@@ -1,9 +1,9 @@
-import Header from "./components/header/Header";
+import HeaderMobile from "./components/header/HeaderMobile";
 
 function App() {
     return (
-        <div className="">
-            <Header/>
+        <div className="h-full w-full">
+            <HeaderMobile />
         </div>
     );
 }
