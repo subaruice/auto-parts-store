@@ -5,10 +5,11 @@
 *::before,
 *::after {
     box-sizing: border-box;
-    margin: 0;
-    padding: 0;
 }
-
+#root{
+    height: 100%;
+    width: 100%;
+}
 html,
 body {
     height: 100%;
@@ -20,21 +21,6 @@ body {
     text-rendering: optimizeLegibility;
 }
 
-body {
-    line-height: 1.5;
-    background-color: #fff;
-    color: #000;
-}
-
-img,
-picture,
-video,
-canvas,
-svg {
-    display: block;
-    max-width: 100%;
-    height: auto;
-}
 
 input,
 button,
