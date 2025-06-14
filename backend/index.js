@@ -1,15 +1,17 @@
-import express from "express";
-import mongoose from "mongoose";
-
-const PORT = 5000;
+import cors from 'cors';
+import express from 'express';
+import productRoutes from './router/products.js'
+import categoryRoutes from './router/categories.js'
 
 const app = express();
+const PORT = 3001;
+
+app.use(cors());
 app.use(express.json());
 
-app.get("/", (req, res) => {
-    console.log(req.query);
+app.use('/api/category', categoryRoutes);
+app.use('/api/products', productRoutes);
 
-    res.status(200).json("Сервер работает");
-});
-
-app.listen(PORT, () => console.log(`сервер был запущен на ${PORT} порту`));
+app.listen(PORT, () => {
+    console.log(`✅ Server running on http://localhost:${PORT}`);
+})
