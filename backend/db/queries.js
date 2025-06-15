@@ -8,11 +8,15 @@ export const getProductsByCategoryId = `
 `;
 
 export const getProductById = `
-  SELECT * FROM avl_product WHERE productID = ?
+  SELECT * FROM avl_products WHERE productID = ?
 `;
 
 export const getAllCategories = `
   SELECT categoryID, name, parent 
   FROM avl_categories 
   ORDER BY parent, sort_order;
+`;
+
+export const getAllProducts = `
+    SELECT * FROM avl_products;
 `;
