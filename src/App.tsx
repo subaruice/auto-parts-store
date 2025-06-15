@@ -1,9 +1,10 @@
 import HeaderMobile from "./components/header/HeaderMobile";
+import Homepage from "./pages/homepage/Homepage";
 
 function App() {
     return (
         <div className="h-full w-full">
-            <HeaderMobile />
+            <Homepage/>
         </div>
     );
 }

@@ -15,14 +15,14 @@ body {
     height: 100%;
     width: 100%;
     overflow-x: hidden;
-    font-family: system-ui, sans-serif;
+    font-family: 'Rubik' ;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     text-rendering: optimizeLegibility;
 }
 
 
-input,
+
 button,
 textarea,
 select {

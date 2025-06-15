@@ -1,6 +1,6 @@
 import express from "express";
 import { pool } from "../db.js";
-import { getProductsByCategoryId, getProductById } from "../db/queries.js";
+import { getProductsByCategoryId, getProductById, getAllProducts } from "../db/queries.js";
 
 const router = express.Router();
 
@@ -17,11 +17,29 @@ router.get("/category/:id", async (req, res) => {
 router.get("/product/:id", async (req, res) => {
     const productID = req.params.id;
     try {
-        const [rows] = pool.query(getProductById, [productID]);
-        if(rows.length === 0 ){
-            return res.status(404).json({error: 'Продукт не найден'})
+        const [rows] = await pool.query(getProductById, [productID]);
+        if (rows.length === 0) {
+            return res.status(404).json({ error: "Продукт не найден" });
         }
         res.json(rows[0]);
+    } catch (err) {
+        console.error("DB error: ", err.message);
+        res.status(500).json({ error: "Database error" });
+    }
+});
+
+router.get("/", async (req, res) => {
+    try {
+        const [rows] = await pool.query(getAllProducts);
+        if (rows.length === 0) {
+            return res.status(404).json({ error: "Нет товаров" });
+        }
+        const cleanedProducts = rows.map((product) => ({
+            ...product,
+            name: product.name.replace(/[^а-яА-ЯёЁ\s]/g, ''),
+            product_code: product.product_code.replace(/\s+/g, '')
+        }));
+        res.json(cleanedProducts);
     } catch (err) {
         console.error("DB error: ", err.message);
         res.status(500).json({ error: "Database error" });
