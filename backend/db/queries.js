@@ -18,5 +18,14 @@ export const getAllCategories = `
 `;
 
 export const getAllProducts = `
-    SELECT * FROM avl_products;
+  SELECT 
+    p.*, 
+    pic.photoID AS picture_id, 
+    pic.filename, 
+    pic.thumbnail, 
+    pic.enlarged 
+  FROM avl_products p
+  LEFT JOIN avl_product_pictures pic 
+    ON p.productID = pic.productID
 `;
+
