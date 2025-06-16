@@ -39,7 +39,36 @@ router.get("/", async (req, res) => {
             name: product.name.replace(/[^а-яА-ЯёЁ\s]/g, ''),
             product_code: product.product_code.replace(/\s+/g, '')
         }));
-        res.json(cleanedProducts);
+        
+        const productsMap = new Map();
+
+        cleanedProducts.forEach(row => {
+        if (!productsMap.has(row.productID)) {
+            const {
+            picture_id, filename, thumbnail, enlarged,
+            ...productFields
+            } = row;
+
+            productsMap.set(row.productID, {
+            ...productFields,
+            pictures: [] // always initialize
+            });
+        }
+
+            if (row.picture_id) {
+                productsMap.get(row.productID).pictures.push({
+            photoID: row.picture_id,
+            filename: row.filename,
+            thumbnail: row.thumbnail,
+            enlarged: row.enlarged
+                });
+            }
+        });
+
+        const result = Array.from(productsMap.values());
+        
+
+        res.json(result);
     } catch (err) {
         console.error("DB error: ", err.message);
         res.status(500).json({ error: "Database error" });
