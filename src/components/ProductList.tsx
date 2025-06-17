@@ -1,5 +1,6 @@
 import type { Item } from "../types/item";
 import React from "react";
+import Bucket from "../icons/button-bucket.svg?react";
 
 interface ItemProps {
     items: Item[];
@@ -7,24 +8,35 @@ interface ItemProps {
 
 const ProductList: React.FC<ItemProps> = ({ items }) => {
     return (
-        <div className="flex gap-3 justify-center flex-wrap">
-            {items.map(({name, in_stock, Price, product_code, pictures}) => 
-                <div className="p-3  bg-white w-[300px] border-[0.5px] rounded-[10px] border-black/30 h-auto flex flex-col ">
-                    <div>
-                        <img src={"http://milotec.com.ua/pictures/" + pictures[0].enlarged} alt="" />
+        <div className="flex gap-4 justify-center flex-wrap">
+            {items.map(({ name, in_stock, Price, product_code, pictures, brief_description }) => (
+                <div className="p-3 shadow-sm hover:shadow-xl shadow-black/30 bg-white w-[300px] border-[0.5px] rounded-[10px] border-black/30 h-auto flex flex-col ">
+                    <div className="">
+                        <img
+                            src={`http://milotec.com.ua/pictures/${pictures[1]?.enlarged ||
+                                pictures[1]?.thumbnail ||
+                                pictures[1]?.filename ||
+                                pictures[0]?.enlarged || pictures[0]?.thumbnail || pictures[0]?.filename}`}
+                            alt="No picture"
+                            className="w-full"
+                        />
                     </div>
-                    <h3 className="font-medium text-black/90">{name}</h3>
+                    <h3 className="font-medium flex-1 text-[18px] my-2 text-black/90">{name}</h3>
+                    <div className="text-[16px] text-black/70 mb-2" dangerouslySetInnerHTML={{ __html: brief_description }}></div>
                     <div className="text-[14px] text-black/60">Код товара: {product_code}</div>
-                    <div className="flex flex-1 justify-between">
-                        <div className={`${in_stock === 1 ? 'text-[#198754]' : 'text-rose-800'}`}>{in_stock === 1 ? 'Есть в наличии' : 'Нет в наличии'}</div>
-                        <div className="text-[20px]">{Price} ₴</div>
+                    <div className="flex justify-between mb-2 items-center">
+                        <div className={`${in_stock === 1 ? "text-[#198754]" : "text-rose-800"}`}>
+                            {in_stock === 1 ? "Есть в наличии" : "Нет в наличии"}
+                        </div>
+                        <div className="text-[22px]">{Price} ₴</div>
                     </div>
-                    <div className="flex justify-center items-center">
-                        <button className="py-3 rounded-[7px] text-[18px] w-full text-white font-medium bg-rose-700">В корзину</button>
+                    <div className="flex justify-center rounded-[7px] gap-2 items-center bg-rose-700 ">
+                        <Bucket className="w-7" />
+                        <button className="py-3 text-[18px]  text-white font-medium ">В корзину</button>
                     </div>
-                    <div></div>
+
                 </div>
-            )}
+            ))}
             <div className="border-0.5 border-black/30"></div>
         </div>
     );
