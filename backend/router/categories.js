@@ -15,6 +15,7 @@ router.get("/", async (req, res) => {
         const structured = main.map((parent) => ({
             ...parent,
             subcategories: subs.filter((sub) => sub.parent === parent.categoryID),
+            name: parent.name.replace("Шкода", "Škoda"),
         }));
 
         res.json(structured);

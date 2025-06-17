@@ -8,9 +8,9 @@ interface ItemProps {
 
 const ProductList: React.FC<ItemProps> = ({ items }) => {
     return (
-        <div className="flex gap-4 justify-center flex-wrap">
+        <div className="flex gap-4 px-4 justify-center flex-wrap">
             {items.map(({ name, in_stock, Price, product_code, pictures, brief_description }) => (
-                <div className="p-3 shadow-sm hover:shadow-xl shadow-black/30 bg-white w-[300px] border-[0.5px] rounded-[10px] border-black/30 h-auto flex flex-col ">
+                <div className="p-3 shadow-sm hover:shadow-xl shadow-black/30 bg-white w-[320px] border-[0.5px] border-black/30 h-auto flex flex-col ">
                     <div className="">
                         <img
                             src={`http://milotec.com.ua/pictures/${pictures[1]?.enlarged ||
@@ -30,7 +30,7 @@ const ProductList: React.FC<ItemProps> = ({ items }) => {
                         </div>
                         <div className="text-[22px]">{Price} ₴</div>
                     </div>
-                    <div className="flex justify-center rounded-[7px] gap-2 items-center bg-rose-700 ">
+                    <div className="flex justify-center gap-2 items-center bg-rose-700 ">
                         <Bucket className="w-7" />
                         <button className="py-3 text-[18px]  text-white font-medium ">В корзину</button>
                     </div>

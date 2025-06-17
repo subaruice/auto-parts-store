@@ -14,7 +14,7 @@ export const getProductById = `
 export const getAllCategories = `
   SELECT categoryID, name, parent 
   FROM avl_categories 
-  ORDER BY parent, sort_order;
+  ORDER BY name, sort_order;
 `;
 
 export const getAllProducts = `
