@@ -1,6 +1,7 @@
 import express from "express";
 import { pool } from "../db.js";
 import { getProductsByCategoryId, getProductById, getAllProducts } from "../db/queries.js";
+import { cleanHtml } from "../utils/extractModels.js";
 
 const router = express.Router();
 
@@ -37,7 +38,8 @@ router.get("/", async (req, res) => {
         const cleanedProducts = rows.map((product) => ({
             ...product,
             name: product.name.replace(/[^а-яА-ЯёЁ\s]/g, ''),
-            product_code: product.product_code.replace(/\s+/g, '')
+            product_code: product.product_code.replace(/\s+/g, ''),
+            brief_description:  cleanHtml(product.brief_description)
         }));
         
         const productsMap = new Map();
@@ -48,6 +50,8 @@ router.get("/", async (req, res) => {
             picture_id, filename, thumbnail, enlarged,
             ...productFields
             } = row;
+
+            
 
             productsMap.set(row.productID, {
             ...productFields,

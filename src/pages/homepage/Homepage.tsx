@@ -2,6 +2,8 @@ import Header from '../../components/header/Header';
 import PostService from '../../API/PostService';
 import { useEffect, useState } from 'react';
 import ProductList from '../../components/ProductList';
+import { useFetching } from './../../hooks/useFetching';
+import Skeleton from '../../components/UI/Skeleton';
 
 interface Item {
     [key: string]: any;
@@ -9,18 +11,21 @@ interface Item {
 
 const Homepage = () => {
     const [items, setItems] = useState<Item[]>([]);
+    const [fetchItems, isLoading, onError] = useFetching(async () => {
+        const res = await PostService.getAllProducts()
+            setItems(res.data);
+    })
 
     useEffect(() => {
-        const fetchItems = async () => {
-            const res = await PostService.getAllProducts();
-            setItems(res.data);
-        }
         fetchItems();
     }, [])
 
     return (
        <div className="flex flex-col">
            <Header/>
+           {isLoading && (
+            <Skeleton/>
+           )}
            <ProductList items={items} />
        </div>
     );
