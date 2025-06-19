@@ -1,9 +1,16 @@
 export const getProductsByCategoryId = `
-    SELECT * FROM avl_products 
-    WHERE categoryID IN (
-        SELECT categoryID
-        FROM avl_categories
-        WHERE parent = ? OR categoryID = ?
+    SELECT 
+    p.*, 
+    pp.photoID AS picture_id,
+    pp.filename,
+    pp.thumbnail,
+    pp.enlarged
+    FROM avl_products p
+    LEFT JOIN avl_product_pictures pp ON p.productID = pp.productID
+    WHERE p.categoryID IN (
+    SELECT categoryID
+    FROM avl_categories
+    WHERE parent = ? OR categoryID = ?
     )
 `;
 
@@ -28,4 +35,3 @@ export const getAllProducts = `
   LEFT JOIN avl_product_pictures pic 
     ON p.productID = pic.productID
 `;
-
