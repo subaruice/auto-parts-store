@@ -9,7 +9,37 @@ router.get("/category/:id", async (req, res) => {
     const categoryID = req.params.id;
     try {
         const [rows] = await pool.query(getProductsByCategoryId, [categoryID, categoryID]);
-        res.json(rows);
+        if (rows.length === 0) {
+            return res.status(404).json({ error: "Нет товаров" });
+        }
+        const cleanedProducts = rows.map((product) => ({
+            ...product,
+            name: product.name.replace(/[^а-яА-ЯёЁ\s]/g, ""),
+            product_code: product.product_code.replace(/\s+/g, ""),
+            brief_description: cleanHtml(product.brief_description),
+        }));
+
+        const productsMap = new Map();
+
+        cleanedProducts.forEach((row) => {
+            if (!productsMap.has(row.productID)) {
+                const { picture_id, filename, thumbnail, enlarged, ...productFields } = row;
+                productsMap.set(row.productID, {
+                    ...productFields,
+                    pictures: [], // always initialize
+                });
+            }
+            if (row.picture_id) {
+                productsMap.get(row.productID).pictures.push({
+                    photoID: row.picture_id,
+                    filename: row.filename,
+                    thumbnail: row.thumbnail,
+                    enlarged: row.enlarged,
+                });
+            }
+        });
+        const result = Array.from(productsMap.values());
+        res.json(result);
     } catch (err) {
         console.error("DB error: ", err.message);
         res.status(500).json({ error: "Database error" });
@@ -37,41 +67,31 @@ router.get("/", async (req, res) => {
         }
         const cleanedProducts = rows.map((product) => ({
             ...product,
-            name: product.name.replace(/[^а-яА-ЯёЁ\s]/g, ''),
-            product_code: product.product_code.replace(/\s+/g, ''),
-            brief_description:  cleanHtml(product.brief_description)
+            name: product.name.replace(/[^а-яА-ЯёЁ\s]/g, ""),
+            product_code: product.product_code.replace(/\s+/g, ""),
+            brief_description: cleanHtml(product.brief_description),
         }));
-        
+
         const productsMap = new Map();
 
-        cleanedProducts.forEach(row => {
-        if (!productsMap.has(row.productID)) {
-            const {
-            picture_id, filename, thumbnail, enlarged,
-            ...productFields
-            } = row;
-
-            
-
-            productsMap.set(row.productID, {
-            ...productFields,
-            pictures: [] // always initialize
-            });
-        }
-
+        cleanedProducts.forEach((row) => {
+            if (!productsMap.has(row.productID)) {
+                const { picture_id, filename, thumbnail, enlarged, ...productFields } = row;
+                productsMap.set(row.productID, {
+                    ...productFields,
+                    pictures: [], // always initialize
+                });
+            }
             if (row.picture_id) {
                 productsMap.get(row.productID).pictures.push({
-            photoID: row.picture_id,
-            filename: row.filename,
-            thumbnail: row.thumbnail,
-            enlarged: row.enlarged
+                    photoID: row.picture_id,
+                    filename: row.filename,
+                    thumbnail: row.thumbnail,
+                    enlarged: row.enlarged,
                 });
             }
         });
-
         const result = Array.from(productsMap.values());
-        
-
         res.json(result);
     } catch (err) {
         console.error("DB error: ", err.message);

@@ -1,10 +1,15 @@
+import { Route, Routes } from "react-router";
 import Homepage from "./pages/homepage/Homepage";
+import Layout from "./components/Layout";
 
 function App() {
     return (
-        <div className="h-full w-full">
-            <Homepage/>
-        </div>
+        <Routes>
+            <Route path="/" element={<Layout />}>
+                <Route index element={<Homepage />} />
+                <Route path="category/:id" element={<Homepage />} />
+            </Route>
+        </Routes>
     );
 }
 

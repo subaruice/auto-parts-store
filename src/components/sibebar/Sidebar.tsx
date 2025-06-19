@@ -4,6 +4,7 @@ import Call from "../../icons/call.svg?react";
 import About from "../../icons/about.svg?react";
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { Link } from "react-router";
 
 interface CategoriesProp {
     categories: any;
@@ -17,7 +18,7 @@ const Sidebar: React.FC<CategoriesProp> = ({ categories }) => {
     };
 
     return (
-        <div className="flex flex-col pl-2 py-4 bg-[#2B2D41] min-w-[320px]">
+        <div className="flex flex-col pl-2 py-4 bg-[#2B2D41] shrink-0 w-[320px]">
             <div className="flex px-8 mb-3 justify-center items-center">
                 <img src={Logo} className="w-[90%]" alt="" />
             </div>
@@ -27,16 +28,17 @@ const Sidebar: React.FC<CategoriesProp> = ({ categories }) => {
                     <Call />
                     <About />
                 </div>
-                <div className="w-full   pl-4">
+                <div className="w-full pl-4">
                     {/* <p className="text-[30px] w-[100%] text-center pb-2 text-gray-200">
                             Каталог
                         </p> */}
                     <div className="flex items-center bg-[#202231] rounded-l-[10px] w-full flex-col">
                         <div className="pr-2 pl-4 tracking-wider text-gray-300 text-[18px] flex flex-col items-start w-full">
                             {categories.map((cat: any) => (
-                                <div
+                                <Link
+                                    to={`/category/${cat.categoryID}`}
                                     key={cat.categoryID}
-                                    className={`${activeCategoryId === cat.categoryID &&
+                                    className={`block ${activeCategoryId === cat.categoryID &&
                                         cat.subcategories.length > 0 &&
                                         "text-white"} hover:text-white cursor-pointer w-[90%] border-b py-4 border-[#2B2D41]`}
                                 >
@@ -53,14 +55,16 @@ const Sidebar: React.FC<CategoriesProp> = ({ categories }) => {
                                                 transition={{ duration: 0.3, ease: "easeInOut" }}
                                             >
                                                 {cat.subcategories.map((sub: any, i: number) => (
-                                                    <div key={i} className="hover:text-white cursor-pointer">
-                                                        {sub.name}
-                                                    </div>
+                                                    <Link to={`/category/${sub.categoryID}`}>
+                                                        <div key={i} className="hover:text-white cursor-pointer">
+                                                            {sub.name}
+                                                        </div>
+                                                    </Link>
                                                 ))}
                                             </motion.div>
                                         )}
                                     </AnimatePresence>
-                                </div>
+                                </Link>
                             ))}
                         </div>
                     </div>
