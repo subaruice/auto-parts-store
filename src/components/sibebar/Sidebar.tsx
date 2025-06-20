@@ -25,11 +25,11 @@ const Sidebar: React.FC<CategoriesProp> = ({ categories }) => {
     const clearStates = () => {
         setActiveCategoryId(null);
         setActiveSubCategoryId(null);
-    }
+    };
 
     return (
         <div className="flex flex-col pl-2 py-4 bg-[#2B2D41] shrink-0 w-[320px]">
-            <Link to={'/'} className="flex px-8 mb-3 justify-center items-center">
+            <Link to={"/"} className="flex px-8 mb-3 justify-center items-center">
                 <img src={Logo} className="w-[90%]" alt="logo-image" />
             </Link>
             <div className="flex">
@@ -37,10 +37,10 @@ const Sidebar: React.FC<CategoriesProp> = ({ categories }) => {
                     <Link onClick={clearStates} className="cursor-pointer" to={"/"}>
                         <Home className="hover:stroke-white" />
                     </Link>
-                    <Link to={'/contacts'}>
+                    <Link to={"/contacts"}>
                         <Call className="hover:stroke-white" />
                     </Link>
-                    <Link to={'/about'}>
+                    <Link to={"/about"}>
                         <About className="hover:stroke-white" />
                     </Link>
                 </div>
@@ -75,11 +75,11 @@ const Sidebar: React.FC<CategoriesProp> = ({ categories }) => {
                                             >
                                                 {cat.subcategories.map((sub: any, i: number) => (
                                                     <Link
+                                                        key={i}
                                                         onClick={() => toggleSubActive(sub.categoryID)}
                                                         to={`/category/${sub.categoryID}`}
                                                     >
                                                         <div
-                                                            key={i}
                                                             className={`${activeSubCategoryId === sub.categoryID &&
                                                                 "text-white"} hover:text-white cursor-pointer`}
                                                         >

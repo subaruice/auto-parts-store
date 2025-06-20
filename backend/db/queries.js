@@ -30,7 +30,22 @@ GROUP BY p.productID
 `;
 
 export const getProductById = `
-  SELECT * FROM avl_products WHERE productID = ?
+  SELECT 
+  p.*,
+
+  JSON_ARRAYAGG(
+    JSON_OBJECT(
+      'photoID', pp.photoID,
+      'filename', pp.filename,
+      'thumbnail', pp.thumbnail,
+      'enlarged', pp.enlarged
+    )
+  ) AS pictures
+
+FROM avl_products p
+LEFT JOIN avl_product_pictures pp ON p.productID = pp.productID
+WHERE p.productID = ?
+GROUP BY p.productID;
 `;
 
 export const getAllCategories = `
