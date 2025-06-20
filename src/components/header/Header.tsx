@@ -3,8 +3,12 @@ import SearchIcon from "../../icons/search-icon.svg?react";
 import UserProfile from "../../icons/user-profile.svg?react";
 import { useState } from "react";
 
-const Header = () => {
-    const [inputValue, setInputValue] = useState<string>("");
+interface HeaderProps {
+    search: string,
+    setSearch: React.Dispatch<React.SetStateAction<string | number  | undefined>>
+}
+
+const Header:React.FC<HeaderProps> = ({search, setSearch}) => {
     return (
         <div className="flex h-[87px] w-full border-b-[0.5px] border-black/30 ">
             <div className="p-[26px]  flex-1">
@@ -14,8 +18,8 @@ const Header = () => {
                         name="search"
                         className="w-full text-black/70 outline-none text-[20px] placeholder:text-[20px] placeholder:text-black/30"
                         placeholder="Поиск по имени, VIN, код-детали..."
-                        value={inputValue}
-                        onChange={(e) => setInputValue(e.target.value)}
+                        value={search}
+                        onChange={(e) => setSearch(e.target.value)}
                         type="text"
                     />
                 </form>
