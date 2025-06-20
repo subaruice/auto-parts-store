@@ -14,6 +14,7 @@ interface Item {
 const Homepage = () => {
     const { id } = useParams();
     const [items, setItems] = useState<Item[]>([]);
+    const [search, setSearch] = useState<string | number>();
     const [categories, setCategories] = useState([]);
     const [fetchItems, isLoading, onError] = useFetching(async () => {
         if (id) {
@@ -38,13 +39,31 @@ const Homepage = () => {
         fetchCategories();
     }, []);
 
+    const filtredItems = () => {
+        const filtred = items.filter((item) => {
+            if (typeof search === "string") {
+                const key = search.toLowerCase();
+                item.name?.toLowerCase().include(key) ||
+                    item.description?.toLowerCase().include(key) ||
+                    item.brief_description?.toLowerCase().include(key);
+            } else if (typeof search === "number") {
+                item.product_code?.include(search);
+            }
+        });
+        return filtred;
+    };
+
     return (
         <div className="flex">
             <Sidebar categories={categories} />
             <div className="flex flex-col w-full">
-                <Header />
+                <Header search={search} setSearch={setSearch} />
                 {isLoading && <Skeleton />}
-                {onError ? <div className="text-gray-700 mt-10 text-[30px] text-center">Нет товаров в данной категории!</div> : <ProductList items={items} />}
+                {onError ? (
+                    <div className="text-gray-700 mt-10 text-[30px] text-center">Нет товаров в данной категории!</div>
+                ) : (
+                    <ProductList items={filtredItems} />
+                )}
             </div>
         </div>
     );
