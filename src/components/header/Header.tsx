@@ -1,11 +1,10 @@
 import ShoppingIcon from "../../icons/shopping-cart.svg?react";
 import SearchIcon from "../../icons/search-icon.svg?react";
 import UserProfile from "../../icons/user-profile.svg?react";
-import { useState } from "react";
 
 interface HeaderProps {
     search: string,
-    setSearch: React.Dispatch<React.SetStateAction<string | number  | undefined>>
+    setSearch: React.Dispatch<React.SetStateAction<string>>
 }
 
 const Header:React.FC<HeaderProps> = ({search, setSearch}) => {
@@ -17,7 +16,7 @@ const Header:React.FC<HeaderProps> = ({search, setSearch}) => {
                     <input
                         name="search"
                         className="w-full text-black/70 outline-none text-[20px] placeholder:text-[20px] placeholder:text-black/30"
-                        placeholder="Поиск по имени, VIN, код-детали..."
+                        placeholder="Поиск по имени, код-детали..."
                         value={search}
                         onChange={(e) => setSearch(e.target.value)}
                         type="text"
