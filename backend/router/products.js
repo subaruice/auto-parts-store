@@ -19,27 +19,27 @@ router.get("/category/:id", async (req, res) => {
             brief_description: cleanHtml(product.brief_description),
         }));
 
-        const productsMap = new Map();
+        // const productsMap = new Map();
 
-        cleanedProducts.forEach((row) => {
-            if (!productsMap.has(row.productID)) {
-                const { picture_id, filename, thumbnail, enlarged, ...productFields } = row;
-                productsMap.set(row.productID, {
-                    ...productFields,
-                    pictures: [], // always initialize
-                });
-            }
-            if (row.picture_id) {
-                productsMap.get(row.productID).pictures.push({
-                    photoID: row.picture_id,
-                    filename: row.filename,
-                    thumbnail: row.thumbnail,
-                    enlarged: row.enlarged,
-                });
-            }
-        });
-        const result = Array.from(productsMap.values());
-        res.json(result);
+        // cleanedProducts.forEach((row) => {
+        //     if (!productsMap.has(row.productID)) {
+        //         const { picture_id, filename, thumbnail, enlarged, ...productFields } = row;
+        //         productsMap.set(row.productID, {
+        //             ...productFields,
+        //             pictures: [], // always initialize
+        //         });
+        //     }
+        //     if (row.picture_id) {
+        //         productsMap.get(row.productID).pictures.push({
+        //             photoID: row.picture_id,
+        //             filename: row.filename,
+        //             thumbnail: row.thumbnail,
+        //             enlarged: row.enlarged,
+        //         });
+        //     }
+        // });
+        // const result = Array.from(productsMap.values());
+        res.json(cleanedProducts);
     } catch (err) {
         console.error("DB error: ", err.message);
         res.status(500).json({ error: "Database error" });

@@ -37,7 +37,6 @@ const ProductList: React.FC<ItemProps> = ({ items }) => {
 
                 </div>
             ))}
-            <div className="border-0.5 border-black/30"></div>
         </div>
     );
 };

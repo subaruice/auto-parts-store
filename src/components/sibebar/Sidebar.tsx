@@ -12,21 +12,37 @@ interface CategoriesProp {
 
 const Sidebar: React.FC<CategoriesProp> = ({ categories }) => {
     const [activeCategoryId, setActiveCategoryId] = useState<number | null>();
+    const [activeSubCategoryId, setActiveSubCategoryId] = useState<number | null>();
 
     const toggleSub = (id: number) => {
         setActiveCategoryId((prev) => (prev === id ? null : id));
+        setActiveSubCategoryId(null);
     };
+    const toggleSubActive = (id: number) => {
+        setActiveSubCategoryId((prev) => (prev === id ? null : id));
+    };
+
+    const clearStates = () => {
+        setActiveCategoryId(null);
+        setActiveSubCategoryId(null);
+    }
 
     return (
         <div className="flex flex-col pl-2 py-4 bg-[#2B2D41] shrink-0 w-[320px]">
-            <div className="flex px-8 mb-3 justify-center items-center">
-                <img src={Logo} className="w-[90%]" alt="" />
-            </div>
+            <Link to={'/'} className="flex px-8 mb-3 justify-center items-center">
+                <img src={Logo} className="w-[90%]" alt="logo-image" />
+            </Link>
             <div className="flex">
                 <div className="flex mt-15 self-start gap-5 flex-col">
-                    <Home />
-                    <Call />
-                    <About />
+                    <Link onClick={clearStates} className="cursor-pointer" to={"/"}>
+                        <Home className="hover:stroke-white" />
+                    </Link>
+                    <Link to={'/contacts'}>
+                        <Call className="hover:stroke-white" />
+                    </Link>
+                    <Link to={'/about'}>
+                        <About className="hover:stroke-white" />
+                    </Link>
                 </div>
                 <div className="w-full pl-4">
                     {/* <p className="text-[30px] w-[100%] text-center pb-2 text-gray-200">
@@ -35,16 +51,19 @@ const Sidebar: React.FC<CategoriesProp> = ({ categories }) => {
                     <div className="flex items-center bg-[#202231] rounded-l-[10px] w-full flex-col">
                         <div className="pr-2 pl-4 tracking-wider text-gray-300 text-[18px] flex flex-col items-start w-full">
                             {categories.map((cat: any) => (
-                                <Link
-                                    to={`/category/${cat.categoryID}`}
+                                <div
                                     key={cat.categoryID}
-                                    className={`block ${activeCategoryId === cat.categoryID &&
+                                    className={`${activeCategoryId === cat.categoryID &&
                                         cat.subcategories.length > 0 &&
                                         "text-white"} hover:text-white cursor-pointer w-[90%] border-b py-4 border-[#2B2D41]`}
                                 >
-                                    <div onClick={() => toggleSub(cat.categoryID)} className="">
+                                    <Link
+                                        to={`/category/${cat.categoryID}`}
+                                        onClick={() => toggleSub(cat.categoryID)}
+                                        className="w-full"
+                                    >
                                         {cat.name}
-                                    </div>
+                                    </Link>
                                     <AnimatePresence>
                                         {activeCategoryId === cat.categoryID && cat.subcategories.length > 0 && (
                                             <motion.div
@@ -55,8 +74,15 @@ const Sidebar: React.FC<CategoriesProp> = ({ categories }) => {
                                                 transition={{ duration: 0.3, ease: "easeInOut" }}
                                             >
                                                 {cat.subcategories.map((sub: any, i: number) => (
-                                                    <Link to={`/category/${sub.categoryID}`}>
-                                                        <div key={i} className="hover:text-white cursor-pointer">
+                                                    <Link
+                                                        onClick={() => toggleSubActive(sub.categoryID)}
+                                                        to={`/category/${sub.categoryID}`}
+                                                    >
+                                                        <div
+                                                            key={i}
+                                                            className={`${activeSubCategoryId === sub.categoryID &&
+                                                                "text-white"} hover:text-white cursor-pointer`}
+                                                        >
                                                             {sub.name}
                                                         </div>
                                                     </Link>
@@ -64,7 +90,7 @@ const Sidebar: React.FC<CategoriesProp> = ({ categories }) => {
                                             </motion.div>
                                         )}
                                     </AnimatePresence>
-                                </Link>
+                                </div>
                             ))}
                         </div>
                     </div>
