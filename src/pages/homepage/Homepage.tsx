@@ -1,6 +1,6 @@
 import Header from "../../components/header/Header";
 import PostService from "../../API/PostService";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import ProductList from "../../components/ProductList";
 import { useFetching } from "../../hooks/useFetching";
 import Skeleton from "../../components/UI/Skeleton";
@@ -14,7 +14,7 @@ interface Item {
 const Homepage = () => {
     const { id } = useParams();
     const [items, setItems] = useState<Item[]>([]);
-    const [search, setSearch] = useState<string | number>();
+    const [search, setSearch] = useState<string>('');
     const [categories, setCategories] = useState([]);
     const [fetchItems, isLoading, onError] = useFetching(async () => {
         if (id) {
@@ -25,6 +25,8 @@ const Homepage = () => {
             setItems(resItems.data);
         }
     });
+
+    
 
     const [fetchCategories] = useFetching(async () => {
         const resCategories = await PostService.getAllCategories();
@@ -39,19 +41,17 @@ const Homepage = () => {
         fetchCategories();
     }, []);
 
-    const filtredItems = () => {
-        const filtred = items.filter((item) => {
-            if (typeof search === "string") {
-                const key = search.toLowerCase();
-                item.name?.toLowerCase().include(key) ||
-                    item.description?.toLowerCase().include(key) ||
-                    item.brief_description?.toLowerCase().include(key);
-            } else if (typeof search === "number") {
-                item.product_code?.include(search);
-            }
-        });
-        return filtred;
-    };
+    const filteredItems = useMemo(() => {
+  return items.filter((item) => {
+      const key = search.toLowerCase();
+      return (
+        item.name?.toLowerCase().includes(key) ||
+        item.description?.toLowerCase().includes(key) ||
+        item.brief_description?.toLowerCase().includes(key) ||
+        item.product_code?.includes(key)
+      ) 
+    })
+}, [search, items]);
 
     return (
         <div className="flex">
@@ -62,7 +62,7 @@ const Homepage = () => {
                 {onError ? (
                     <div className="text-gray-700 mt-10 text-[30px] text-center">Нет товаров в данной категории!</div>
                 ) : (
-                    <ProductList items={filtredItems} />
+                    <ProductList items={filteredItems } />
                 )}
             </div>
         </div>
