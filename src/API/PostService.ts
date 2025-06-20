@@ -13,4 +13,8 @@ export default class PostService {
         const response = await axios.get('http://localhost:3001/api/products/category/' + id)
         return response;
     }
+    static async getProductByID(id: string) {
+        const response = await axios.get('http://localhost:3001/api/products/product/' + id)
+        return response;
+    }
 }

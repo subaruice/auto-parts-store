@@ -16,7 +16,7 @@ const Header:React.FC<HeaderProps> = ({search, setSearch}) => {
                     <input
                         name="search"
                         className="w-full text-black/70 outline-none text-[20px] placeholder:text-[20px] placeholder:text-black/30"
-                        placeholder="Поиск по имени, код-детали..."
+                        placeholder="Поиск по названию, код-детали..."
                         value={search}
                         onChange={(e) => setSearch(e.target.value)}
                         type="text"
