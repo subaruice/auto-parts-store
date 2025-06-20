@@ -15,7 +15,7 @@ const Homepage = () => {
     const { id } = useParams();
     const [items, setItems] = useState<Item[]>([]);
     const [categories, setCategories] = useState([]);
-    const [fetchItems, isLoading] = useFetching(async () => {
+    const [fetchItems, isLoading, onError] = useFetching(async () => {
         if (id) {
             const resProductByCategory = await PostService.getCategoryByProduct(id);
             setItems(resProductByCategory.data);
@@ -23,6 +23,9 @@ const Homepage = () => {
             const resItems = await PostService.getAllProducts();
             setItems(resItems.data);
         }
+    });
+
+    const [fetchCategories] = useFetching(async () => {
         const resCategories = await PostService.getAllCategories();
         setCategories(resCategories.data);
     });
@@ -31,13 +34,17 @@ const Homepage = () => {
         fetchItems();
     }, [id]);
 
+    useEffect(() => {
+        fetchCategories();
+    }, []);
+
     return (
         <div className="flex">
             <Sidebar categories={categories} />
-            <div className="flex flex-col">
+            <div className="flex flex-col w-full">
                 <Header />
                 {isLoading && <Skeleton />}
-                <ProductList items={items} />
+                {onError ? <div className="text-gray-700 mt-10 text-[30px] text-center">Нет товаров в данной категории!</div> : <ProductList items={items} />}
             </div>
         </div>
     );
