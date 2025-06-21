@@ -22,12 +22,14 @@ const Homepage = () => {
         if (categoryID) {
             const resProductByCategory = await PostService.getCategoryByProduct(categoryID);
             setItems(resProductByCategory.data);
+            setProduct({});
         } else if (productID) {
             const resProduct = await PostService.getProductByID(productID);
             setProduct(resProduct.data);
         } else {
             const resItems = await PostService.getAllProducts();
             setItems(resItems.data);
+            setProduct({});
         }
     });
 
@@ -67,7 +69,7 @@ const Homepage = () => {
                 ) : !productID ? (
                     <ProductList items={filteredItems} />
                 ) : (
-                <ProductItem product={product} />
+                    <ProductItem product={product} />
                 )}
             </div>
         </div>
