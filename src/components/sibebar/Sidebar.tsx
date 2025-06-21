@@ -29,7 +29,7 @@ const Sidebar: React.FC<CategoriesProp> = ({ categories }) => {
 
     return (
         <div className="flex flex-col pl-2 py-4 bg-[#2B2D41] shrink-0 w-[320px]">
-            <Link to={"/"} className="flex px-8 mb-3 justify-center items-center">
+            <Link to={"/"} className="flex px-8 mb-2 justify-center items-center">
                 <img src={Logo} className="w-[90%]" alt="logo-image" />
             </Link>
             <div className="flex">
@@ -45,16 +45,13 @@ const Sidebar: React.FC<CategoriesProp> = ({ categories }) => {
                     </Link>
                 </div>
                 <div className="w-full pl-4">
-                    {/* <p className="text-[30px] w-[100%] text-center pb-2 text-gray-200">
-                            Каталог
-                        </p> */}
                     <div className="flex items-center bg-[#202231] rounded-l-[10px] w-full flex-col">
                         <div className="pr-2 pl-4 tracking-wider text-gray-300 text-[18px] flex flex-col items-start w-full">
                             {categories.map((cat: any) => (
                                 <div
                                     key={cat.categoryID}
                                     className={`${activeCategoryId === cat.categoryID &&
-                                        cat.subcategories.length > 0 &&
+                                        
                                         "text-white"} hover:text-white cursor-pointer w-[90%] border-b py-4 border-[#2B2D41]`}
                                 >
                                     <Link

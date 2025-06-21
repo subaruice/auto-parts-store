@@ -36,6 +36,7 @@ router.get("/product/:id", async (req, res) => {
             name: product.name.replace(/[^а-яА-ЯёЁ\s]/g, ""),
             product_code: product.product_code.replace(/\s+/g, ""),
             brief_description: cleanHtml(product.brief_description),
+            description: cleanHtml(product.description),
         }));
         return res.json(cleanedProducts[0]);
     } catch (err) {

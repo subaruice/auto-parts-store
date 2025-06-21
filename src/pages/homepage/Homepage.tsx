@@ -6,7 +6,7 @@ import { useFetching } from "../../hooks/useFetching";
 import Skeleton from "../../components/UI/Skeleton";
 import Sidebar from "../../components/sibebar/Sidebar";
 import { useParams } from "react-router";
-import ProductItem from "../../components/ProductItem";
+import ProductItem from "../../components/productItem/ProductItem";
 
 interface Item {
     [key: string]: any;
@@ -20,13 +20,16 @@ const Homepage = () => {
     const [categories, setCategories] = useState([]);
     const [fetchItems, isLoading, onError] = useFetching(async () => {
         if (categoryID) {
+            setSearch('')
             const resProductByCategory = await PostService.getCategoryByProduct(categoryID);
             setItems(resProductByCategory.data);
             setProduct({});
         } else if (productID) {
+            setSearch('')
             const resProduct = await PostService.getProductByID(productID);
             setProduct(resProduct.data);
         } else {
+            setSearch('')
             const resItems = await PostService.getAllProducts();
             setItems(resItems.data);
             setProduct({});
@@ -65,7 +68,7 @@ const Homepage = () => {
                 <Header search={search} setSearch={setSearch} />
                 {isLoading && <Skeleton />}
                 {onError ? (
-                    <div className="text-gray-700 mt-10 text-[30px] text-center">Нет товаров в данной категории!</div>
+                    <div className="text-gray-700 mt-10 text-[30px] text-center">Нет товаров в данной категории</div>
                 ) : !productID ? (
                     <ProductList items={filteredItems} />
                 ) : (
