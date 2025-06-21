@@ -1,6 +1,7 @@
 import type { Item } from "../types/item";
 import React from "react";
 import Bucket from "../icons/button-bucket.svg?react";
+import { Link } from "react-router";
 
 interface ItemProps {
     items: Item[];
@@ -10,7 +11,7 @@ const ProductList: React.FC<ItemProps> = ({ items }) => {
     return (
         <div className="flex gap-4 px-4 justify-center flex-wrap">
             {items.map(({ name, in_stock, Price, product_code, pictures, brief_description, productID }) => (
-                <div key={productID} className="p-3 shadow-sm hover:shadow-xl shadow-black/30 bg-white w-[320px] border-[0.5px] border-black/30 h-auto flex flex-col ">
+                <Link to={`/products/${productID}`} key={productID} className="p-3 shadow-sm hover:shadow-xl shadow-black/30 bg-white w-[320px] border-[0.5px] border-black/30 h-auto flex flex-col ">
                     <div className="">
                         <img
                             src={`http://milotec.com.ua/pictures/${pictures[1]?.enlarged ||
@@ -35,7 +36,7 @@ const ProductList: React.FC<ItemProps> = ({ items }) => {
                         <button className="py-3 text-[18px]  text-white font-medium ">В корзину</button>
                     </div>
 
-                </div>
+                </Link>
             ))}
         </div>
     );
