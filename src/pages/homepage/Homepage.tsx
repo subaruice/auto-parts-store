@@ -1,6 +1,6 @@
 import Header from "../../components/header/Header";
 import PostService from "../../API/PostService";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import ProductList from "../../components/ProductList";
 // @ts-ignore
 import { useFetching } from "../../hooks/useFetching";
@@ -21,26 +21,35 @@ const Homepage = () => {
     const [categories, setCategories] = useState([]);
     const [fetchItems, isLoading, onError] = useFetching(async () => {
         if (categoryID) {
-            setSearch('')
+            setSearch("");
             const resProductByCategory = await PostService.getCategoryByProduct(categoryID);
             setItems(resProductByCategory.data);
             setProduct({});
         } else if (productID) {
-            setSearch('')
+            setSearch("");
             const resProduct = await PostService.getProductByID(productID);
             setProduct(resProduct.data);
         } else {
-            setSearch('')
+            setSearch("");
             const resItems = await PostService.getAllProducts();
             setItems(resItems.data);
             setProduct({});
         }
     });
 
+    const location = window.location.href
+    const toTop = useRef<HTMLDivElement>(null);
     const [fetchCategories] = useFetching(async () => {
         const resCategories = await PostService.getAllCategories();
         setCategories(resCategories.data);
     });
+    const scrollToTop = () => {
+        toTop.current?.scrollIntoView({behavior: 'smooth', block: 'start'})
+    }
+
+    useEffect(() => {
+        scrollToTop();
+    }, [location])
 
     useEffect(() => {
         fetchItems();
@@ -63,7 +72,7 @@ const Homepage = () => {
     }, [search, items]);
 
     return (
-        <div className="flex">
+        <div ref={toTop} className="flex">
             <Sidebar categoryID={cat} categories={categories} />
             <div className="flex flex-col w-full h-auto">
                 <Header search={search} setSearch={setSearch} />

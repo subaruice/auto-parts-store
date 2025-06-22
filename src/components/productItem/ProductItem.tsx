@@ -18,7 +18,12 @@ interface PicObj {
 }
 
 const ProductItem: React.FC<ProductProp> = ({ product }) => {
+    const [isEnlarged, setIsEnlarged] = useState<boolean>(false);
     const [quantity, setQuantity] = useState<string>("");
+
+    const togglePictureSize = () => {
+        setIsEnlarged(!isEnlarged);
+    }
     return (
         <div className="py-5 h-full px-5">
             {/* main content */}
@@ -61,7 +66,7 @@ const ProductItem: React.FC<ProductProp> = ({ product }) => {
                         </div>
                         <div className="w-full gap-2 flex justify-end">
                             <input
-                                className="border border-[#eceff1] rounded-[5px] w-10 outline-none input-no-spinner"
+                                className="indent-1 border border-[#eceff1] rounded-[5px] w-10 outline-none input-no-spinner"
                                 type="number"
                                 placeholder="0"
                                 value={quantity}
