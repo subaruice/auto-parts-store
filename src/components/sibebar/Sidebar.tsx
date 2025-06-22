@@ -15,8 +15,6 @@ const Sidebar: React.FC<CategoriesProp> = ({ categories, categoryID }) => {
     const [activeCategoryId, setActiveCategoryId] = useState<number | null>();
     const [activeSubCategoryId, setActiveSubCategoryId] = useState<number | null>();
 
-
-
     const toggleSub = (id: number) => {
         setActiveCategoryId((prev) => (prev === id ? null : id));
         setActiveSubCategoryId(null);
@@ -31,14 +29,27 @@ const Sidebar: React.FC<CategoriesProp> = ({ categories, categoryID }) => {
     };
 
     useEffect(() => {
-        if(!activeCategoryId && categoryID){
-            categories.map((cat:any) => {
-                if(cat.categoryID === Number(categoryID)){
-                    setActiveCategoryId(Number(categoryID))
-                }
-            })
+        if (activeCategoryId == null && categoryID && categories.length > 0) {
+            const numericCategoryID = Number(categoryID);
+
+            let found = categories.find((cat: any) => cat.categoryID === numericCategoryID);
+            if (!found) {
+                // ищем во вложенных подкатегориях
+                categories.forEach((cat: any) => {
+                    const sub = cat.subcategories?.find((subcat: any) => subcat.categoryID === numericCategoryID);
+                    if (sub) {
+                        found = { ...sub, parent: cat.categoryID }; // добавляем родителя вручную
+                    }
+                });
+            }
+            if (found.parent === 1) {
+                setActiveCategoryId(Number(categoryID));
+            } else if (found.parent !== 1) {
+                setActiveSubCategoryId(Number(categoryID));
+                setActiveCategoryId(Number(found.parent));
+            }
         }
-    }, [categoryID])
+    }, [categoryID, categories]);
 
     return (
         <div className="flex flex-col pl-2 py-4 bg-[#2B2D41] shrink-0 w-[320px]">
@@ -64,7 +75,6 @@ const Sidebar: React.FC<CategoriesProp> = ({ categories, categoryID }) => {
                                 <div
                                     key={cat.categoryID}
                                     className={`${activeCategoryId === cat.categoryID &&
-                                        
                                         "text-white"} hover:text-white cursor-pointer w-[90%] border-b py-4 border-[#2B2D41]`}
                                 >
                                     <Link
