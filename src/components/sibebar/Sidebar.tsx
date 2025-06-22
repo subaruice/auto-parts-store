@@ -2,17 +2,20 @@ import Logo from "../../icons/logo-head.png";
 import Home from "../../icons/home.svg?react";
 import Call from "../../icons/call.svg?react";
 import About from "../../icons/about.svg?react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Link } from "react-router";
 
 interface CategoriesProp {
     categories: any;
+    categoryID?: string | undefined;
 }
 
-const Sidebar: React.FC<CategoriesProp> = ({ categories }) => {
+const Sidebar: React.FC<CategoriesProp> = ({ categories, categoryID }) => {
     const [activeCategoryId, setActiveCategoryId] = useState<number | null>();
     const [activeSubCategoryId, setActiveSubCategoryId] = useState<number | null>();
+
+
 
     const toggleSub = (id: number) => {
         setActiveCategoryId((prev) => (prev === id ? null : id));
@@ -27,9 +30,19 @@ const Sidebar: React.FC<CategoriesProp> = ({ categories }) => {
         setActiveSubCategoryId(null);
     };
 
+    useEffect(() => {
+        if(!activeCategoryId && categoryID){
+            categories.map((cat:any) => {
+                if(cat.categoryID === Number(categoryID)){
+                    setActiveCategoryId(Number(categoryID))
+                }
+            })
+        }
+    }, [categoryID])
+
     return (
         <div className="flex flex-col pl-2 py-4 bg-[#2B2D41] shrink-0 w-[320px]">
-            <Link to={"/"} className="flex px-8 mb-2 justify-center items-center">
+            <Link onClick={clearStates} to={"/"} className="flex px-8 mb-2 justify-center items-center">
                 <img src={Logo} className="w-[90%]" alt="logo-image" />
             </Link>
             <div className="flex">

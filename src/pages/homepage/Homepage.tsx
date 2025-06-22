@@ -2,6 +2,7 @@ import Header from "../../components/header/Header";
 import PostService from "../../API/PostService";
 import { useEffect, useMemo, useState } from "react";
 import ProductList from "../../components/ProductList";
+// @ts-ignore
 import { useFetching } from "../../hooks/useFetching";
 import Skeleton from "../../components/UI/Skeleton";
 import Sidebar from "../../components/sibebar/Sidebar";
@@ -13,7 +14,7 @@ interface Item {
 }
 
 const Homepage = () => {
-    const { categoryID, productID } = useParams();
+    const { categoryID, productID, cat } = useParams();
     const [product, setProduct] = useState<Item>({});
     const [items, setItems] = useState<Item[]>([]);
     const [search, setSearch] = useState<string>("");
@@ -63,7 +64,7 @@ const Homepage = () => {
 
     return (
         <div className="flex">
-            <Sidebar categories={categories} />
+            <Sidebar categoryID={cat} categories={categories} />
             <div className="flex flex-col w-full h-auto">
                 <Header search={search} setSearch={setSearch} />
                 {isLoading && <Skeleton />}
