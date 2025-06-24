@@ -5,7 +5,9 @@ import Bucket from "../../icons/button-bucket.svg?react";
 import OutOfStock from "../../icons/out-of-stock.svg?react";
 import { useState } from "react";
 import "../productItem/productItem.css";
-import {ChevronLeft, ChevronRight} from 'lucide-react';
+import { ChevronLeft, ChevronRight } from "lucide-react";
+import Xmark from "../../icons/x-mark.svg?react";
+import { motion, AnimatePresence } from "framer-motion";
 
 interface ProductProp {
     product: Item;
@@ -21,20 +23,29 @@ interface PicObj {
 const ProductItem: React.FC<ProductProp> = ({ product }) => {
     const [isEnlarged, setIsEnlarged] = useState<boolean>(false);
     const [quantity, setQuantity] = useState<string>("");
-    const [index, setIndex] = useState<number>(0)
+    const [index, setIndex] = useState<number>(0);
 
-    const rawArray = product.pictures?.map((pic:any) => pic.enlarged || pic.thumbnail || pic.filename)    
+    const rawArray = product.pictures?.map((pic: any) => pic.enlarged || pic.thumbnail || pic.filename);
 
-    const togglePictureSize = () => {
+    const openPreview = (id: number) => {
+        return () => {
+            if (!isEnlarged) {
+                setIndex(id);
+            }
+            setIsEnlarged(!isEnlarged);
+        };
+    };
+
+    const closePreview = () => {
         setIsEnlarged(!isEnlarged);
     };
 
     const next = () => {
         setIndex((prev) => (prev === product.pictures?.length - 1 ? 0 : prev + 1));
-    }
+    };
     const prev = () => {
-        setIndex((prev) => (prev === 0 ? product.pictures?.length : prev - 1));
-    }
+        setIndex((prev) => (prev === 0 ? product.pictures?.length - 1 : prev - 1));
+    };
 
     return (
         <div className="py-5 h-full px-5">
@@ -46,11 +57,8 @@ const ProductItem: React.FC<ProductProp> = ({ product }) => {
                 <div className="flex gap-10">
                     <div className="min-w-[40%] max-w-[50%]">
                         <img
-                            onClick={togglePictureSize}
-                            src={`http://milotec.com.ua/pictures/${product.pictures?.[0].enlarged ||
-                                product.pictures?.[0].thumbnail ||
-                                product.pictures?.[product.pictures.length - 1].enlarged ||
-                                product.pictures?.[product.pictures.length - 1].thumbnail}`}
+                            onClick={openPreview(0)}
+                            src={`http://milotec.com.ua/pictures/${rawArray && rawArray[0]}`}
                             alt="No image"
                             className="cursor-pointer"
                         />
@@ -94,37 +102,67 @@ const ProductItem: React.FC<ProductProp> = ({ product }) => {
                 </div>
                 <div className="flex gap-4">
                     {product.pictures &&
-                        product.pictures.map((pic: PicObj, i: number) => (
+                        rawArray.map((pic: PicObj, i: number) => (
                             <img
                                 key={i}
-                                onClick={togglePictureSize}
+                                onClick={openPreview(i)}
                                 className="w-40 cursor-pointer"
-                                src={`http://milotec.com.ua/pictures/${pic.enlarged || pic.thumbnail || pic.filename}`}
+                                src={`http://milotec.com.ua/pictures/${pic}`}
                                 alt="no image"
                             />
                         ))}
                 </div>
-                {isEnlarged && (
-                    <div onClick={togglePictureSize} className="absolute h-full w-full inset-0 p-20 bg-black/50">
-                        <div className="w-full h-full px-30 flex justify-center items-center">
-                                <div>
-                                    <ChevronLeft className='stroke-white' />
-                                </div>
-                                <div className="">
-                                    <img
-                                        onClick={togglePictureSize}
-                                        className="w-full bg-white h-full object-contain cursor-pointer"
-                                        src={`http://milotec.com.ua/pictures/${rawArray[index]}`}
-                                        alt="no image"
+                <AnimatePresence>
+                    {isEnlarged && (
+                        <motion.div
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            exit={{ opacity: 0 }}
+                            onClick={closePreview}
+                            className="absolute h-full w-full inset-0 p-20 bg-black/50"
+                        >
+                            <div
+                                onClick={(e) => e.stopPropagation()}
+                                className=" w-full h-full px-30 flex justify-center items-center"
+                            >
+                                <div className="w-full cursor-pointer  flex justify-center">
+                                    <ChevronLeft
+                                        onClick={prev}
+                                        className="hover:w-35 transition-all stroke-white w-30 h-full"
                                     />
-                                    <div className="text-right text-[20px] text-white">{index + 1} / {rawArray.length}</div>
                                 </div>
-                                <div>
-                                    <ChevronRight  className ='stroke-white'/>
+                                <div className="shrink-0 relative">
+                                    <Xmark
+                                        onClick={closePreview}
+                                        className="absolute hover:w-12 transition-all cursor-pointer -top-12 -right-12 w-10 text-white"
+                                    />
+                                    <AnimatePresence>
+                                        <motion.img
+                                            onClick={closePreview}
+                                            className="w-full bg-white h-full object-contain cursor-pointer"
+                                            src={`http://milotec.com.ua/pictures/${rawArray[index]}`}
+                                            alt="no image"
+                                            initial={{ opacity: 0, width: '0'}}
+                                            animate={{ opacity: 1, width: 'auto'}}
+                                            exit={{ opacity: 0, width: '0' }}
+                                            transition={{ duration: 0.3 , ease:'linear'}}
+                                            key={index}
+                                        />
+                                    </AnimatePresence>
+                                    <div className="text-right text-[20px] text-white">
+                                        {index + 1} / {rawArray.length}
+                                    </div>
                                 </div>
-                        </div>
-                    </div>
-                )}
+                                <div className="cursor-pointer w-full flex justify-center">
+                                    <ChevronRight
+                                        onClick={next}
+                                        className="hover:w-35 transition-all stroke-white w-30 h-full"
+                                    />
+                                </div>
+                            </div>
+                        </motion.div>
+                    )}
+                </AnimatePresence>
             </div>
         </div>
     );
