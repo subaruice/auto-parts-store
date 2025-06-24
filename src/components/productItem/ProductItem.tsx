@@ -8,6 +8,7 @@ import "../productItem/productItem.css";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import Xmark from "../../icons/x-mark.svg?react";
 import { motion, AnimatePresence } from "framer-motion";
+import CommonAdvantages from "../productAdvantages/CommonAdvantages";
 
 interface ProductProp {
     product: Item;
@@ -22,7 +23,7 @@ interface PicObj {
 
 const ProductItem: React.FC<ProductProp> = ({ product }) => {
     const [isEnlarged, setIsEnlarged] = useState<boolean>(false);
-    const [quantity, setQuantity] = useState<string>("");
+    const [quantity, setQuantity] = useState<string>("1");
     const [index, setIndex] = useState<number>(0);
 
     const rawArray = product.pictures?.map((pic: any) => pic.enlarged || pic.thumbnail || pic.filename);
@@ -88,13 +89,13 @@ const ProductItem: React.FC<ProductProp> = ({ product }) => {
                             <input
                                 className="indent-1 border border-[#eceff1] rounded-[5px] w-10 outline-none input-no-spinner"
                                 type="number"
-                                placeholder="0"
+                                placeholder=""
                                 value={quantity}
                                 onChange={(e) => setQuantity(e.target.value)}
                             />
                             <p className="text-gray-400 pr-2">Кол-во</p>
                         </div>
-                        <div className="text-white font-medium py-4 text-[20px] items-center justify-center flex gap-2 bg-[#3fa357]">
+                        <div className="cursor-pointer text-white hover:bg-[#468153] font-medium py-4 text-[20px] items-center justify-center flex gap-2 bg-[#3fa357]">
                             <Bucket />
                             <button>В корзину</button>
                         </div>
@@ -163,6 +164,7 @@ const ProductItem: React.FC<ProductProp> = ({ product }) => {
                         </motion.div>
                     )}
                 </AnimatePresence>
+                <CommonAdvantages/>
             </div>
         </div>
     );
