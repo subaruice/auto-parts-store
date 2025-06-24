@@ -5,6 +5,7 @@ import Bucket from "../../icons/button-bucket.svg?react";
 import OutOfStock from "../../icons/out-of-stock.svg?react";
 import { useState } from "react";
 import "../productItem/productItem.css";
+import {ChevronLeft, ChevronRight} from 'lucide-react';
 
 interface ProductProp {
     product: Item;
@@ -20,10 +21,21 @@ interface PicObj {
 const ProductItem: React.FC<ProductProp> = ({ product }) => {
     const [isEnlarged, setIsEnlarged] = useState<boolean>(false);
     const [quantity, setQuantity] = useState<string>("");
+    const [index, setIndex] = useState<number>(0)
+
+    const rawArray = product.pictures?.map((pic:any) => pic.enlarged || pic.thumbnail || pic.filename)    
 
     const togglePictureSize = () => {
         setIsEnlarged(!isEnlarged);
+    };
+
+    const next = () => {
+        setIndex((prev) => (prev === product.pictures?.length - 1 ? 0 : prev + 1));
     }
+    const prev = () => {
+        setIndex((prev) => (prev === 0 ? product.pictures?.length : prev - 1));
+    }
+
     return (
         <div className="py-5 h-full px-5">
             {/* main content */}
@@ -34,14 +46,14 @@ const ProductItem: React.FC<ProductProp> = ({ product }) => {
                 <div className="flex gap-10">
                     <div className="min-w-[40%] max-w-[50%]">
                         <img
+                            onClick={togglePictureSize}
                             src={`http://milotec.com.ua/pictures/${product.pictures?.[0].enlarged ||
                                 product.pictures?.[0].thumbnail ||
-                                product.pictures?.[product.pictures.length - 1].enlarged || 
-                                product.pictures?.[product.pictures.length - 1].thumbnail
-                            }`}
-                            alt=""
+                                product.pictures?.[product.pictures.length - 1].enlarged ||
+                                product.pictures?.[product.pictures.length - 1].thumbnail}`}
+                            alt="No image"
+                            className="cursor-pointer"
                         />
-                        
                     </div>
                     {/* product information */}
                     <div className="flex flex-col gap-4 w-full">
@@ -82,10 +94,37 @@ const ProductItem: React.FC<ProductProp> = ({ product }) => {
                 </div>
                 <div className="flex gap-4">
                     {product.pictures &&
-                            product.pictures.map((pic: PicObj, i: number) => (
-                                <img key={i} className="w-40" src={`http://milotec.com.ua/pictures/${pic.enlarged || pic.thumbnail || pic.filename}`} alt="no image" />
-                            ))}
+                        product.pictures.map((pic: PicObj, i: number) => (
+                            <img
+                                key={i}
+                                onClick={togglePictureSize}
+                                className="w-40 cursor-pointer"
+                                src={`http://milotec.com.ua/pictures/${pic.enlarged || pic.thumbnail || pic.filename}`}
+                                alt="no image"
+                            />
+                        ))}
                 </div>
+                {isEnlarged && (
+                    <div onClick={togglePictureSize} className="absolute h-full w-full inset-0 p-20 bg-black/50">
+                        <div className="w-full h-full px-30 flex justify-center items-center">
+                                <div>
+                                    <ChevronLeft className='stroke-white' />
+                                </div>
+                                <div className="">
+                                    <img
+                                        onClick={togglePictureSize}
+                                        className="w-full bg-white h-full object-contain cursor-pointer"
+                                        src={`http://milotec.com.ua/pictures/${rawArray[index]}`}
+                                        alt="no image"
+                                    />
+                                    <div className="text-right text-[20px] text-white">{index + 1} / {rawArray.length}</div>
+                                </div>
+                                <div>
+                                    <ChevronRight  className ='stroke-white'/>
+                                </div>
+                        </div>
+                    </div>
+                )}
             </div>
         </div>
     );
