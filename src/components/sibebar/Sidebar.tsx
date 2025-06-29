@@ -2,7 +2,7 @@ import Logo from "../../icons/logo-head.png";
 import Home from "../../icons/home.svg?react";
 import Call from "../../icons/call.svg?react";
 import About from "../../icons/about.svg?react";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Link } from "react-router";
 import React from "react";
