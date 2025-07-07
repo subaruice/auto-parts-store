@@ -31,7 +31,7 @@ const ProductList: React.FC<ItemProps> = ({ items }) => {
                         </div>
                         <div className="text-[22px]">{Price} ₴</div>
                     </div>
-                    <div className="flex cursor-pointer justify-center gap-2 items-center hover:bg-red-500 transition-all bg-rose-700 ">
+                    <div className="flex cursor-pointer justify-center gap-2 items-center hover:bg-[#468153] transition-all bg-[#3fa357] ">
                         <Bucket className="w-7" />
                         <button className="py-3 text-[18px]  text-white font-medium ">В корзину</button>
                     </div>
