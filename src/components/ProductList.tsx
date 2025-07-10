@@ -1,16 +1,16 @@
 import type { Item } from "../types/item";
-import React from "react";
 import Bucket from "../icons/button-bucket.svg?react";
-import { Link } from "react-router";
+import { Link, useOutletContext } from "react-router";
 
 interface ItemProps {
-    items: Item[];
+    filteredItems: Item[];
 }
 
-const ProductList: React.FC<ItemProps> = ({ items }) => {
+const ProductList = () => {
+    const {filteredItems} = useOutletContext<ItemProps>()
     return (
-        <div className="flex gap-4 px-4 justify-center flex-wrap">
-            {items.map(({ name, in_stock, Price, categoryID, product_code, pictures, brief_description, productID }) => (
+        <div className="flex gap-4 px-4 justify-center flex-wrap ">
+            {filteredItems && filteredItems.map(({ name, in_stock, Price, categoryID, product_code, pictures, brief_description, productID }) => (
                 <Link to={`/category/${categoryID}/products/${productID}`} key={productID} className="p-3 shadow-sm hover:shadow-xl shadow-black/30 bg-white w-[320px] border-[0.5px] border-black/30 h-auto flex flex-col ">
                     <div className="">
                         <img
