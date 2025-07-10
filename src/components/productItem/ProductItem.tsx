@@ -9,6 +9,7 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 import Xmark from "../../icons/x-mark.svg?react";
 import { motion, AnimatePresence } from "framer-motion";
 import CommonAdvantages from "../productAdvantages/CommonAdvantages";
+import { useOutletContext } from "react-router";
 
 interface ProductProp {
     product: Item;
@@ -21,7 +22,8 @@ interface PicObj {
     thumbnail: string | null;
 }
 
-const ProductItem: React.FC<ProductProp> = ({ product }) => {
+const ProductItem = () => {
+    const {product} = useOutletContext<ProductProp>()
     const [isEnlarged, setIsEnlarged] = useState<boolean>(false);
     const [quantity, setQuantity] = useState<string>("1");
     const [index, setIndex] = useState<number>(0);

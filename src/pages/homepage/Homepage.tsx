@@ -6,8 +6,9 @@ import ProductList from "../../components/ProductList";
 import { useFetching } from "../../hooks/useFetching";
 import Skeleton from "../../components/UI/Skeleton";
 import Sidebar from "../../components/sibebar/Sidebar";
-import { useParams } from "react-router";
+import { useLocation, useParams } from "react-router";
 import ProductItem from "../../components/productItem/ProductItem";
+import { Outlet } from "react-router";
 
 interface Item {
     [key: string]: any;
@@ -37,7 +38,7 @@ const Homepage = () => {
         }
     });
 
-    const location = window.location.href
+    const location = useLocation();
     const toTop = useRef<HTMLDivElement>(null);
     const [fetchCategories] = useFetching(async () => {
         const resCategories = await PostService.getAllCategories();
@@ -49,7 +50,7 @@ const Homepage = () => {
 
     useEffect(() => {
         scrollToTop();
-    }, [location])
+    }, [location.pathname])
 
     useEffect(() => {
         fetchItems();
@@ -79,11 +80,9 @@ const Homepage = () => {
                 {isLoading && <Skeleton />}
                 {onError ? (
                     <div className="text-gray-700 mt-10 text-[30px] text-center">Нет товаров в данной категории</div>
-                ) : !productID ? (
-                    <ProductList items={filteredItems} />
-                ) : (
-                    <ProductItem product={product} />
-                )}
+                ) : 
+                    <Outlet context={{product, filteredItems}} />
+                }
             </div>
         </div>
     );
