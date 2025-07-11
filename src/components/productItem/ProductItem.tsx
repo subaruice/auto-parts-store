@@ -23,20 +23,20 @@ interface PicObj {
 }
 
 const ProductItem = () => {
-    const {product} = useOutletContext<ProductProp>()
+    const { product } = useOutletContext<ProductProp>();
     const [isEnlarged, setIsEnlarged] = useState<boolean>(false);
     const [quantity, setQuantity] = useState<string>("1");
     const [index, setIndex] = useState<number>(0);
-    
+
     const rawArray = product.pictures?.map((pic: any) => pic.enlarged || pic.thumbnail || pic.filename);
 
     const storeProducts = () => {
-        if(product){
-        const existing = JSON.parse(localStorage.getItem('products') ?? '[]')
-        existing.push(product) 
-        localStorage.setItem('products', JSON.stringify(existing))
+        if (product) {
+            const existing = JSON.parse(localStorage.getItem("products") ?? "[]");
+            existing.push(product);
+            localStorage.setItem("products", JSON.stringify(existing));
         }
-    }
+    };
 
     const openPreview = (id: number) => {
         return () => {
@@ -105,7 +105,10 @@ const ProductItem = () => {
                             />
                             <p className="text-gray-400 pr-2">Кол-во</p>
                         </div>
-                        <div onClick={storeProducts} className="cursor-pointer text-white hover:bg-[#468153] font-medium py-4 text-[20px] items-center justify-center flex gap-2 bg-[#3fa357]">
+                        <div
+                            onClick={storeProducts}
+                            className="cursor-pointer text-white hover:bg-[#468153] font-medium py-4 text-[20px] items-center justify-center flex gap-2 bg-[#3fa357]"
+                        >
                             <Bucket />
                             <button>В корзину</button>
                         </div>
@@ -153,10 +156,10 @@ const ProductItem = () => {
                                             className="w-full bg-white h-full object-contain cursor-pointer"
                                             src={`http://milotec.com.ua/pictures/${rawArray[index]}`}
                                             alt="no image"
-                                            initial={{ opacity: 0, width: '0'}}
-                                            animate={{ opacity: 1, width: 'auto'}}
-                                            exit={{ opacity: 0, width: '0' }}
-                                            transition={{ duration: 0.3 , ease:'linear'}}
+                                            initial={{ opacity: 0, width: "0" }}
+                                            animate={{ opacity: 1, width: "auto" }}
+                                            exit={{ opacity: 0, width: "0" }}
+                                            transition={{ duration: 0.3, ease: "linear" }}
                                             key={index}
                                         />
                                     </AnimatePresence>
@@ -174,7 +177,7 @@ const ProductItem = () => {
                         </motion.div>
                     )}
                 </AnimatePresence>
-                <CommonAdvantages/>
+                <CommonAdvantages />
             </div>
         </div>
     );
