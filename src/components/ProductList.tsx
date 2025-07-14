@@ -1,13 +1,16 @@
 import type { Item } from "../types/item";
 import Bucket from "../icons/button-bucket.svg?react";
 import { Link, useOutletContext } from "react-router";
+import { memo } from "react";
 
 interface ItemProps {
     filteredItems: Item[];
 }
 
-const ProductList = () => {
+const ProductList = memo(() => {
     const {filteredItems} = useOutletContext<ItemProps>()
+    console.log(filteredItems);
+    
     return (
         <div className="flex gap-4 px-4 justify-center flex-wrap ">
             {filteredItems && filteredItems.map(({ name, in_stock, Price, categoryID, product_code, pictures, brief_description, productID }) => (
@@ -40,5 +43,5 @@ const ProductList = () => {
             ))}
         </div>
     );
-};
+});
 export default ProductList;

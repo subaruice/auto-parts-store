@@ -22,19 +22,16 @@ const Homepage = () => {
     const [categories, setCategories] = useState([]);
     const [fetchItems, isLoading, onError] = useFetching(async () => {
         if (categoryID) {
-            setSearch("");
             const resProductByCategory = await PostService.getCategoryByProduct(categoryID);
             setItems(resProductByCategory.data);
-            setProduct({});
+            return
         } else if (productID) {
-            setSearch("");
             const resProduct = await PostService.getProductByID(productID);
             setProduct(resProduct.data);
-        } else {
-            setSearch("");
+            return
+        } else if (location.pathname === "/") {
             const resItems = await PostService.getAllProducts();
             setItems(resItems.data);
-            setProduct({});
         }
     });
 
@@ -45,20 +42,16 @@ const Homepage = () => {
         setCategories(resCategories.data);
     });
     const scrollToTop = () => {
-        toTop.current?.scrollIntoView({behavior: 'smooth', block: 'start'})
-    }
+        toTop.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+    };
 
     useEffect(() => {
+        if (categories.length === 0) {
+            fetchCategories();
+        }
         scrollToTop();
-    }, [location.pathname])
-
-    useEffect(() => {
         fetchItems();
-    }, [categoryID, productID]);
-
-    useEffect(() => {
-        fetchCategories();
-    }, []);
+    }, [categoryID, productID, location.pathname]);
 
     const filteredItems = useMemo(() => {
         return items.filter((item) => {
@@ -80,9 +73,9 @@ const Homepage = () => {
                 {isLoading && <Skeleton />}
                 {onError ? (
                     <div className="text-gray-700 mt-10 text-[30px] text-center">Нет товаров в данной категории</div>
-                ) : 
-                    <Outlet context={{product, filteredItems}} />
-                }
+                ) : (
+                    <Outlet context={{ product, filteredItems }} />
+                )}
             </div>
         </div>
     );
