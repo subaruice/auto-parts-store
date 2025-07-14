@@ -10,6 +10,7 @@ import Xmark from "../../icons/x-mark.svg?react";
 import { motion, AnimatePresence } from "framer-motion";
 import CommonAdvantages from "../productAdvantages/CommonAdvantages";
 import { useOutletContext } from "react-router";
+import {memo} from "react";
 
 interface ProductProp {
     product: Item;
@@ -22,7 +23,7 @@ interface PicObj {
     thumbnail: string | null;
 }
 
-const ProductItem = () => {
+const ProductItem = memo(() => {
     const { product } = useOutletContext<ProductProp>();
     const [isEnlarged, setIsEnlarged] = useState<boolean>(false);
     const [quantity, setQuantity] = useState<string>("1");
@@ -181,6 +182,6 @@ const ProductItem = () => {
             </div>
         </div>
     );
-};
+});
 
 export default ProductItem;

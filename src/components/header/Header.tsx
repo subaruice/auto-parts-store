@@ -2,13 +2,14 @@ import ShoppingIcon from "../../icons/shopping-cart.svg?react";
 import SearchIcon from "../../icons/search-icon.svg?react";
 import UserProfile from "../../icons/user-profile.svg?react";
 import { Link } from "react-router";
+import { memo } from "react";
 
 interface HeaderProps {
     search: string;
     setSearch: React.Dispatch<React.SetStateAction<string>>;
 }
 
-const Header: React.FC<HeaderProps> = ({ search, setSearch }) => {
+const Header: React.FC<HeaderProps> = memo(({ search, setSearch }) => {
     return (
         <div className="flex min-h-[87px] w-full border-b-[0.5px] border-black/30 ">
             <div className="p-[26px]  flex-1">
@@ -29,13 +30,13 @@ const Header: React.FC<HeaderProps> = ({ search, setSearch }) => {
                     <UserProfile className="cursor-pointer" />
                 </div>
                 <div className="px-[18px] flex items-center">
-                    <Link to={'/bucket'} >
+                    <Link to={"/bucket"}>
                         <ShoppingIcon className="cursor-pointer" />
                     </Link>
                 </div>
             </div>
         </div>
     );
-};
+});
 
 export default Header;
