@@ -10,7 +10,7 @@ import Xmark from "../../icons/x-mark.svg?react";
 import { motion, AnimatePresence } from "framer-motion";
 import CommonAdvantages from "../productAdvantages/CommonAdvantages";
 import { useOutletContext } from "react-router";
-import {memo} from "react";
+import { memo } from "react";
 
 interface ProductProp {
     product: Item;
@@ -26,17 +26,23 @@ interface PicObj {
 const ProductItem = memo(() => {
     const { product } = useOutletContext<ProductProp>();
     const [isEnlarged, setIsEnlarged] = useState<boolean>(false);
-    const [quantity, setQuantity] = useState<number>(1);
+    const [quantity, setQuantity] = useState<string>("1");
     const [index, setIndex] = useState<number>(0);
 
     const rawArray = product.pictures?.map((pic: any) => pic.enlarged || pic.thumbnail || pic.filename);
 
     const storeProducts = () => {
-            const stored = JSON.parse(localStorage.getItem("products") ?? "[]");
-            const updated = stored.map((p:any) => 
-                p.productID === product.productID ? {...p, quantity: quantity + p.quantity} : {...product, quantity: quantity}
-            )
-            localStorage.setItem("products", JSON.stringify(updated));
+        const stored = JSON.parse(localStorage.getItem("products") ?? "[]");
+        let existing = false;
+        const updated = stored.map((p: any) =>
+            p.productID === product.productID
+                ? ((existing = true), { ...p, quantity: Number(quantity) + p.quantity })
+                : p
+        );
+        if (!existing) {
+            updated.push({ ...product, quantity: Number(quantity) });
+        }
+        localStorage.setItem("products", JSON.stringify(updated));
     };
 
     const openPreview = (id: number) => {
@@ -102,7 +108,7 @@ const ProductItem = memo(() => {
                                 type="number"
                                 placeholder=""
                                 value={quantity}
-                                onChange={(e) => setQuantity(Number(e.target.value))}
+                                onChange={(e) => setQuantity(e.target.value)}
                             />
                             <p className="text-gray-400 pr-2">Кол-во</p>
                         </div>
