@@ -1,13 +1,11 @@
 import Header from "../../components/header/Header";
 import PostService from "../../API/PostService";
 import { useEffect, useMemo, useRef, useState } from "react";
-import ProductList from "../../components/ProductList";
 // @ts-ignore
 import { useFetching } from "../../hooks/useFetching";
 import Skeleton from "../../components/UI/Skeleton";
 import Sidebar from "../../components/sibebar/Sidebar";
 import { useLocation, useParams } from "react-router";
-import ProductItem from "../../components/productItem/ProductItem";
 import { Outlet } from "react-router";
 
 interface Item {

@@ -32,11 +32,10 @@ const ProductItem = memo(() => {
     const rawArray = product.pictures?.map((pic: any) => pic.enlarged || pic.thumbnail || pic.filename);
 
     const storeProducts = () => {
-        if (product) {
-            const existing = JSON.parse(localStorage.getItem("products") ?? "[]");
+            const stored = JSON.parse(localStorage.getItem("products") ?? "[]");
+            const existing = stored.find()
             existing.push(product);
             localStorage.setItem("products", JSON.stringify(existing));
-        }
     };
 
     const openPreview = (id: number) => {
