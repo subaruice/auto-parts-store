@@ -26,16 +26,17 @@ interface PicObj {
 const ProductItem = memo(() => {
     const { product } = useOutletContext<ProductProp>();
     const [isEnlarged, setIsEnlarged] = useState<boolean>(false);
-    const [quantity, setQuantity] = useState<string>("1");
+    const [quantity, setQuantity] = useState<number>(1);
     const [index, setIndex] = useState<number>(0);
 
     const rawArray = product.pictures?.map((pic: any) => pic.enlarged || pic.thumbnail || pic.filename);
 
     const storeProducts = () => {
             const stored = JSON.parse(localStorage.getItem("products") ?? "[]");
-            const existing = stored.find()
-            existing.push(product);
-            localStorage.setItem("products", JSON.stringify(existing));
+            const updated = stored.map((p:any) => 
+                p.productID === product.productID ? {...p, quantity: quantity + p.quantity} : {...product, quantity: quantity}
+            )
+            localStorage.setItem("products", JSON.stringify(updated));
     };
 
     const openPreview = (id: number) => {
@@ -101,7 +102,7 @@ const ProductItem = memo(() => {
                                 type="number"
                                 placeholder=""
                                 value={quantity}
-                                onChange={(e) => setQuantity(e.target.value)}
+                                onChange={(e) => setQuantity(Number(e.target.value))}
                             />
                             <p className="text-gray-400 pr-2">Кол-во</p>
                         </div>
@@ -137,7 +138,7 @@ const ProductItem = memo(() => {
                         >
                             <div
                                 onClick={(e) => e.stopPropagation()}
-                                className=" w-full h-full px-30 flex justify-center items-center"
+                                className=" w-full h-full flex justify-center items-center"
                             >
                                 <div className="w-full cursor-pointer  flex justify-center">
                                     <ChevronLeft
@@ -153,7 +154,7 @@ const ProductItem = memo(() => {
                                     <AnimatePresence>
                                         <motion.img
                                             onClick={closePreview}
-                                            className="w-full bg-white h-full object-contain cursor-pointer"
+                                            className="max-h-[80vh] bg-white object-contain cursor-pointer"
                                             src={`http://milotec.com.ua/pictures/${rawArray[index]}`}
                                             alt="no image"
                                             initial={{ opacity: 0, width: "0" }}
