@@ -5,14 +5,14 @@ import About from "../../icons/about.svg?react";
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Link } from "react-router";
-import React from "react";
+import { memo } from "react";
 
 interface CategoriesProp {
     categories: any;
     categoryID?: string | undefined;
 }
 
-const Sidebar: React.FC<CategoriesProp> = React.memo(({ categories, categoryID }) => {
+const Sidebar: React.FC<CategoriesProp> = memo(({ categories, categoryID }) => {
     const [activeCategoryId, setActiveCategoryId] = useState<number | null>();
     const [activeSubCategoryId, setActiveSubCategoryId] = useState<number | null>();
 

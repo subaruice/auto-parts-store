@@ -114,7 +114,11 @@ const ProductItem = memo(() => {
                         </div>
                         <div
                             onClick={storeProducts}
-                            className="cursor-pointer text-white hover:bg-[#468153] font-medium py-4 text-[20px] items-center justify-center flex gap-2 bg-[#3fa357]"
+                            className={`${
+                                product.in_stock === 0
+                                    ? "pointer-events-none bg-[#94c29f]"
+                                    : "active:bg-green-950 cursor-pointer hover:bg-[#468153] bg-[#3fa357]"
+                            } text-white  font-medium py-4 text-[20px] items-center justify-center flex gap-2`}
                         >
                             <Bucket />
                             <button>В корзину</button>
