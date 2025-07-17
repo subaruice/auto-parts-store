@@ -20,8 +20,8 @@ const ProductList = memo(() => {
                 ? ((existing = true), { ...p, quantity: p.quantity + 1 })
                 : { ...p, quantity: p.quantity }
         );
-        if(!existing){ 
-            updated.push({...product, quantity: 1})
+        if (!existing) {
+            updated.push({ ...product, quantity: 1 });
         }
         localStorage.setItem("products", JSON.stringify(updated));
     };
@@ -60,14 +60,16 @@ const ProductList = memo(() => {
                             <div className="text-[22px]">{p.Price} ₴</div>
                         </div>
 
-                        <div className="flex cursor-pointer justify-center gap-2 items-center hover:bg-[#468153] transition-all bg-[#3fa357] ">
+                        <div
+                            onClick={(e) => addProduct(p, e)}
+                            className={`${
+                                p.in_stock === 0
+                                    ? "pointer-events-none bg-[#94c29f]"
+                                    : "active:bg-green-950 cursor-pointer hover:bg-[#468153] bg-[#3fa357]"
+                            } flex  justify-center gap-2 items-center  transition-all `}
+                        >
                             <Bucket className="w-7" />
-                            <button
-                                onClick={(e) => addProduct(p, e)}
-                                className="py-3 text-[18px]  text-white font-medium "
-                            >
-                                В корзину
-                            </button>
+                            <button className="py-3 text-[18px]  text-white font-medium ">В корзину</button>
                         </div>
                     </Link>
                 ))}
