@@ -11,7 +11,20 @@ interface HeaderProps {
 }
 
 const Header: React.FC<HeaderProps> = memo(({ search, setSearch }) => {
+    const [productsCounter, setProductsCounter] = useState(() => {
+        const storage = JSON.parse(localStorage.getItem("products") || "[]");
+        if (storage.length > 0) {
+            return storage.reduce((acc: number, product: any) => acc + Number(product.quantity), 0);  
+        }
+        return 0;
+    });
     const [showEmptyBucket, setShowEmptyBucket] = useState(false);
+
+    const storage = JSON.parse(localStorage.getItem("product") || "[]");
+    if (storage.length > 0) {
+        let counter = storage.reduce((acc: number, product: any) => acc + Number(product.quantity));
+        setProductsCounter(counter);
+    }
     const toggleEmptyBucket = (e: any) => {
         const existing = JSON.parse(localStorage.getItem("products") || "[]");
         if (existing.length < 1) {
@@ -46,7 +59,7 @@ const Header: React.FC<HeaderProps> = memo(({ search, setSearch }) => {
                     />
                 </div>
                 <div className="px-[18px] flex items-center">
-                    <Link onClick={(e) => toggleEmptyBucket(e)} to="/bucket">
+                    <Link className="relative" onClick={(e) => toggleEmptyBucket(e)} to="/bucket">
                         <ShoppingCart
                             color="#8D99AD"
                             strokeWidth="2px"
@@ -54,6 +67,9 @@ const Header: React.FC<HeaderProps> = memo(({ search, setSearch }) => {
                             height="32px"
                             className="cursor-pointer hover:stroke-gray-600 active:stroke-gray-900"
                         />
+                        <div className="text-white rounded-full absolute -top-1 -right-1 bg-red-600 flex items-center justify-center w-5 h-5">
+                            {productsCounter}
+                        </div>
                     </Link>
                     {showEmptyBucket && <EmptyBucket show={showEmptyBucket} />}
                 </div>
