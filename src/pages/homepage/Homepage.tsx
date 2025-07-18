@@ -19,6 +19,7 @@ const Homepage = () => {
     const [search, setSearch] = useState<string>("");
     const [categories, setCategories] = useState([]);
     const [fetchItems, isLoading, onError] = useFetching(async () => {
+        setSearch('')
         if (categoryID) {
             const resProductByCategory = await PostService.getCategoryByProduct(categoryID);
             setItems(resProductByCategory.data);

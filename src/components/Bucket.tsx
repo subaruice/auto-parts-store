@@ -91,7 +91,7 @@ const Bucket = memo(() => {
                         <div className="flex justify-end">
                             <div className="flex  bg-blue-50 rounded border justify-between gap-2 items-center py-5 px-4 border-[#328044] mt-5">
                                 <div className="text-center text-[30px] px-3 flex-1 text-black/80">{finalPrice}₴</div>
-                                <button className="self-end font-medium text-[18px] text-white rounded-xl hover:bg-[#468153] transition-all py-4 px-6 bg-[#3fa357] w-50">
+                                <button className="self-end font-medium text-[18px] text-white rounded-xl active:bg-green-950 hover:bg-[#468153] transition-all py-4 px-6 bg-[#3fa357] w-50">
                                     Оформить заказ
                                 </button>
                             </div>
