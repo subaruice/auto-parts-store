@@ -34,6 +34,7 @@ const Bucket = memo(() => {
         const updated = products.filter((p: any) => p.productID !== id);
         localStorage.setItem("products", JSON.stringify(updated));
         setProducts([...updated]);
+        window.dispatchEvent(new Event("customEvent"));
     };
 
     useEffect(() => {

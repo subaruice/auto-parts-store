@@ -43,6 +43,8 @@ const ProductItem = memo(() => {
             updated.push({ ...product, quantity: Number(quantity) });
         }
         localStorage.setItem("products", JSON.stringify(updated));
+        window.dispatchEvent(new Event('customEvent'))
+
     };
 
     const openPreview = (id: number) => {
