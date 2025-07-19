@@ -23,12 +23,12 @@ const Homepage = () => {
         if (categoryID) {
             const resProductByCategory = await PostService.getCategoryByProduct(categoryID);
             setItems(resProductByCategory.data);
-            return
+            return;
         } else if (productID) {
             const resProduct = await PostService.getProductByID(productID);
             setProduct(resProduct.data);
-            return
-        } else if (location.pathname === "/") {
+            return;
+        } else if (location.pathname === '/') {
             const resItems = await PostService.getAllProducts();
             setItems(resItems.data);
         }
@@ -45,12 +45,15 @@ const Homepage = () => {
     };
 
     useEffect(() => {
-        if (categories.length === 0) {
-            fetchCategories();
+        if (categoryID || productID || location.pathname === '/') {
+            fetchItems();
         }
         scrollToTop();
-        fetchItems();
     }, [categoryID, productID, location.pathname]);
+
+    useEffect(() => {
+        fetchCategories();
+    }, []);
 
     const filteredItems = useMemo(() => {
         return items.filter((item) => {
@@ -63,6 +66,7 @@ const Homepage = () => {
             );
         });
     }, [search, items]);
+    const contextValue = useMemo(() => ({ product, filteredItems }), [product, filteredItems]);
 
     return (
         <div ref={toTop} className="flex">
@@ -73,7 +77,7 @@ const Homepage = () => {
                 {onError ? (
                     <div className="text-gray-700 mt-10 text-[30px] text-center">Нет товаров в данной категории</div>
                 ) : (
-                    <Outlet context={{ product, filteredItems }} />
+                    <Outlet context={contextValue} />
                 )}
             </div>
         </div>
