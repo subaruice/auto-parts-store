@@ -19,7 +19,6 @@ const Homepage = () => {
     const [search, setSearch] = useState<string>("");
     const [categories, setCategories] = useState([]);
     const [fetchItems, isLoading, onError] = useFetching(async () => {
-        console.log(fetch);
         setItems([])
         setSearch("");
         if (categoryID) {

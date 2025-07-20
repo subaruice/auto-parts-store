@@ -11,6 +11,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import CommonAdvantages from "../productAdvantages/CommonAdvantages";
 import { useOutletContext } from "react-router";
 import { memo } from "react";
+import AddedProductToBucket from "../UI/AddedProductToBucket";
 
 interface ProductProp {
     product: Item;
@@ -28,6 +29,7 @@ const ProductItem = memo(() => {
     const [isEnlarged, setIsEnlarged] = useState<boolean>(false);
     const [quantity, setQuantity] = useState<string>("1");
     const [index, setIndex] = useState<number>(0);
+    const [showAddBucketMessage, setShowAddBucketMessage] = useState(false);
 
     const rawArray = product.pictures?.map((pic: any) => pic.enlarged || pic.thumbnail || pic.filename);
 
@@ -44,8 +46,13 @@ const ProductItem = memo(() => {
         }
         localStorage.setItem("products", JSON.stringify(updated));
         window.dispatchEvent(new Event('customEvent'))
-
+        setShowAddBucketMessage(true);
+        setTimeout(() => {
+            setShowAddBucketMessage(false);
+        }, 2500);
     };
+
+
 
     const openPreview = (id: number) => {
         return () => {
@@ -67,8 +74,11 @@ const ProductItem = memo(() => {
         setIndex((prev) => (prev === 0 ? product.pictures?.length - 1 : prev - 1));
     };
 
+    const sale = Math.floor((product.list_price - product.Price) / product.list_price * 100)
+
     return (
         <div className="py-5 h-full px-5">
+            {showAddBucketMessage && <AddedProductToBucket show={showAddBucketMessage}/>}
             {/* main content */}
             <div className="rounded-[10px] h-full bg-white flex flex-col gap-5 p-5 text-black/70 w-full ">
                 <h1 className="text-center text-[25px] font-medium">
@@ -100,9 +110,16 @@ const ProductItem = memo(() => {
                         <div className="text-[18px]">
                             Код продукта: <span className="font-medium">{product.product_code}</span>
                         </div>
-                        <div className="flex justify-between text-[25px] p-4 font-medium text-[#333333] bg-[#eef3f6]">
+                        <div className="flex relative justify-between text-[25px] p-4 font-medium text-[#333333] bg-[#eef3f6]">
+                            {product.list_price > 0 && (
+                                <div className="bg-red-600 absolute text-white text-[18px] -top-[60%] px-4 py-1 right-3">-{sale}%</div>
+                            )}
                             <p>Цена:</p>
-                            <p>{product.Price}₴</p>
+                            <p className="relative">{product.Price}₴
+                                {product.list_price > 0 && (
+                                    <div className="absolute text-[14px] -top-[25%] text-black/60 line-through right-0">{product.list_price} ₴</div>
+                                )}
+                            </p>
                         </div>
                         <div className="w-full gap-2 flex justify-end">
                             <input
@@ -120,7 +137,7 @@ const ProductItem = memo(() => {
                                 product.in_stock === 0
                                     ? "pointer-events-none bg-[#94c29f]"
                                     : "active:bg-green-950 cursor-pointer hover:bg-[#468153] bg-[#3fa357]"
-                            } text-white  font-medium py-4 text-[20px] items-center justify-center flex gap-2`}
+                            } text-white font-medium py-4 text-[20px] items-center justify-center flex gap-2`}
                         >
                             <Bucket />
                             <button>В корзину</button>

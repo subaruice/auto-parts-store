@@ -50,7 +50,7 @@ const ItemFromProductList = memo(({ item }: any) => {
             {item.list_price > 0 && (
                 <div className="bg-red-600 absolute text-white text-[18px] -top-[10px] px-4 py-1 right-3">-{sale}%</div>
             )}
-            <div className="">
+            <div>
                 <img
                     src={`http://milotec.com.ua/pictures/${item.pictures[1]?.enlarged ||
                         item.pictures[1]?.thumbnail ||

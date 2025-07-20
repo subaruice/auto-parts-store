@@ -20,10 +20,10 @@ const ProductList = memo(() => {
                 <div>
                     <SliderHomepage />
                     <CommonAdvantages />
-                    <div className="px-2 mt-4 text-black/80">
+                    <div className="px-2 mt-4 text-center text-black/80">
                         Мы работаем как с новыми, так и с уже известными моделями Škoda Auto
                         <br />
-                        <span className="text-[20px] font-medium ">Товары находящиеся сейчас по скидке:</span>
+                        <span className=" text-[20px] font-medium ">Товары находящиеся сейчас по скидке:</span>
                     </div>
                 </div>
             )}
