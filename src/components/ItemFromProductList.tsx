@@ -39,12 +39,17 @@ const ItemFromProductList = memo(({ item }: any) => {
         }, 2500);
     };
 
+    const sale = Math.floor((item.list_price - item.Price) / item.list_price * 100)
+
     return (
         <Link
             to={`/category/${item.categoryID}/products/${item.productID}`}
             key={item.productID}
-            className="p-3 shadow-sm hover:shadow-xl shadow-black/30 bg-white w-[320px] border-[0.5px] border-black/30 h-auto flex flex-col "
+            className="p-3 shadow-sm relative hover:shadow-xl shadow-black/30 bg-white w-[320px] border-[0.5px] border-black/30 h-auto flex flex-col "
         >
+            {item.list_price > 0 && (
+                <div className="bg-red-600 absolute text-white text-[18px] -top-[10px] px-4 py-1 right-3">-{sale}%</div>
+            )}
             <div className="">
                 <img
                     src={`http://milotec.com.ua/pictures/${item.pictures[1]?.enlarged ||
@@ -67,7 +72,9 @@ const ItemFromProductList = memo(({ item }: any) => {
                 <div className={`${item.in_stock === 1 ? "text-[#198754]" : "text-rose-800"}`}>
                     {item.in_stock === 1 ? "Есть в наличии" : "Нет в наличии"}
                 </div>
-                <div className="text-[22px]">{item.Price} ₴</div>
+                <div className="text-[22px] relative">{item.Price} ₴
+                    <div className="absolute text-[14px] -top-[50%] text-black/60 line-through right-0">{item.list_price} ₴</div>
+                </div>
             </div>
 
             <div

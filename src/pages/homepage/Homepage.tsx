@@ -58,8 +58,14 @@ const Homepage = () => {
     }, []);
 
     const filteredItems = useMemo(() => {
+        const key = search.toLowerCase();
+        if(location.pathname === '/'){
+            return items.filter((item) => {
+                return item.list_price > 0; 
+            })
+        }
         return items.filter((item) => {
-            const key = search.toLowerCase();
+            
             return (
                 item.name?.toLowerCase().includes(key) ||
                 item.description?.toLowerCase().includes(key) ||
