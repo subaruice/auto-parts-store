@@ -1,6 +1,6 @@
 const CommonAdvantages = () => {
     return (
-        <div className="w-full flex gap-3 mt-5">
+        <div className="w-full flex gap-3 mt-5 text-black/80">
             <div className="flex-1/3 pr-3">
                 <div className="flex gap-2">
                     <img className="self-start w-max-[68px] object-contain" src="/auto-parts-store/common-adventure-1.png" alt="" />

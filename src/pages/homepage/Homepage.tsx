@@ -19,7 +19,9 @@ const Homepage = () => {
     const [search, setSearch] = useState<string>("");
     const [categories, setCategories] = useState([]);
     const [fetchItems, isLoading, onError] = useFetching(async () => {
-        setSearch('')
+        console.log(fetch);
+        setItems([])
+        setSearch("");
         if (categoryID) {
             const resProductByCategory = await PostService.getCategoryByProduct(categoryID);
             setItems(resProductByCategory.data);
@@ -28,7 +30,7 @@ const Homepage = () => {
             const resProduct = await PostService.getProductByID(productID);
             setProduct(resProduct.data);
             return;
-        } else if (location.pathname === '/') {
+        } else if (location.pathname === "/") {
             const resItems = await PostService.getAllProducts();
             setItems(resItems.data);
         }
@@ -45,7 +47,7 @@ const Homepage = () => {
     };
 
     useEffect(() => {
-        if (categoryID || productID || location.pathname === '/') {
+        if (categoryID || productID || location.pathname === "/") {
             fetchItems();
         }
         scrollToTop();
@@ -73,8 +75,9 @@ const Homepage = () => {
             <Sidebar categoryID={cat} categories={categories} />
             <div className="flex flex-col w-full h-auto">
                 <Header search={search} setSearch={setSearch} />
-                {isLoading && <Skeleton />}
-                {onError ? (
+                {isLoading ? (
+                    <Skeleton />
+                ) : onError ? (
                     <div className="text-gray-700 mt-10 text-[30px] text-center">Нет товаров в данной категории</div>
                 ) : (
                     <Outlet context={contextValue} />
