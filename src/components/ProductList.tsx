@@ -16,6 +16,7 @@ const ProductList = memo(() => {
 
     return (
         <div className="flex flex-col gap-4 px-4 py-4">
+            
             {location.pathname === "/" && (
                 <div>
                     <SliderHomepage />

@@ -73,7 +73,9 @@ const ItemFromProductList = memo(({ item }: any) => {
                     {item.in_stock === 1 ? "Есть в наличии" : "Нет в наличии"}
                 </div>
                 <div className="text-[22px] relative">{item.Price} ₴
-                    <div className="absolute text-[14px] -top-[50%] text-black/60 line-through right-0">{item.list_price} ₴</div>
+                    {item.list_price > 0 && (
+                        <div className="absolute text-[14px] -top-[50%] text-black/60 line-through right-0">{item.list_price} ₴</div>
+                    )}
                 </div>
             </div>
 
