@@ -6,9 +6,15 @@ import { cleanHtml } from "../utils/extractModels.js";
 const router = express.Router();
 
 router.get("/category/:id", async (req, res) => {
+    const limit = parseInt(req.query.limit);
+    const offset = parseInt(req.query.offset);
     const categoryID = req.params.id;
     try {
-        const [rows] = await pool.query(getProductsByCategoryId, [categoryID, categoryID]);
+        const [rows] = await pool.query(`${getProductsByCategoryId} LIMIT ? OFFSET ?`, [
+            categoryID,
+            limit,
+            offset,
+        ]);
         if (rows.length === 0) {
             return res.status(404).json({ error: "Нет товаров" });
         }
@@ -46,8 +52,10 @@ router.get("/product/:id", async (req, res) => {
 });
 
 router.get("/", async (req, res) => {
+    const limit = parseInt(req.query.limit);
+    const offset = parseInt(req.query.offset);
     try {
-        const [rows] = await pool.query(getAllProducts);
+        const [rows] = await pool.query(`${getAllProducts} LIMIT ? OFFSET ?`, [limit, offset]);
         if (rows.length === 0) {
             return res.status(404).json({ error: "Нет товаров" });
         }
