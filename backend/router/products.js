@@ -6,10 +6,11 @@ import { cleanHtml } from "../utils/extractModels.js";
 const router = express.Router();
 
 router.get("/category/:id", async (req, res) => {
-    const limit = parseInt(req.query.limit);
-    const offset = parseInt(req.query.offset);
+    const limit = parseInt(req.query.limit) || 20;
+    const offset = parseInt(req.query.offset) || 0;
     const categoryID = req.params.id;
     try {
+        const [count] = await pool.query(getProductsByCategoryId, [categoryID]);
         const [rows] = await pool.query(`${getProductsByCategoryId} LIMIT ? OFFSET ?`, [
             categoryID,
             limit,
@@ -24,6 +25,7 @@ router.get("/category/:id", async (req, res) => {
             product_code: product.product_code.replace(/\s+/g, ""),
             brief_description: cleanHtml(product.brief_description),
         }));
+        res.set('x-total-count', count.length);
         res.json(cleanedProducts);
     } catch (err) {
         console.error("DB error: ", err.message);
@@ -52,8 +54,8 @@ router.get("/product/:id", async (req, res) => {
 });
 
 router.get("/", async (req, res) => {
-    const limit = parseInt(req.query.limit);
-    const offset = parseInt(req.query.offset);
+    const limit = parseInt(req.query.limit) || 20;
+    const offset = parseInt(req.query.offset) || 0;
     try {
         const [rows] = await pool.query(`${getAllProducts} LIMIT ? OFFSET ?`, [limit, offset]);
         if (rows.length === 0) {
@@ -86,6 +88,7 @@ router.get("/", async (req, res) => {
             }
         });
         const result = Array.from(productsMap.values());
+        res.set('x-total-count', result.length)
         res.json(result);
     } catch (err) {
         console.error("DB error: ", err.message);
