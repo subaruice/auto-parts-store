@@ -12,7 +12,7 @@ interface ItemProps {
 const ProductList = memo(() => {
     const { filteredItems } = useOutletContext<ItemProps>();
     const location = useLocation();
-    console.log(filteredItems);
+    console.log(filteredItems.length);
 
     return (
         <div className="flex flex-col gap-4 px-4 py-4">

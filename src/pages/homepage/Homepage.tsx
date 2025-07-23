@@ -16,25 +16,34 @@ const Homepage = () => {
     const { categoryID, productID, cat } = useParams();
     const [product, setProduct] = useState<Item>({});
     const [hasMore, setHasMore] = useState(true);
-    const [limit, setLimit] = useState(20);
-    const [offset, setOffset] = useState(0);
+    const limit = 20;
+    const offset = useRef(0);
     const [items, setItems] = useState<Item[]>([]);
     const [search, setSearch] = useState<string>("");
     const [categories, setCategories] = useState([]);
     const observerRef = useRef(null);
+    const initialLoad = useRef(true);
+
     const [fetchItems, isLoading, onError] = useFetching(async () => {
-        if(!hasMore || isLoading) return
         setSearch("");
         console.log("fetch");
+        if (!categoryID && !productID && location.pathname !== "/") return;
+
+        if (initialLoad.current) {
+            setItems([]);
+            offset.current = 0;
+            setHasMore(true);
+        }
 
         if (categoryID) {
-            const resProductByCategory = await PostService.getCategoryByProduct(categoryID, limit, offset);
+            const resProductByCategory = await PostService.getCategoryByProduct(categoryID, limit, offset.current);
+            setItems((prev) => (initialLoad.current ? resProductByCategory.data : [...prev, ...resProductByCategory.data]));
             if (resProductByCategory.data.length < limit) {
                 setHasMore(false);
+            } else {
+                offset.current += limit;
             }
-            setItems((prev) => [...prev, ...resProductByCategory.data]);
-            setOffset((prev) => prev + limit);
-            return;
+            initialLoad.current = false;
         } else if (productID) {
             const resProduct = await PostService.getProductByID(productID);
             setProduct(resProduct.data);
@@ -56,21 +65,19 @@ const Homepage = () => {
     };
 
     useEffect(() => {
-        setItems([]);
-        setOffset(0);
+        console.log('useeffect initial');
+        initialLoad.current = true;
         setHasMore(true);
-        if (categoryID || productID || location.pathname === "/") {
-            console.log("render");
-            fetchItems();
-        }
+        fetchItems();
         scrollToTop();
     }, [categoryID, productID, location.pathname]);
-    
+
     useEffect(() => {
-        if(!observerRef.current) return
+        if (!observerRef.current) return;
         const observer = new IntersectionObserver(([entry]) => {
-            if (entry.isIntersecting && hasMore && !isLoading && categoryID) {
-                fetchItems();
+            if (entry.isIntersecting && hasMore && !isLoading && !initialLoad.current && onError) {
+                console.log('useeffect observer');
+                    fetchItems();
             }
         });
         if (observerRef.current) {
@@ -79,7 +86,7 @@ const Homepage = () => {
         return () => {
             if (observerRef.current) observer.unobserve(observerRef.current);
         };
-    }, [hasMore, isLoading, categoryID]);
+    }, [hasMore, isLoading]);
 
     useEffect(() => {
         fetchCategories();
@@ -122,7 +129,7 @@ const Homepage = () => {
                 ) : (
                     <Outlet context={contextValue} />
                 )}
-                {!isLoading && hasMore && <div className="h-[1px]" ref={observerRef}></div>}
+                <div className="h-[1px]" ref={observerRef}></div>
             </div>
         </div>
     );
