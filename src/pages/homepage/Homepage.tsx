@@ -16,7 +16,7 @@ const Homepage = () => {
     const { categoryID, productID, cat } = useParams();
     const [product, setProduct] = useState<Item>({});
     const [hasMore, setHasMore] = useState(true);
-    const limit = 20;
+    const limit = 60;
     const offset = useRef(0);
     const [items, setItems] = useState<Item[]>([]);
     const [search, setSearch] = useState<string>("");
@@ -37,11 +37,13 @@ const Homepage = () => {
 
         if (categoryID) {
             const resProductByCategory = await PostService.getCategoryByProduct(categoryID, limit, offset.current);
-            setItems((prev) => (initialLoad.current ? resProductByCategory.data : [...prev, ...resProductByCategory.data]));
-            if (resProductByCategory.data.length < limit) {
+            setItems((prev) =>
+                initialLoad.current ? resProductByCategory.data : [...prev, ...resProductByCategory.data]
+            );
+            offset.current += limit;
+            if (offset.current >= resProductByCategory.headers["x-total-count"]) {
                 setHasMore(false);
             } else {
-                offset.current += limit;
             }
             initialLoad.current = false;
         } else if (productID) {
@@ -49,8 +51,13 @@ const Homepage = () => {
             setProduct(resProduct.data);
             return;
         } else if (location.pathname === "/") {
-            const resItems = await PostService.getAllProducts(1000);
-            setItems(resItems.data);
+            const resItems = await PostService.getAllSaleProducts(limit, offset.current);
+            setItems(prev => initialLoad.current ? resItems.data : [...prev, ...resItems.data]);
+            offset.current += limit;
+            if(offset.current >= resItems.headers['x-total-count']){
+                setHasMore(false);
+            }
+            initialLoad.current = false;
         }
     });
 
@@ -65,7 +72,7 @@ const Homepage = () => {
     };
 
     useEffect(() => {
-        console.log('useeffect initial');
+        console.log("useeffect initial");
         initialLoad.current = true;
         setHasMore(true);
         fetchItems();
@@ -75,9 +82,9 @@ const Homepage = () => {
     useEffect(() => {
         if (!observerRef.current) return;
         const observer = new IntersectionObserver(([entry]) => {
-            if (entry.isIntersecting && hasMore && !isLoading && !initialLoad.current && onError) {
-                console.log('useeffect observer');
-                    fetchItems();
+            if (entry.isIntersecting && hasMore && !isLoading && !initialLoad.current && !onError) {
+                console.log("useeffect observer");
+                fetchItems();
             }
         });
         if (observerRef.current) {
@@ -94,26 +101,26 @@ const Homepage = () => {
 
     const filteredItems = useMemo(() => {
         const key = search.toLowerCase();
-        // if (location.pathname === "/") {
-        //     return items.filter((item) => {
-        //         return (
-        //             item.list_price !== 0 &&
-        //             (item.name?.toLowerCase().includes(key) ||
-        //                 item.description?.toLowerCase().includes(key) ||
-        //                 item.brief_description?.toLowerCase().includes(key) ||
-        //                 item.product_code?.includes(key))
-        //         );
-        //     });
-        // } else {
-        return items.filter((item) => {
-            return (
-                item.name?.toLowerCase().includes(key) ||
-                item.description?.toLowerCase().includes(key) ||
-                item.brief_description?.toLowerCase().includes(key) ||
-                item.product_code?.includes(key)
-            );
-        });
-        // }
+        if (location.pathname === "/") {
+            return items.filter((item) => {
+                return (
+                    item.list_price !== 0 &&
+                    (item.name?.toLowerCase().includes(key) ||
+                        item.description?.toLowerCase().includes(key) ||
+                        item.brief_description?.toLowerCase().includes(key) ||
+                        item.product_code?.includes(key))
+                );
+            });
+        } else {
+            return items.filter((item) => {
+                return (
+                    item.name?.toLowerCase().includes(key) ||
+                    item.description?.toLowerCase().includes(key) ||
+                    item.brief_description?.toLowerCase().includes(key) ||
+                    item.product_code?.includes(key)
+                );
+            });
+        }
     }, [search, items]);
     const contextValue = useMemo(() => ({ product, filteredItems }), [product, filteredItems]);
 
