@@ -6,7 +6,10 @@ import categoryRoutes from './router/categories.js'
 const app = express();
 const PORT = 3001;
 
-app.use(cors());
+app.use(cors({
+    origin: '*',
+    exposedHeaders: ['x-total-count']
+}));
 app.use(express.json());
 
 app.use('/api/category', categoryRoutes);
