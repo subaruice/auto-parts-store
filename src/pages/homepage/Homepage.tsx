@@ -16,7 +16,7 @@ const Homepage = () => {
     const { categoryID, productID, cat } = useParams();
     const [product, setProduct] = useState<Item>({});
     const [hasMore, setHasMore] = useState(true);
-    const limit = 60;
+    const limit = 20;
     const offset = useRef(0);
     const [items, setItems] = useState<Item[]>([]);
     const [search, setSearch] = useState<string>("");
@@ -43,7 +43,6 @@ const Homepage = () => {
             offset.current += limit;
             if (offset.current >= resProductByCategory.headers["x-total-count"]) {
                 setHasMore(false);
-            } else {
             }
             initialLoad.current = false;
         } else if (productID) {
@@ -52,9 +51,17 @@ const Homepage = () => {
             return;
         } else if (location.pathname === "/") {
             const resItems = await PostService.getAllSaleProducts(limit, offset.current);
-            setItems(prev => initialLoad.current ? resItems.data : [...prev, ...resItems.data]);
+            setItems((prev) => (initialLoad.current ? resItems.data : [...prev, ...resItems.data]));
             offset.current += limit;
-            if(offset.current >= resItems.headers['x-total-count']){
+            if (offset.current >= resItems.headers["x-total-count"]) {
+                setHasMore(false);
+            }
+            initialLoad.current = false;
+        } else if (location.pathname === "/catalog") {
+            const resItems = await PostService.getAllSaleProducts(limit, offset.current);
+            setItems((prev) => (initialLoad.current ? resItems.data : [...prev, ...resItems.data]));
+            offset.current += limit;
+            if (offset.current >= resItems.headers["x-total-count"]) {
                 setHasMore(false);
             }
             initialLoad.current = false;
