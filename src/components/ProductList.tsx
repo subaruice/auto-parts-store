@@ -1,7 +1,7 @@
 import type { Item } from "../types/item";
 import { ArrowUpDown } from "lucide-react";
 import { useLocation, useOutletContext, useParams } from "react-router";
-import { memo, useState } from "react";
+import { memo, useMemo, useState } from "react";
 import ItemFromProductList from "./ItemFromProductList";
 import SliderHomepage from "./UI/SliderHomepage";
 import CommonAdvantages from "./productAdvantages/CommonAdvantages";
@@ -28,6 +28,17 @@ const ProductList = memo(() => {
     const [isOpen, setIsOpen] = useState(false);
     const location = useLocation();
     const { categoryID } = useParams();
+    const [isChecked, setIsChecked] = useState(false);
+
+    const sortedAndFiltredItems = useMemo(() => {
+        if (currentOption.value === "price_low_high")
+            return [...filteredItems].sort((a: Item, b: Item) => (a.Price || a.list_price) - (b.Price || b.list_price));
+        if (currentOption.value === "price_high_low")
+            return [...filteredItems].sort((a: Item, b: Item) => (b.Price || b.list_price) - (a.Price || a.list_price));
+        if (currentOption.value === "price_sale")
+            return filteredItems.sort((a: Item, b: Item) => (a.list_price || a.Price) - (b.list_price || b.Price));
+        else return filteredItems;
+    }, [filteredItems, currentOption]);
 
     const toggleSort = () => {
         setIsOpen(!isOpen);
@@ -45,10 +56,15 @@ const ProductList = memo(() => {
             {category && (
                 <div className="rounded-lg relative gap-2 items-center flex px-3 py-1 bg-white justify-between w-full">
                     <div className="grow font-medium text-[22px] text-black/70">{category.name}</div>
+                    <input type="checkbox" checked={isChecked} onChange={(e) => setIsChecked(e.target.checked)} className="h-5 w-5 accent-sky-700" id="in_stock" />
+                    <label className="text-black/50 pr-5" htmlFor="in_stock">
+                        В наличии
+                    </label>
                     <ArrowUpDown
                         onClick={toggleSort}
-                        className={`${isOpen &&
-                            "bg-black/10 stroke-white"} rounded cursor-pointer hover:stroke-[#707070]`}
+                        className={`${
+                            isOpen && "bg-black/10 stroke-white"
+                        } rounded cursor-pointer hover:stroke-[#707070]`}
                         color="#333333"
                     />
                     <div className="text-black/50">{currentOption.label}</div>
@@ -81,9 +97,8 @@ const ProductList = memo(() => {
                     </div>
                 </div>
             )}
-
             <div className="flex gap-4 justify-center flex-wrap ">
-                {filteredItems && filteredItems.map((p) => <ItemFromProductList key={p.productID} item={p} />)}
+                {filteredItems && sortedAndFiltredItems.map((p) => <ItemFromProductList key={p.productID} item={p} />)}
             </div>
         </div>
     );

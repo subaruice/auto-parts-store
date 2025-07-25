@@ -74,7 +74,7 @@ const ItemFromProductList = memo(({ item }: any) => {
                 </div>
                 <div className="text-[22px] relative">{item.Price} ₴
                     {item.list_price > 0 && (
-                        <div className="absolute text-[14px] -top-[50%] text-black/60 line-through right-0">{item.list_price} ₴</div>
+                        <div className="absolute text-[14px] text-nowrap -top-[50%] text-black/60 line-through right-0">{item.list_price} ₴</div>
                     )}
                 </div>
             </div>

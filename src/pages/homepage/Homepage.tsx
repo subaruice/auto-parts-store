@@ -16,7 +16,7 @@ const Homepage = () => {
     const { categoryID, productID, cat } = useParams();
     const [product, setProduct] = useState<Item>({});
     const [hasMore, setHasMore] = useState(true);
-    const limit = 20;
+    const limit = 2000;
     const offset = useRef(0);
     const [items, setItems] = useState<Item[]>([]);
     const [search, setSearch] = useState<string>("");
@@ -50,9 +50,9 @@ const Homepage = () => {
             setProduct(resProduct.data);
             return;
         } else if (location.pathname === "/") {
-            const resItems = await PostService.getAllSaleProducts(limit, offset.current);
+            const resItems = await PostService.getAllSaleProducts(20, offset.current);
             setItems((prev) => (initialLoad.current ? resItems.data : [...prev, ...resItems.data]));
-            offset.current += limit;
+            offset.current += 20;
             if (offset.current >= resItems.headers["x-total-count"]) {
                 setHasMore(false);
             }
@@ -143,7 +143,7 @@ const Homepage = () => {
                 ) : (
                     <Outlet context={contextValue} />
                 )}
-                <div className="h-[1px]" ref={observerRef}></div>
+                {location.pathname === '/' && <div className="h-[1px]" ref={observerRef}></div>}
             </div>
         </div>
     );
