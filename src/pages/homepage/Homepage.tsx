@@ -129,7 +129,7 @@ const Homepage = () => {
             });
         }
     }, [search, items]);
-    const contextValue = useMemo(() => ({ product, filteredItems }), [product, filteredItems]);
+    const contextValue = useMemo(() => ({ product, filteredItems, categories }), [product, filteredItems, categories]);
 
     return (
         <div ref={toTop} className="flex">
