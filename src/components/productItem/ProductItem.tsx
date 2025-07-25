@@ -117,7 +117,7 @@ const ProductItem = memo(() => {
                             <p>Цена:</p>
                             <div className="relative">{product.Price}₴
                                 {product.list_price > 0 && (
-                                    <div className="absolute text-[14px] -top-[25%] text-black/60 line-through right-0">{product.list_price} ₴</div>
+                                    <div className="absolute text-[14px] -top-[25%] text-nowrap text-black/60 line-through right-0">{product.list_price} ₴</div>
                                 )}
                             </div>
                         </div>
