@@ -99,12 +99,12 @@ const ProductItem = memo(() => {
                             <Box className="w-[23px] mr-3" />
                             <div
                                 className={`${
-                                    product.in_stock === 1 ? "text-[#42ab14]" : "text-[#ff4848]"
+                                    product.in_stock > 0 ? "text-[#42ab14]" : "text-[#ff4848]"
                                 } flex-1 font-medium`}
                             >
-                                {product.in_stock === 1 ? "Есть в наличии" : "Нет в наличии"}
+                                {product.in_stock > 0 ? "Есть в наличии" : "Нет в наличии"}
                             </div>
-                            {product.in_stock === 1 ? <Done className="w-[23px]" /> : <OutOfStock />}
+                            {product.in_stock > 0 ? <Done className="w-[23px]" /> : <OutOfStock />}
                         </div>
                         <div className="text-[18px]" dangerouslySetInnerHTML={{ __html: product.description }}></div>
                         <div className="text-[18px]">

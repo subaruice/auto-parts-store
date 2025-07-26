@@ -5,6 +5,7 @@ import { memo, useMemo, useState } from "react";
 import ItemFromProductList from "./ItemFromProductList";
 import SliderHomepage from "./UI/SliderHomepage";
 import CommonAdvantages from "./productAdvantages/CommonAdvantages";
+import { AnimatePresence, motion } from "framer-motion";
 
 interface ItemProps {
     filteredItems: Item[];
@@ -32,13 +33,35 @@ const ProductList = memo(() => {
 
     const sortedAndFiltredItems = useMemo(() => {
         if (currentOption.value === "price_low_high")
-            return [...filteredItems].sort((a: Item, b: Item) => (a.Price || a.list_price) - (b.Price || b.list_price));
+            return isChecked
+                ? [...filteredItems]
+                      .sort((a: Item, b: Item) => (a.Price || a.list_price) - (b.Price || b.list_price))
+                      .filter((p: any) => p.in_stock > 0)
+                : [...filteredItems].sort((a: Item, b: Item) => (a.Price || a.list_price) - (b.Price || b.list_price));
         if (currentOption.value === "price_high_low")
-            return [...filteredItems].sort((a: Item, b: Item) => (b.Price || b.list_price) - (a.Price || a.list_price));
+            return isChecked
+                ? [...filteredItems]
+                      .sort((a: Item, b: Item) => (b.Price || b.list_price) - (a.Price || a.list_price))
+                      .filter((p: any) => p.in_stock > 0)
+                : [...filteredItems].sort((a: Item, b: Item) => (b.Price || b.list_price) - (a.Price || a.list_price));
         if (currentOption.value === "price_sale")
-            return filteredItems.sort((a: Item, b: Item) => (a.list_price || a.Price) - (b.list_price || b.Price));
+            return isChecked
+                ? [...filteredItems]
+                      .sort(
+                          (a: Item, b: Item) =>
+                              ((b.list_price - b.Price) / b.list_price) * 100 -
+                              ((a.list_price - a.Price) / a.list_price) * 100
+                      )
+                      .filter((p: any) => p.in_stock > 0)
+                : [...filteredItems].sort(
+                      (a: Item, b: Item) =>
+                          ((b.list_price - b.Price) / b.list_price) * 100 -
+                          ((a.list_price - a.Price) / a.list_price) * 100
+                  );
+        if (currentOption.value === "default")
+            return isChecked ? filteredItems.filter((p: any) => p.in_stock > 0) : filteredItems;
         else return filteredItems;
-    }, [filteredItems, currentOption]);
+    }, [filteredItems, currentOption, isChecked]);
 
     const toggleSort = () => {
         setIsOpen(!isOpen);
@@ -56,33 +79,44 @@ const ProductList = memo(() => {
             {category && (
                 <div className="rounded-lg relative gap-2 items-center flex px-3 py-1 bg-white justify-between w-full">
                     <div className="grow font-medium text-[22px] text-black/70">{category.name}</div>
-                    <input type="checkbox" checked={isChecked} onChange={(e) => setIsChecked(e.target.checked)} className="h-5 w-5 accent-sky-700" id="in_stock" />
+                    <input
+                        type="checkbox"
+                        checked={isChecked}
+                        onChange={(e) => setIsChecked(e.target.checked)}
+                        className="h-5 w-5 accent-sky-700"
+                        id="in_stock"
+                    />
                     <label className="text-black/50 pr-5" htmlFor="in_stock">
                         В наличии
                     </label>
                     <ArrowUpDown
                         onClick={toggleSort}
-                        className={`${
-                            isOpen && "bg-black/10 stroke-white"
-                        } rounded cursor-pointer hover:stroke-[#707070]`}
+                        className={`${isOpen && "stroke-gray-400"} rounded cursor-pointer hover:stroke-[#707070]`}
                         color="#333333"
                     />
                     <div className="text-black/50">{currentOption.label}</div>
                     {isOpen && (
-                        <div className="flex px-3 py-2 bg-white gap-3 text-black/80  flex-col items-left rounded-lg justify-center absolute right-0 top-0 z-50 ">
-                            {options.map((option) => (
-                                <div
-                                    onClick={() => {
-                                        setCurrentOption(option);
-                                        toggleSort();
-                                    }}
-                                    key={option.value}
-                                    className="hover:text-black cursor-pointer"
-                                >
-                                    {option.label}
-                                </div>
-                            ))}
-                        </div>
+                        <AnimatePresence>
+                            <motion.div
+                                initial={{ opacity: 0, scaleY: 0, transformOrigin: "top" }}
+                                animate={{ opacity: 1, scaleY: 1 }}
+                                exit={{ opacity: 0, scaleY: 0 }}
+                                className="flex px-3 py-2 bg-white gap-3 text-black/80  flex-col items-left rounded-lg justify-center absolute right-0 top-0 z-50 "
+                            >
+                                {options.map((option) => (
+                                    <div
+                                        onClick={() => {
+                                            setCurrentOption(option);
+                                            toggleSort();
+                                        }}
+                                        key={option.value}
+                                        className="hover:text-black cursor-pointer"
+                                    >
+                                        {option.label}
+                                    </div>
+                                ))}
+                            </motion.div>
+                        </AnimatePresence>
                     )}
                 </div>
             )}
