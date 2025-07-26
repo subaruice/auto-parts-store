@@ -69,8 +69,8 @@ const ItemFromProductList = memo(({ item }: any) => {
             ></div>
             <div className="text-[14px] text-black/60">Код товара: {item.product_code}</div>
             <div className="flex justify-between mb-2 items-center">
-                <div className={`${item.in_stock === 1 ? "text-[#198754]" : "text-rose-800"}`}>
-                    {item.in_stock === 1 ? "Есть в наличии" : "Нет в наличии"}
+                <div className={`${item.in_stock > 0 ? "text-[#198754]" : "text-rose-800"}`}>
+                    {item.in_stock > 0 ? "Есть в наличии" : "Нет в наличии"}
                 </div>
                 <div className="text-[22px] relative">{item.Price} ₴
                     {item.list_price > 0 && (
