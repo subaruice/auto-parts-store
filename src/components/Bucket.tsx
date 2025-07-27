@@ -1,7 +1,6 @@
 import { memo, useEffect, useState } from "react";
 import { X } from "lucide-react";
 import { Link } from "react-router";
-import { div } from "framer-motion/client";
 
 const Bucket = memo(() => {
     const [products, setProducts] = useState(JSON.parse(localStorage.getItem("products") ?? "[]"));
