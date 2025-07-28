@@ -58,7 +58,7 @@ const Header: React.FC<HeaderProps> = memo(({ search, setSearch }) => {
             <div className="flex items-center">
                 <div className="h-full flex items-center px-[18px] border-x-[0.5px] border-black/30">
                     <UserProfile
-                        color="#8D99AD]"
+                        color="#8D99AD"
                         className="cursor-pointer hover:stroke-gray-600 active:stroke-gray-900"
                     />
                 </div>

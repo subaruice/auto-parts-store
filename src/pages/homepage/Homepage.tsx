@@ -7,6 +7,7 @@ import Skeleton from "../../components/UI/Skeleton";
 import Sidebar from "../../components/sibebar/Sidebar";
 import { useLocation, useParams } from "react-router";
 import { Outlet } from "react-router";
+import HeaderMobile from "../../components/header/HeaderMobile";
 
 interface Item {
     [key: string]: any;
@@ -23,6 +24,7 @@ const Homepage = () => {
     const [categories, setCategories] = useState([]);
     const observerRef = useRef(null);
     const initialLoad = useRef(true);
+    const isMobile = window.innerWidth < 1024;
 
     const [fetchItems, isLoading, onError] = useFetching(async () => {
         setSearch("");
@@ -133,9 +135,9 @@ const Homepage = () => {
 
     return (
         <div ref={toTop} className="flex">
-            <Sidebar categoryID={cat} categories={categories} />
+            {!isMobile && <Sidebar categoryID={cat} categories={categories}/>}
             <div className="flex flex-col w-full h-auto">
-                <Header search={search} setSearch={setSearch} />
+                {isMobile ? <HeaderMobile categoryID={cat} categories={categories}/> : <Header search={search} setSearch={setSearch} />}
                 {isLoading ? (
                     <Skeleton />
                 ) : onError ? (
@@ -143,7 +145,7 @@ const Homepage = () => {
                 ) : (
                     <Outlet context={contextValue} />
                 )}
-                {location.pathname === '/' && <div className="h-[1px]" ref={observerRef}></div>}
+                {location.pathname === "/" && <div className="h-[1px]" ref={observerRef}></div>}
             </div>
         </div>
     );
