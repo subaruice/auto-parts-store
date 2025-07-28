@@ -1,7 +1,7 @@
-import Logo from "../../icons/logo-head.png";
-import Home from "../../icons/home.svg?react";
-import Call from "../../icons/call.svg?react";
-import About from "../../icons/about.svg?react";
+// import Logo from "../../icons/logo-head.png";
+// import Home from "../../icons/home.svg?react";
+// import Call from "../../icons/call.svg?react";
+// import About from "../../icons/about.svg?react";
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Link } from "react-router";
@@ -10,9 +10,10 @@ import { memo } from "react";
 interface CategoriesProp {
     categories: any;
     categoryID?: string | undefined;
+    setSidebar: React.Dispatch<React.SetStateAction<boolean>>
 }
 
-const SidebarMobile: React.FC<CategoriesProp> = memo(({ categories, categoryID }) => {
+const SidebarMobile: React.FC<CategoriesProp> = memo(({ categories, categoryID, setSidebar }) => {
     const [activeCategoryId, setActiveCategoryId] = useState<number | null>();
     const [activeSubCategoryId, setActiveSubCategoryId] = useState<number | null>();
     const [isCatalogOpen, setIsCatalogOpen] = useState(false);
@@ -20,15 +21,16 @@ const SidebarMobile: React.FC<CategoriesProp> = memo(({ categories, categoryID }
     const toggleSub = (id: number) => {
         setActiveCategoryId((prev) => (prev === id ? null : id));
         setActiveSubCategoryId(null);
+        setSidebar(false);
     };
     const toggleSubActive = (id: number) => {
         setActiveSubCategoryId((prev) => (prev === id ? null : id));
     };
 
-    const clearStates = () => {
-        setActiveCategoryId(null);
-        setActiveSubCategoryId(null);
-    };
+    // const clearStates = () => {
+    //     setActiveCategoryId(null);
+    //     setActiveSubCategoryId(null);
+    // };
 
     useEffect(() => {
         if (activeCategoryId == null && categoryID && categories.length > 0) {
@@ -76,6 +78,7 @@ const SidebarMobile: React.FC<CategoriesProp> = memo(({ categories, categoryID }
                                 <div className="pr-2 pl-4 tracking-wider text-gray-300 text-[18px] flex flex-col items-start w-full">
                                     {categories.map((cat: any) => (
                                         <div
+                                            
                                             key={cat.categoryID}
                                             className={`${
                                                 activeCategoryId === cat.categoryID && "text-white"

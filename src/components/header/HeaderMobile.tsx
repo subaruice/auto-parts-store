@@ -50,7 +50,7 @@ const HeaderMobile: React.FC<Props> = memo(({ categoryID, categories }) => {
         setIsSidebarOpen(!isSidebarOpen);
     };
     return (
-        <div className="py-3 w-full bg-[#2B2D41] flex items-center px-2 justify-between">
+        <div className="py-3 sticky top-0 z-50 w-full bg-[#2B2D41] flex items-center px-2 justify-between">
             <AnimatePresence mode="wait">
                 {isSidebarOpen ? (
                     <motion.div
@@ -81,9 +81,9 @@ const HeaderMobile: React.FC<Props> = memo(({ categoryID, categories }) => {
                         exit={{ scaleX: 0 }}
                         transition={{ duration: 0.1 }}
                         onClick={toggleSidebar}
-                        className="z-50 overflow-auto fixed top-16 bottom-0 right-0 left-0 bg-black/50"
+                        className="z-50 overflow-auto fixed top-16 bottom-0 right-0 left-0"
                     >
-                        <SidebarMobile categoryID={categoryID} categories={categories} />
+                        <SidebarMobile setSidebar={setIsSidebarOpen} categoryID={categoryID} categories={categories} />
                     </motion.div>
                 )}
             </AnimatePresence>
