@@ -77,15 +77,15 @@ const ProductItem = memo(() => {
     const sale = Math.floor((product.list_price - product.Price) / product.list_price * 100)
 
     return (
-        <div className="py-5 h-full px-5">
+        <div className="p-2 lg:py-5 h-full lg:px-5">
             {showAddBucketMessage && <AddedProductToBucket show={showAddBucketMessage}/>}
             {/* main content */}
-            <div className="rounded-[10px] h-full bg-white flex flex-col gap-5 p-5 text-black/70 w-full ">
-                <h1 className="text-center text-[25px] font-medium">
+            <div className="rounded-[10px] h-full bg-white flex flex-col gap-5 p-2 sm:p-5 text-black/70 w-full ">
+                <h1 className="text-center text-[18px] lg:text-[25px] font-medium">
                     Кат.номер {product.product_code} - {product.name}
                 </h1>
-                <div className="flex gap-10">
-                    <div className="min-w-[40%] max-w-[50%]">
+                <div className="flex flex-col lg:flex-row gap-3 lg:gap-10">
+                    <div className="lg:min-w-[40%] lg:max-w-[50%]">
                         <img
                             onClick={openPreview(0)}
                             src={`http://milotec.com.ua/pictures/${rawArray && rawArray[0]}`}
@@ -112,7 +112,7 @@ const ProductItem = memo(() => {
                         </div>
                         <div className="flex relative justify-between text-[25px] p-4 font-medium text-[#333333] bg-[#eef3f6]">
                             {product.list_price > 0 && (
-                                <div className="bg-red-600 absolute text-white text-[18px] -top-[60%] px-4 py-1 right-3">-{sale}%</div>
+                                <div className="bg-red-600 absolute text-white text-[18px] -top-[35%] lg:-top-[60%] px-4 py-1 right-3">-{sale}%</div>
                             )}
                             <p>Цена:</p>
                             <div className="relative">{product.Price}₴
@@ -144,7 +144,7 @@ const ProductItem = memo(() => {
                         </div>
                     </div>
                 </div>
-                <div className="flex gap-4">
+                <div className="flex gap-4 overflow-auto">
                     {product.pictures &&
                         rawArray.map((pic: PicObj, i: number) => (
                             <img
@@ -156,51 +156,49 @@ const ProductItem = memo(() => {
                             />
                         ))}
                 </div>
-                <AnimatePresence>
+                <AnimatePresence mode="wait">
                     {isEnlarged && (
                         <motion.div
                             initial={{ opacity: 0 }}
                             animate={{ opacity: 1 }}
                             exit={{ opacity: 0 }}
                             onClick={closePreview}
-                            className="absolute h-full w-full inset-0 p-20 bg-black/50"
+                            className="fixed flex items-center justify-center inset-0 bg-black/50"
                         >
                             <div
                                 onClick={(e) => e.stopPropagation()}
-                                className=" w-full h-full flex justify-center items-center"
+                                className="w-full max-w-screen-xl flex justify-center items-center"
                             >
-                                <div className="w-full cursor-pointer  flex justify-center">
+                                <div className="cursor-pointer  flex justify-center">
                                     <ChevronLeft
                                         onClick={prev}
-                                        className="hover:w-35 transition-all stroke-white w-30 h-full"
+                                        className="h-12 lg:hover:w-35 transition-all stroke-white w-12 lg:w-30 "
                                     />
                                 </div>
-                                <div className="shrink-0 relative">
+                                <div className="flex-` w-full relative">
                                     <Xmark
                                         onClick={closePreview}
                                         className="absolute hover:w-12 transition-all cursor-pointer -top-12 -right-12 w-10 text-white"
                                     />
-                                    <AnimatePresence>
                                         <motion.img
                                             onClick={closePreview}
-                                            className="max-h-[80vh] bg-white object-contain cursor-pointer"
+                                            className="max-w-[100%] bg-white object-contain cursor-pointer"
                                             src={`http://milotec.com.ua/pictures/${rawArray[index]}`}
                                             alt="no image"
-                                            initial={{ opacity: 0, width: "0" }}
-                                            animate={{ opacity: 1, width: "auto" }}
-                                            exit={{ opacity: 0, width: "0" }}
-                                            transition={{ duration: 0.3, ease: "linear" }}
+                                            initial={{ opacity: 0, scale: 0.9 }}
+                                            animate={{ opacity: 1, scale: 1 }}
+                                            exit={{ opacity: 0, scale: 0.9 }}
+                                            transition={{ duration: 0.3 }}
                                             key={index}
                                         />
-                                    </AnimatePresence>
                                     <div className="text-right text-[20px] text-white">
                                         {index + 1} / {rawArray.length}
                                     </div>
                                 </div>
-                                <div className="cursor-pointer w-full flex justify-center">
+                                <div className="cursor-pointer flex justify-center">
                                     <ChevronRight
                                         onClick={next}
-                                        className="hover:w-35 transition-all stroke-white w-30 h-full"
+                                        className="lg:hover:w-35 w-12 transition-all stroke-white lg:w-30 h-12"
                                     />
                                 </div>
                             </div>
