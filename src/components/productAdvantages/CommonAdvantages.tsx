@@ -1,9 +1,9 @@
 const CommonAdvantages = () => {
     return (
-        <div className="w-full flex gap-3 mt-5 text-black/80">
+        <div className="w-full flex-col flex lg:flex-row gap-3 mt-5 text-black/80">
             <div className="flex-1/3 pr-3">
                 <div className="flex gap-2">
-                    <img className="self-start w-max-[68px] object-contain" src="/auto-parts-store/common-adventure-1.png" alt="" />
+                    <img className="self-start w-[51px] h-[51px] object-contain" src="/auto-parts-store/common-adventure-1.png" alt="" />
                     <p>
                         <span className="font-medium text-[16px]">Чешская традиция качества <br/></span>26+ лет на рынке,
                         производство только из прочных материалов
@@ -12,7 +12,7 @@ const CommonAdvantages = () => {
             </div>
             <div className="flex-1/3 pr-3">
                 <div className="flex gap-2">
-                    <img className="self-start w-max-[68px] object-contain" src="/auto-parts-store//common-adventure-2.png" alt="" />
+                    <img className="self-start w-[51px] h-[51px] object-contain" src="/auto-parts-store/common-adventure-2.png" alt="" />
                     <p>
                         <span className="font-medium text-[16px]">Огромный асортимент Skoda <br/></span>
                         Собственное производство автоаксессуаров для автомобилей Škoda.
@@ -21,7 +21,7 @@ const CommonAdvantages = () => {
             </div>
             <div className="flex-1/3">
                 <div className="flex gap-2">
-                    <img className="self-start w-max-[68px] object-contain" src="/auto-parts-store/common-adventure-3.png" alt="" />
+                    <img className="self-start w-[51px] h-[51px] object-contain" src="/auto-parts-store/common-adventure-3.png" alt="" />
                     <p>
                         <span className="font-medium text-[16px]">ЕС Сертификаты <br/></span>
                         Вся продукция соответствует нормам и директивам ЕС.

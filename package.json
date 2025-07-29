@@ -5,6 +5,7 @@
   "type": "module",
   "homepage": "https://subaruice.github.io/auto-parts-store",
   "scripts": {
+    "front": "vite",
     "dev": "concurrently \"vite --host\" \"nodemon backend/index.js\"",
     "build": "tsc -b && vite build",
     "deploy": "gh-pages -d dist"
