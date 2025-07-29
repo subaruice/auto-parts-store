@@ -40,16 +40,16 @@ const Bucket = memo(() => {
         sumUpPrices();
     }, [products]);
     return (
-        <div className="p-4 w-full h-full">
-            <div className="rounded-[10px] p-4 bg-white w-full h-full">
+        <div className="p-2 sm:p-4 w-full h-full">
+            <div className="rounded-[10px] p-2 sm:p-4 bg-white w-full h-full">
                 {products.length > 0 ? (
                     <div className="flex flex-col gap-5">
                         <div className="flex flex-col gap-4">
                             {products.map((product: any) => (
-                                <div key={product.productID} className="flex items-center">
-                                    <div className="h-20 w-30 mr-4">
+                                <div key={product.productID} className="flex sm:flex-row border-b sm:border-none border-gray-200 gap-2 sm:gap-0 flex-col items-center">
+                                    <div className=" sm:h-20 sm:w-30 sm:mr-4">
                                         <img
-                                            className="h-20 object-contain"
+                                            className="sm:h-20 object-contain"
                                             src={`http://milotec.com.ua/pictures/${product.pictures[0]?.thumbnail ||
                                                 product.pictures[0]?.filename ||
                                                 product.pictures[0]?.enlarged}`}
@@ -58,7 +58,7 @@ const Bucket = memo(() => {
                                     </div>
                                     <Link
                                         to={`/category/${product.categoryID}/products/${product.productID}`}
-                                        className="flex-1 pr-4 font-medium text-black/80 text-[17px]"
+                                        className="flex-1 sm:pr-4 font-medium text-black/80 text-[17px]"
                                     >
                                         {product.name}
                                     </Link>
@@ -82,16 +82,16 @@ const Bucket = memo(() => {
                                     <div className="w-25 text-center text-[18px] ">{product.Price}₴</div>
                                     <X
                                         onClick={() => clearProducts(product.productID)}
-                                        className="cursor-pointer hover:stroke-red-700"
+                                        className="cursor-pointer mb-2 sm:mb-0 hover:stroke-red-700"
                                         color="#fd3535"
                                     />
                                 </div>
                             ))}
                         </div>
                         <div className="flex justify-end">
-                            <div className="flex  bg-blue-50 rounded border justify-between gap-2 items-center py-5 px-4 border-[#328044] mt-5">
-                                <div className="text-center text-[30px] px-3 flex-1 text-black/80">{finalPrice}₴</div>
-                                <button className="self-end font-medium text-[18px] text-white rounded-xl active:bg-green-950 hover:bg-[#468153] transition-all py-4 px-6 bg-[#3fa357] w-50">
+                            <div className="flex bg-blue-50 rounded border justify-between gap-2 items-center py-3 sm:py-5 px-2 sm:px-4 border-[#328044] mt-2 sm:mt-5">
+                                <div className="text-center text-[25px] sm:text-[30px] px-1 sm:px-3 flex-1 text-black/80">{finalPrice}₴</div>
+                                <button className="self-end font-medium text-[18px] text-white rounded-xl active:bg-green-950 hover:bg-[#468153] transition-all py-4 px-6 bg-[#3fa357] sm:w-30">
                                     Оформить заказ
                                 </button>
                             </div>

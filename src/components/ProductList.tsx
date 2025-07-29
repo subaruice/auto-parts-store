@@ -77,24 +77,28 @@ const ProductList = memo(() => {
     return (
         <div className="flex flex-col gap-4 px-4 py-4">
             {category && (
-                <div className="rounded-lg relative gap-2 items-center flex px-3 py-1 bg-white justify-between w-full">
+                <div className="rounded-lg relative flex-col gap-2 items-center flex px-3 py-1 bg-white justify-between w-full">
                     <div className="grow font-medium text-[22px] text-black/70">{category.name}</div>
-                    <input
-                        type="checkbox"
-                        checked={isChecked}
-                        onChange={(e) => setIsChecked(e.target.checked)}
-                        className="h-5 w-5 accent-sky-700"
-                        id="in_stock"
-                    />
-                    <label className="text-black/50 pr-5" htmlFor="in_stock">
-                        В наличии
-                    </label>
-                    <ArrowUpDown
-                        onClick={toggleSort}
-                        className={`${isOpen && "stroke-gray-400"} rounded cursor-pointer hover:stroke-[#707070]`}
-                        color="#333333"
-                    />
-                    <div className="text-black/50">{currentOption.label}</div>
+                    <div className="flex gap-2 items-center justify-center">
+                        <input
+                            type="checkbox"
+                            checked={isChecked}
+                            onChange={(e) => setIsChecked(e.target.checked)}
+                            className="h-5 w-5 accent-sky-700"
+                            id="in_stock"
+                        />
+                        <label className="text-black/50 pr-5" htmlFor="in_stock">
+                            В наличии
+                        </label>
+                    </div>
+                    <div className="flex gap-2 items-center justify-center">
+                        <ArrowUpDown
+                            onClick={toggleSort}
+                            className={`${isOpen && "stroke-gray-400"} rounded cursor-pointer hover:stroke-[#707070]`}
+                            color="#333333"
+                        />
+                        <div className="text-black/50">{currentOption.label}</div>
+                    </div>
                     {isOpen && (
                         <AnimatePresence>
                             <motion.div
