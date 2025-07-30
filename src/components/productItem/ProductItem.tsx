@@ -85,10 +85,10 @@ const ProductItem = memo(() => {
                     Кат.номер {product.product_code} - {product.name}
                 </h1>
                 <div className="flex flex-col lg:flex-row gap-3 lg:gap-10">
-                    <div className="lg:min-w-[40%] lg:max-w-[50%]">
+                    <div className="flex items-center justify-center lg:min-w-[40%] lg:max-w-[50%]">
                         <img
                             onClick={openPreview(0)}
-                            src={`http://milotec.com.ua/pictures/${rawArray && rawArray[0]}`}
+                            src={product.pictures && product.pictures[0].photoID === null ? "/auto-parts-store/no-image.jpg" : `http://milotec.com.ua/pictures/${rawArray && rawArray[0]}`}
                             alt="No image"
                             className="cursor-pointer"
                         />

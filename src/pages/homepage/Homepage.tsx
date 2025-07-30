@@ -131,14 +131,14 @@ const Homepage = () => {
             });
         }
     }, [search, items]);
-    const contextValue = useMemo(() => ({ product, filteredItems, categories }), [product, filteredItems, categories]);
+    const contextValue = useMemo(() => ({ product, filteredItems, categories, isLoading }), [product, filteredItems, categories, isLoading]);
 
     return (
         <div ref={toTop} className="flex">
             {!isMobile && <Sidebar categoryID={cat} categories={categories}/>}
             <div className="flex flex-col w-full h-auto">
                 {isMobile ? <HeaderMobile categoryID={cat} categories={categories}/> : <Header search={search} setSearch={setSearch} />}
-                {isLoading ? (
+                {isLoading  && location.pathname !== '/' ? (
                     <Skeleton />
                 ) : onError ? (
                     <div className="text-gray-700 mt-10 text-[30px] text-center">Нет товаров в данной категории</div>

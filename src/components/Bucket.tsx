@@ -50,7 +50,7 @@ const Bucket = memo(() => {
                                     <div className=" sm:h-20 sm:w-30 sm:mr-4">
                                         <img
                                             className="sm:h-20 object-contain"
-                                            src={`http://milotec.com.ua/pictures/${product.pictures[0]?.thumbnail ||
+                                            src={product.pictures[0].photoID === null ? '/auto-parts-store/no-image.jpg' : `http://milotec.com.ua/pictures/${product.pictures[0]?.thumbnail ||
                                                 product.pictures[0]?.filename ||
                                                 product.pictures[0]?.enlarged}`}
                                             alt="no picture"

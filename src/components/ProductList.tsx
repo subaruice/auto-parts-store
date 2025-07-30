@@ -6,10 +6,12 @@ import ItemFromProductList from "./ItemFromProductList";
 import SliderHomepage from "./UI/SliderHomepage";
 import CommonAdvantages from "./productAdvantages/CommonAdvantages";
 import { AnimatePresence, motion } from "framer-motion";
+import MiniLoader from "./UI/MiniLoader";
 
 interface ItemProps {
     filteredItems: Item[];
     categories: any;
+    isLoading: boolean;
 }
 
 type Option = {
@@ -24,7 +26,7 @@ const options: Option[] = [
 ];
 
 const ProductList = memo(() => {
-    const { filteredItems, categories } = useOutletContext<ItemProps>();
+    const { filteredItems, categories, isLoading } = useOutletContext<ItemProps>();
     const [currentOption, setCurrentOption] = useState<Option>(options[0]);
     const [isOpen, setIsOpen] = useState(false);
     const location = useLocation();
@@ -77,7 +79,7 @@ const ProductList = memo(() => {
     return (
         <div className="flex flex-col gap-4 px-4 py-4">
             {category && (
-                <div className="rounded-lg relative flex-col gap-2 items-center flex px-3 py-1 bg-white justify-between w-full">
+                <div className="rounded-lg relative sm:flex-row flex-col gap-2 items-center flex px-3 py-2 sm:py-1 bg-white justify-between w-full">
                     <div className="grow font-medium text-[22px] text-black/70">{category.name}</div>
                     <div className="flex gap-2 items-center justify-center">
                         <input
@@ -138,6 +140,7 @@ const ProductList = memo(() => {
             <div className="flex gap-4 justify-center flex-wrap ">
                 {filteredItems && sortedAndFiltredItems.map((p) => <ItemFromProductList key={p.productID} item={p} />)}
             </div>
+                {isLoading && <MiniLoader/>}
         </div>
     );
 });

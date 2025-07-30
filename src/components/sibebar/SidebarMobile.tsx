@@ -85,7 +85,7 @@ const SidebarMobile: React.FC<CategoriesProp> = memo(({ categories, categoryID, 
                             exit={{scaleY: 0}}
                             transition={{duration: 0.2}}
                             className="w-full pl-2">
-                                <div className="flex items-center bg-[#202231] w-full flex-col">
+                                <div className="flex rounded items-center bg-[#202231] w-full flex-col">
                                     <div className="pr-2 pl-4 tracking-wider text-gray-300 text-[18px] flex flex-col items-start w-full">
                                         {categories.map((cat: any) => (
                                             <div
