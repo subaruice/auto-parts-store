@@ -71,17 +71,17 @@ const Sidebar: React.FC<CategoriesProp> = memo(({ categories, categoryID }) => {
                 </div>
                 <div className="w-full pl-4">
                     <div className="flex items-center bg-[#202231] rounded-l-[10px] w-full flex-col">
-                        <div className="pr-2 pl-4 tracking-wider text-gray-300 text-[18px] flex flex-col items-start w-full">
+                        <div className="tracking-wider text-gray-300 text-[18px] flex flex-col items-start w-full">
                             {categories.map((cat: any) => (
                                 <div
                                     key={cat.categoryID}
                                     className={`${activeCategoryId === cat.categoryID &&
-                                        "text-white"} hover:text-white cursor-pointer w-[90%] border-b py-4 border-[#2B2D41]`}
+                                        "text-white"} hover:text-white cursor-pointer w-[100%] border-b  border-[#2B2D41]`}
                                 >
                                     <Link
                                         to={`/category/${cat.categoryID}`}
                                         onClick={() => toggleSub(cat.categoryID)}
-                                        className="w-full"
+                                        className="block w-full pr-2 pl-4 py-4 h-full"
                                     >
                                         {cat.name}
                                     </Link>
