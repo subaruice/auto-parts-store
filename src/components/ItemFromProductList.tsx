@@ -52,7 +52,7 @@ const ItemFromProductList = memo(({ item }: any) => {
             )}
             <div>
                 <img
-                    src={`http://milotec.com.ua/pictures/${item.pictures[1]?.enlarged ||
+                    src={item.pictures[0].photoID === null ? "/auto-parts-store/no-image.jpg" : `http://milotec.com.ua/pictures/${item.pictures[1]?.enlarged ||
                         item.pictures[1]?.thumbnail ||
                         item.pictures[1]?.filename ||
                         item.pictures[0]?.enlarged ||
