@@ -69,7 +69,7 @@ const SidebarMobile: React.FC<CategoriesProp> = memo(({ categories, categoryID, 
                         <About className="hover:stroke-white" />
                     </Link>
                 </div> */}
-                <div className="border-b border-gray-700 pl-4 pr-2 py-7">Главная</div>
+                <Link onClick={() => setSidebar(false)} to={'/'} className="border-b border-gray-700 pl-4 pr-2 py-7">Главная</Link>
                 <div className="border-b border-gray-700 pr-2">
                     <div
                         className={`${isCatalogOpen && "text-white"} indent-4 py-7`}
@@ -137,8 +137,8 @@ const SidebarMobile: React.FC<CategoriesProp> = memo(({ categories, categoryID, 
                     )}
                     </AnimatePresence>
                 </div>
-                <div className="border-b border-gray-700 pl-4 pr-2 py-7">Контакты</div>
-                <div className="border-b border-gray-700 pl-4 pr-2 py-7">О нас</div>
+                <Link to={'/contacts'} onClick={() => setSidebar(false)} className="border-b border-gray-700 pl-4 pr-2 py-7">Контакты</Link>
+                <Link onClick={() => setSidebar(false)} to={'/about'} className="border-b border-gray-700 pl-4 pr-2 py-7">О нас</Link>
             </div>
         </div>
     );
