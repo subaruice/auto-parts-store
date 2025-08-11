@@ -40,7 +40,7 @@ const SliderHomepage = memo(() => {
     }, []);
 
     return (
-        <AnimatePresence mode="wait">
+        <AnimatePresence mode="popLayout">
         <div className="gap-3 flex flex-col justify-center">
             <Link className="flex justify-center" to={`/category/${current.categoryID}`}>
                 <motion.img
