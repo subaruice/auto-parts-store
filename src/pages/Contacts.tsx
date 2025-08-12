@@ -1,6 +1,7 @@
 import axios from "axios";
 import { Phone, Mail, MapPin } from "lucide-react";
 import { useForm } from "react-hook-form";
+import Map from "../components/Map";
 
 type ContactFormValues = {
     firstName: string;
@@ -19,37 +20,40 @@ const Contacts = () => {
 
     const onSubmit = async (data: ContactFormValues) => {
         console.log("Отправка формы:", data);
-        const res = await axios.post('http://localhost:3001/feedback', data)
+        const res = await axios.post("http://localhost:3001/feedback", data);
+        console.log(res.data.message);
         reset();
     };
 
     return (
         <section className="md:p-4 p-2">
-            <div className="bg-white p-2 md:p-4 text-black/70 flex lg:flex-row flex-col">
-                <div className="flex-1/2 flex text-[17px] flex-col gap-4 md:gap-8">
-                    <h1 className="text-black/80 text-[20px] font-semibold">Оставайтесь с нами!</h1>
-                    <div className="flex gap-4 items-center">
-                        <MapPin className="stroke-[#3e4b85] w-5 h-5" />
-                        <p>улица Бородича 17, Кривой Рог, Украина</p>
+            <div className="bg-white p-2 md:p-4 text-black/70 gap-4 flex md:flex-row flex-col">
+                <div className="flex-1/2 flex flex-col gap-4">
+                    <div className="lg:col-span-1 lg:row-start-1 flex text-[17px] flex-col gap-4 md:gap-8">
+                        <h1 className="text-center md:text-start text-black/80 text-[20px] font-semibold">
+                            Оставайтесь с нами!
+                        </h1>
+                        <div className="flex gap-4 items-center">
+                            <MapPin className="stroke-[#3e4b85] w-5 h-5" />
+                            <p>улица Бородича 17, Кривой Рог, Украина</p>
+                        </div>
+                        <div className="flex gap-4 items-center">
+                            <Phone className="stroke-[#3e4b85] w-5 h-5" />
+                            <a href="tel:+380660510001">+380660510001</a>
+                        </div>
+                        <div className="flex gap-4 items-center">
+                            <Mail className="stroke-[#3e4b85] w-5 h-5" />
+                            <a className="text-sky-900" href="mailto:info@milotec.com.ua">
+                                info@milotec.com.ua
+                            </a>
+                        </div>
                     </div>
-                    <div className="flex gap-4 items-center">
-                        <Phone className="stroke-[#3e4b85] w-5 h-5" />
-                        <a href="tel:+380660510001">+380660510001</a>
-                    </div>
-                    <div className="flex gap-4 items-center">
-                        <Mail className="stroke-[#3e4b85] w-5 h-5" />
-                        <a className="text-sky-900" href="mailto:info@milotec.com.ua">
-                            info@milotec.com.ua
-                        </a>
-                    </div>
+                    <Map/>
                 </div>
-
-                {/* Правая часть с формой */}
                 <div className="flex-1/2">
                     <form onSubmit={handleSubmit(onSubmit)} className=" space-y-4">
                         <h2 className="text-[20px] font-bold text-center">Форма обратной связи</h2>
                         <div className="flex gap-2">
-                            {/* Имя */}
                             <div className="flex-1/2">
                                 <label className="block font-medium">Имя</label>
                                 <input
@@ -61,7 +65,6 @@ const Contacts = () => {
                                 {errors.firstName && <p className="text-red-500 text-sm">{errors.firstName.message}</p>}
                             </div>
 
-                            {/* Фамилия */}
                             <div className="flex-1/2">
                                 <label className="block font-medium">Фамилия</label>
                                 <input
@@ -73,7 +76,6 @@ const Contacts = () => {
                                 {errors.lastName && <p className="text-red-500 text-sm">{errors.lastName.message}</p>}
                             </div>
                         </div>
-                        {/* Email */}
                         <div>
                             <label className="block font-medium">Email</label>
                             <input
@@ -91,7 +93,6 @@ const Contacts = () => {
                             {errors.email && <p className="text-red-500 text-sm">{errors.email.message}</p>}
                         </div>
 
-                        {/* Сообщение */}
                         <div>
                             <label className="block font-medium">Сообщение</label>
                             <textarea
