@@ -9,8 +9,8 @@ const About = () => {
                         alt="Skoda"
                         className="float-left w-100 mr-4 mb-5 sm:mb-10 rounded shadow"
                     />
-                    <p className="tracking-wider font-semibold mb-2 text-[#303c66]">
-                        - Качество за разумную цену <br /> - Любовь к марке Skoda
+                    <p className="text-[21px] text-center tracking-wider font-semibold mb-2 text-[#303c66]">
+                        Качество за разумную цену <br />Любовь к марке Skoda
                     </p>
                     <p className="mb-5 sm:mb-10">
                         Это не только фразы, но и факт, который влияет на все наши стремления при разработке,

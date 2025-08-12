@@ -175,7 +175,7 @@ const ProductItem = memo(() => {
                                         className="h-12 lg:hover:w-35 transition-all stroke-white w-12 lg:w-30 "
                                     />
                                 </div>
-                                <div className="flex-` w-full relative">
+                                <div className="flex items-center justify-center w-full relative">
                                     <Xmark
                                         onClick={closePreview}
                                         className="absolute hover:w-12 transition-all cursor-pointer -top-12 -right-12 w-10 text-white"
@@ -191,7 +191,7 @@ const ProductItem = memo(() => {
                                             transition={{ duration: 0.3 }}
                                             key={index}
                                         />
-                                    <div className="text-right text-[20px] text-white">
+                                    <div className="absolute -bottom-6 right-0 text-right text-[20px] text-white">
                                         {index + 1} / {rawArray.length}
                                     </div>
                                 </div>
