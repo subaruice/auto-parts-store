@@ -27,9 +27,11 @@ const Homepage = () => {
     const isMobile = window.innerWidth < 1024;
 
     const [fetchItems, isLoading, onError] = useFetching(async () => {
-        setSearch("");
+        if (location.pathname !== "/catalog") {
+            setSearch("");
+        }
         console.log("fetch");
-        if (!categoryID && !productID && location.pathname !== "/") return;
+        if (!categoryID && !productID && location.pathname !== "/" && location.pathname !== '/catalog') return;
 
         if (initialLoad.current) {
             setItems([]);
@@ -60,7 +62,7 @@ const Homepage = () => {
             }
             initialLoad.current = false;
         } else if (location.pathname === "/catalog") {
-            const resItems = await PostService.getAllSaleProducts(limit, offset.current);
+            const resItems = await PostService.getAllProducts(limit, offset.current);
             setItems((prev) => (initialLoad.current ? resItems.data : [...prev, ...resItems.data]));
             offset.current += limit;
             if (offset.current >= resItems.headers["x-total-count"]) {
@@ -131,21 +133,28 @@ const Homepage = () => {
             });
         }
     }, [search, items]);
-    const contextValue = useMemo(() => ({ product, filteredItems, categories, isLoading }), [product, filteredItems, categories, isLoading]);
+    const contextValue = useMemo(
+        () => ({ product, filteredItems, categories, isLoading }),
+        [product, filteredItems, categories, isLoading]
+    );
 
     return (
         <div ref={toTop} className="flex">
-            {!isMobile && <Sidebar categoryID={cat} categories={categories}/>}
+            {!isMobile && <Sidebar categoryID={cat} categories={categories} />}
             <div className="flex flex-col w-full h-auto">
-                {isMobile ? <HeaderMobile categoryID={cat} categories={categories}/> : <Header search={search} setSearch={setSearch} />}
-                {isLoading  && location.pathname !== '/' ? (
+                {isMobile ? (
+                    <HeaderMobile categoryID={cat} categories={categories} />
+                ) : (
+                    <Header search={search} setSearch={setSearch} />
+                )}
+                {isLoading && location.pathname !== "/" ? (
                     <Skeleton />
                 ) : onError ? (
                     <div className="text-gray-700 mt-10 text-[30px] text-center">Нет товаров в данной категории</div>
                 ) : (
                     <Outlet context={contextValue} />
                 )}
-                {location.pathname === "/" && <div className="h-[1px]" ref={observerRef}></div>}
+                {(location.pathname === "/" || location.pathname === '/catalog') && <div className="h-[1px]" ref={observerRef}></div>}
             </div>
         </div>
     );

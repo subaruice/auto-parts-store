@@ -1,4 +1,3 @@
-import { AnimatePresence, motion } from "framer-motion";
 import { useState, memo, useRef, useEffect } from "react";
 import { Link } from "react-router";
 
@@ -40,29 +39,22 @@ const SliderHomepage = memo(() => {
     }, []);
 
     return (
-        <AnimatePresence mode="popLayout">
         <div className="gap-3 flex flex-col justify-center">
             <Link className="flex justify-center" to={`/category/${current.categoryID}`}>
-                <motion.img
-                key={current.src} 
-                initial={{opacity:0}}
-                animate={{opacity:1}}
-                exit={{opacity:0}}
-                transition={{duration: 2}}
-                src={current.src} alt="no image" />
+                <img src={current.src} alt="no image" />
             </Link>
             <div className="flex gap-2 justify-center">
                 {imageSources.map((_, i) => (
                     <div
                         key={i}
-                        className={`${imageSources[i].src === current.src &&
-                            "bg-gray-700"} h-4 w-4 cursor-pointer rounded-full bg-gray-400`}
+                        className={`${
+                            imageSources[i].src === current.src && "bg-gray-700"
+                        } h-4 w-4 cursor-pointer rounded-full bg-gray-400`}
                         onClick={() => cancel(imageSources[i])}
                     ></div>
                 ))}
             </div>
         </div>
-        </AnimatePresence>
     );
 });
 

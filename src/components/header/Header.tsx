@@ -1,7 +1,7 @@
 import { ShoppingCart } from "lucide-react";
 import SearchIcon from "../../icons/search-icon.svg?react";
 import UserProfile from "../../icons/user-profile.svg?react";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 import { memo, useEffect, useState } from "react";
 import Notification from "../UI/Notification"; 
 
@@ -13,6 +13,7 @@ interface HeaderProps {
 const Header: React.FC<HeaderProps> = memo(({ search, setSearch }) => {
     const [productsCounter, setProductsCounter] = useState(0);
     const [showEmptyBucket, setShowEmptyBucket] = useState(false);
+    const navigate = useNavigate()
 
     useEffect(() => {
         const handleCouter = () => {
@@ -40,10 +41,17 @@ const Header: React.FC<HeaderProps> = memo(({ search, setSearch }) => {
         }, 2500);
     };
 
+    const onKeyDown = (e:React.KeyboardEvent<HTMLFormElement>) => {
+        if(e.key === 'Enter'){
+            e.preventDefault()
+            navigate('/catalog')
+        }
+    }
+
     return (
         <div className="flex min-h-[87px] w-full border-b-[0.5px] border-black/30 ">
             <div className="p-[26px] flex-1">
-                <form action="" className="flex gap-[22px]">
+                <form onKeyDown={onKeyDown} className="flex gap-[22px]">
                     <SearchIcon />
                     <input
                         name="search"
