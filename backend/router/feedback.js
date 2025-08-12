@@ -15,7 +15,6 @@ const mail = nodemailer.createTransport({
         pass: process.env.MAIL_PASS,
     },
 });
-console.log(process.env.MAIL_PASS);
 
 router.post("/feedback", async (req, res) => {
     const { firstName, lastName, email, message } = req.body;

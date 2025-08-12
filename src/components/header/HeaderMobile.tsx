@@ -7,7 +7,7 @@ import SidebarMobile from "../sibebar/SidebarMobile";
 import { X } from "lucide-react";
 import { AnimatePresence, motion } from "framer-motion";
 import { Link } from "react-router";
-import EmptyBucket from "../UI/EmptyBucket";
+import Notification from "../UI/Notification";
 
 interface Props {
     categoryID?: string | undefined;
@@ -106,7 +106,7 @@ const HeaderMobile: React.FC<Props> = memo(({ categoryID, categories }) => {
                         </div>
                     )}
                 </Link>
-                {showEmptyBucket && <EmptyBucket show={showEmptyBucket} />}
+                {showEmptyBucket && <Notification show={showEmptyBucket}>Корзина Пуста</Notification>}
             </div>
         </div>
     );

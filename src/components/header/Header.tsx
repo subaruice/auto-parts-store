@@ -3,7 +3,7 @@ import SearchIcon from "../../icons/search-icon.svg?react";
 import UserProfile from "../../icons/user-profile.svg?react";
 import { Link } from "react-router";
 import { memo, useEffect, useState } from "react";
-import EmptyBucket from "../UI/EmptyBucket";
+import Notification from "../UI/Notification"; 
 
 interface HeaderProps {
     search: string;
@@ -77,7 +77,7 @@ const Header: React.FC<HeaderProps> = memo(({ search, setSearch }) => {
                             </div>
                         )}
                     </Link>
-                    {showEmptyBucket &&  <EmptyBucket show={showEmptyBucket} />}
+                    {showEmptyBucket &&  <Notification show={showEmptyBucket}>Корзина пуста</Notification>}
                 </div>
             </div>
         </div>

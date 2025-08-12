@@ -11,9 +11,11 @@ const Map = memo(() => {
     if (loadError) return <div>Ошибка</div>;
     if (!isLoaded) return <Skeleton />;
     return (
-        <GoogleMap mapContainerClassName="w-full h-100 border border-black/20 rounded-xl" center={center} zoom={14}>
-            <Marker position={center} />
-        </GoogleMap>
+        <div>
+            <GoogleMap mapContainerClassName="w-full h-100 border border-black/20 rounded-xl" center={center} zoom={14}>
+                <Marker position={center} />
+            </GoogleMap>
+        </div>
     );
 });
 
