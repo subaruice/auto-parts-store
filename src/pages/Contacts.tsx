@@ -2,6 +2,8 @@ import axios from "axios";
 import { Phone, Mail, MapPin } from "lucide-react";
 import { useForm } from "react-hook-form";
 import Map from "../components/Map";
+import Notification from "../components/UI/Notification";
+import { useState } from "react";
 
 type ContactFormValues = {
     firstName: string;
@@ -11,6 +13,7 @@ type ContactFormValues = {
 };
 
 const Contacts = () => {
+    const [showMessage, setIsShowMessage] = useState(false);
     const {
         register,
         handleSubmit,
@@ -19,10 +22,17 @@ const Contacts = () => {
     } = useForm<ContactFormValues>();
 
     const onSubmit = async (data: ContactFormValues) => {
-        console.log("Отправка формы:", data);
-        const res = await axios.post("http://localhost:3001/feedback", data);
-        console.log(res.data.message);
-        reset();
+        try {
+            setIsShowMessage(true);
+            setTimeout(() => {
+                setIsShowMessage(false);
+            }, 2500);
+            await axios.post("http://localhost:3001/feedback", data);
+        } catch (err) {
+            console.log(err);
+        } finally {
+            reset();
+        }
     };
 
     return (
@@ -48,7 +58,7 @@ const Contacts = () => {
                             </a>
                         </div>
                     </div>
-                    <Map/>
+                    <Map />
                 </div>
                 <div className="flex-1/2">
                     <form onSubmit={handleSubmit(onSubmit)} className=" space-y-4">
@@ -121,6 +131,7 @@ const Contacts = () => {
                     </form>
                 </div>
             </div>
+            {showMessage && <Notification show={showMessage}>Сообщение отправлено</Notification>}
         </section>
     );
 };

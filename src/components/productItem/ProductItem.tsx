@@ -11,7 +11,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import CommonAdvantages from "../productAdvantages/CommonAdvantages";
 import { useOutletContext } from "react-router";
 import { memo } from "react";
-import AddedProductToBucket from "../UI/AddedProductToBucket";
+import Notification from "../UI/Notification";
 
 interface ProductProp {
     product: Item;
@@ -78,7 +78,7 @@ const ProductItem = memo(() => {
 
     return (
         <div className="p-2 lg:py-5 h-full lg:px-5">
-            {showAddBucketMessage && <AddedProductToBucket show={showAddBucketMessage}/>}
+            {showAddBucketMessage && <Notification show={showAddBucketMessage}>Товар добавлен в корзину</Notification>}
             {/* main content */}
             <div className="rounded-[10px] h-full bg-white flex flex-col gap-5 p-2 sm:p-5 text-black/70 w-full ">
                 <h1 className="text-center text-[18px] lg:text-[25px] font-medium">

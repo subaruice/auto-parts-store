@@ -1,7 +1,7 @@
 import Bucket from "../icons/button-bucket.svg?react";
 import { Link } from "react-router";
 import { memo, useState } from "react";
-import AddedProductToBucket from "./UI/AddedProductToBucket";
+import Notification from "./UI/Notification";
 import type { Item } from "../types/item";
 
 const ItemFromProductList = memo(({ item }: any) => {
@@ -90,7 +90,7 @@ const ItemFromProductList = memo(({ item }: any) => {
                 <Bucket className="w-7" />
                 <button className="py-3 text-[18px]  text-white font-medium ">В корзину</button>
             </div>
-            {showAddBucketMessage && <AddedProductToBucket show={showAddBucketMessage} />}
+            {showAddBucketMessage && <Notification show={showAddBucketMessage}>Товар добавлен в корзину</Notification>}
         </Link>
     );
 });
