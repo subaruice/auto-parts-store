@@ -3,11 +3,11 @@ const About = () => {
         <div className="p-2 sm:p-4">
             <div className=" rounded-lg bg-white p-2 sm:p-4 text-[18px] text-black/70 leading-relaxed space-y-3 sm:space-y-6">
                 <p className="font-bold text-center text-[20px]">О продукции</p>
-                <div>
+                <div className="flex md:block justify-center items-center flex-col pb-6">
                     <img
                         src="about-us.png"
                         alt="Skoda"
-                        className="float-left w-100 mr-4 mb-5 sm:mb-10 rounded shadow"
+                        className="md:float-left w-100 md:mr-4 mb-5 sm:mb-10 rounded shadow"
                     />
                     <p className="text-[21px] text-center tracking-wider font-semibold mb-2 text-[#303c66]">
                         Качество за разумную цену <br />Любовь к марке Skoda
@@ -25,8 +25,8 @@ const About = () => {
                     <div className="clear-left"></div>
                 </div>
 
-                <div className="border-b pb-6 border-black/30">
-                    <img src="about-us.jpg" alt="Фирма" className="float-right w-100 ml-4 mb-2 rounded shadow" />
+                <div className="flex md:block justify-center items-center flex-col border-b pb-6 border-black/30">
+                    <img src="about-us.jpg" alt="Фирма" className="md:float-right w-100 md:ml-4 mb-2 rounded shadow" />
                     <p>
                         Вся поставляемая продукция имеет сертификаты качества и прошла тестирование в реальных условиях
                         эксплуатации. Фирма-производитель также имеет сертификат, разрешающий выпуск автоаксессуаров.
