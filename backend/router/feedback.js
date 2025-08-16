@@ -54,7 +54,7 @@ router.post("/feedback", async (req, res) => {
                 </div>
             `,
         })
-        res.status(200).json({ success: true, message: "Сообщения отправлены" });
+        res.json({ success: true, message: "Сообщения отправлены" });
     } catch (err) {
         console.error(err);
         res.status(500).json({ success: false, message: `${process.env.MAIL_PASS}` });

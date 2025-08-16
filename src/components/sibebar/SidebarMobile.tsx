@@ -27,30 +27,24 @@ const SidebarMobile: React.FC<CategoriesProp> = memo(({ categories, categoryID, 
         setActiveSubCategoryId((prev) => (prev === id ? null : id));
     };
 
-    // const clearStates = () => {
-    //     setActiveCategoryId(null);
-    //     setActiveSubCategoryId(null);
-    // };
-
     useEffect(() => {
         if (activeCategoryId == null && categoryID && categories.length > 0) {
             const numericCategoryID = Number(categoryID);
 
             let found = categories.find((cat: any) => cat.categoryID === numericCategoryID);
             if (!found) {
-                // ищем во вложенных подкатегориях
                 categories.forEach((cat: any) => {
                     const sub = cat.subcategories?.find((subcat: any) => subcat.categoryID === numericCategoryID);
                     if (sub) {
-                        found = { ...sub, parent: cat.categoryID }; // добавляем родителя вручную
+                        found = { ...sub, parent: cat.categoryID };
                     }
                 });
             }
-            if (found.parent === 1) {
+            if (found?.parent === 1) {
                 setActiveCategoryId(Number(categoryID));
-            } else if (found.parent !== 1) {
+            } else if (found?.parent !== 1) {
                 setActiveSubCategoryId(Number(categoryID));
-                setActiveCategoryId(Number(found.parent));
+                setActiveCategoryId(Number(found?.parent));
             }
         }
     }, [categoryID, categories]);
@@ -58,17 +52,6 @@ const SidebarMobile: React.FC<CategoriesProp> = memo(({ categories, categoryID, 
     return (
         <div onClick={(e) => e.stopPropagation()} className="grow h-full flex flex-col  shrink-0 w-[90%]">
             <div className="flex grow text-gray-200 text-[22px] bg-[#2f3247] flex-col">
-                {/* <div className="flex mt-15 self-start gap-5 flex-col">
-                    <Link onClick={clearStates} className="cursor-pointer" to={"/"}>
-                        <Home className="hover:stroke-white" />
-                    </Link>
-                    <Link to={"/contacts"}>
-                        <Call className="hover:stroke-white" />
-                    </Link>
-                    <Link to={"/about"}>
-                        <About className="hover:stroke-white" />
-                    </Link>
-                </div> */}
                 <Link onClick={() => setSidebar(false)} to={'/'} className="border-b border-gray-700 pl-4 pr-2 py-7">Главная</Link>
                 <div className="border-b border-gray-700 pr-2">
                     <div
