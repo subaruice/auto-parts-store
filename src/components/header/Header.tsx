@@ -3,7 +3,7 @@ import SearchIcon from "../../icons/search-icon.svg?react";
 import UserProfile from "../../icons/user-profile.svg?react";
 import { Link, useNavigate } from "react-router";
 import { memo, useEffect, useState } from "react";
-import Notification from "../UI/Notification"; 
+import Notification from "../UI/Notification";
 
 interface HeaderProps {
     search: string;
@@ -13,7 +13,7 @@ interface HeaderProps {
 const Header: React.FC<HeaderProps> = memo(({ search, setSearch }) => {
     const [productsCounter, setProductsCounter] = useState(0);
     const [showEmptyBucket, setShowEmptyBucket] = useState(false);
-    const navigate = useNavigate()
+    const navigate = useNavigate();
 
     useEffect(() => {
         const handleCouter = () => {
@@ -41,12 +41,12 @@ const Header: React.FC<HeaderProps> = memo(({ search, setSearch }) => {
         }, 2500);
     };
 
-    const onKeyDown = (e:React.KeyboardEvent<HTMLFormElement>) => {
-        if(e.key === 'Enter'){
-            e.preventDefault()
-            navigate('/catalog')
+    const onKeyDown = (e: React.KeyboardEvent<HTMLFormElement>) => {
+        if (e.key === "Enter") {
+            e.preventDefault();
+            navigate("/catalog");
         }
-    }
+    };
 
     return (
         <div className="flex min-h-[87px] w-full border-b-[0.5px] border-black/30 ">
@@ -65,10 +65,12 @@ const Header: React.FC<HeaderProps> = memo(({ search, setSearch }) => {
             </div>
             <div className="flex items-center">
                 <div className="h-full flex items-center px-[18px] border-x-[0.5px] border-black/30">
-                    <UserProfile
-                        color="#8D99AD"
-                        className="cursor-pointer hover:stroke-gray-600 active:stroke-gray-900"
-                    />
+                    <Link to={'/login'}>
+                        <UserProfile
+                            color="#8D99AD"
+                            className="cursor-pointer hover:stroke-gray-600 active:stroke-gray-900"
+                        />
+                    </Link>
                 </div>
                 <div className="px-[18px] flex items-center">
                     <Link className="relative" onClick={(e) => toggleEmptyBucket(e)} to="/bucket">
@@ -85,7 +87,7 @@ const Header: React.FC<HeaderProps> = memo(({ search, setSearch }) => {
                             </div>
                         )}
                     </Link>
-                    {showEmptyBucket &&  <Notification show={showEmptyBucket}>Корзина пуста</Notification>}
+                    {showEmptyBucket && <Notification show={showEmptyBucket}>Корзина пуста</Notification>}
                 </div>
             </div>
         </div>

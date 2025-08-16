@@ -1,7 +1,6 @@
 import axios from "axios";
 import { Phone, Mail, MapPin } from "lucide-react";
 import { useForm } from "react-hook-form";
-import Map from "../components/Map";
 import Notification from "../components/UI/Notification";
 import { useState } from "react";
 
@@ -39,26 +38,40 @@ const Contacts = () => {
         <section className="md:p-4 p-2">
             <div className="bg-white p-2 md:p-4 text-black/70 gap-4 flex md:flex-row flex-col">
                 <div className="flex-1/2 flex flex-col gap-4">
-                    <div className="lg:col-span-1 lg:row-start-1 flex text-[17px] flex-col gap-4 md:gap-8">
+                    <div className="flex text-[17px] flex-col gap-4 md:gap-8">
                         <h1 className="text-center md:text-start text-black/80 text-[20px] font-semibold">
                             Оставайтесь с нами!
                         </h1>
-                        <div className="flex gap-4 items-center">
-                            <MapPin className="stroke-[#3e4b85] w-5 h-5" />
-                            <p>улица Бородича 17, Кривой Рог, Украина</p>
+                        <div className="flex  flex-col  items-start">
+                            <div className="flex gap-4 items-center">
+                                <MapPin className="stroke-[#3e4b85] w-5 h-5" />
+                                <p>улица Бородича 17, Кривой Рог, Украина</p>
+                            </div>
+                            <a
+                                className="text-[14px] indent-9 text-sky-950 !underline"
+                                href="https://maps.app.goo.gl/bLK4bduTq1FUZfMu9"
+                            >
+                                https://maps.app.goo.gl/bLK4bduTq1FUZfMu9
+                            </a>
                         </div>
                         <div className="flex gap-4 items-center">
                             <Phone className="stroke-[#3e4b85] w-5 h-5" />
-                            <a href="tel:+380660510001">+380660510001</a>
+                            <a className="text-sky-900" href="tel:+380660510001">
+                                +380660510001
+                            </a>
                         </div>
                         <div className="flex gap-4 items-center">
                             <Mail className="stroke-[#3e4b85] w-5 h-5" />
-                            <a className="text-sky-900" href="mailto:info@milotec.com.ua">
+                            <a className="text-sky-950 !underline" href="mailto:info@milotec.com.ua">
                                 info@milotec.com.ua
                             </a>
                         </div>
                     </div>
-                    <Map />
+                    <iframe
+                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2674.598664341972!2d33.4294296!3d47.905452721608015!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x40db2178999a417d%3A0x3b7c00bf82a0fd08!2z0KjQutC-0LTQsCDRgtGO0L3QuNC90LM!5e0!3m2!1sru!2sua!4v1755152182266!5m2!1sru!2sua"
+                        className="w-full h-112.5"
+                        loading="lazy"
+                    ></iframe>
                 </div>
                 <div className="flex-1/2">
                     <form onSubmit={handleSubmit(onSubmit)} className=" space-y-4">

@@ -46,13 +46,22 @@ const Bucket = memo(() => {
                     <div className="flex flex-col gap-5">
                         <div className="flex flex-col gap-4">
                             {products.map((product: any) => (
-                                <div key={product.productID} className="flex sm:flex-row border-b sm:border-none border-gray-200 gap-2 sm:gap-0 flex-col items-center">
+                                <div
+                                    key={product.productID}
+                                    className="flex border-b sm:border-none border-gray-200 gap-2 sm:gap-0 items-center"
+                                >
                                     <div className=" sm:h-20 sm:w-30 sm:mr-4">
                                         <img
                                             className="sm:h-20 object-contain"
-                                            src={product.pictures[0].photoID === null ? '/auto-parts-store/no-image.jpg' : `http://milotec.com.ua/pictures/${product.pictures[0]?.thumbnail ||
-                                                product.pictures[0]?.filename ||
-                                                product.pictures[0]?.enlarged}`}
+                                            src={
+                                                product.pictures[0].photoID === null
+                                                    ? "/auto-parts-store/no-image.jpg"
+                                                    : `http://milotec.com.ua/pictures/${
+                                                          product.pictures[0]?.thumbnail ||
+                                                          product.pictures[0]?.filename ||
+                                                          product.pictures[0]?.enlarged
+                                                      }`
+                                            }
                                             alt="no picture"
                                         />
                                     </div>
@@ -89,9 +98,11 @@ const Bucket = memo(() => {
                             ))}
                         </div>
                         <div className="flex justify-end">
-                            <div className="flex bg-blue-50 rounded border justify-between gap-2 items-center py-3 sm:py-5 px-2 sm:px-4 border-[#328044] mt-2 sm:mt-5">
-                                <div className="text-center text-[25px] sm:text-[30px] px-1 sm:px-3 flex-1 text-black/80">{finalPrice}₴</div>
-                                <button className="self-end font-medium text-[18px] text-white rounded-xl active:bg-green-950 hover:bg-[#468153] transition-all py-4 px-6 bg-[#3fa357] w-30 sm:w-50">
+                            <div className="flex bg-blue-50 rounded-lg border justify-between gap-2 items-center py-3 sm:py-5 px-2 sm:px-4 border-[#328044] mt-2 sm:mt-5">
+                                <div className="text-center text-[25px] sm:text-[30px] px-1 sm:px-3 flex-1 text-black/80">
+                                    {finalPrice}₴
+                                </div>
+                                <button className="self-end font-medium text-[18px] text-white rounded-xl active:bg-green-950 hover:bg-[#468153] transition-all py-4 px-6 bg-[#3fa357] w-full sm:w-50">
                                     Оформить заказ
                                 </button>
                             </div>

@@ -35,7 +35,7 @@ const HeaderMobile: React.FC<Props> = memo(({ categoryID, categories }) => {
     }, []);
 
     const toggleEmptyBucket = (e: any) => {
-        setIsSidebarOpen(false)
+        setIsSidebarOpen(false);
         const existing = JSON.parse(localStorage.getItem("products") || "[]");
         if (existing.length < 1) {
             e.preventDefault();
@@ -87,11 +87,16 @@ const HeaderMobile: React.FC<Props> = memo(({ categoryID, categories }) => {
                     </motion.div>
                 )}
             </AnimatePresence>
-            <Link onClick={() => setIsSidebarOpen(false)} to={'/'}>
+            <Link onClick={() => setIsSidebarOpen(false)} to={"/"}>
                 <img src={HeadLogo} className="cursor-pointer h-10" alt="Header Logo" />
             </Link>
             <div className="flex gap-2">
-                <UserProfile stroke="#dfdfdf" className="cursor-pointer hover:stroke-gray-600 active:stroke-gray-900" />
+                <Link to={"/login"}>
+                    <UserProfile
+                        stroke="#dfdfdf"
+                        className="cursor-pointer hover:stroke-gray-600 active:stroke-gray-900"
+                    />
+                </Link>
                 <Link className="relative" onClick={(e) => toggleEmptyBucket(e)} to="/bucket">
                     <ShoppingCart
                         color="#dfdfdf"

@@ -35,19 +35,18 @@ const Sidebar: React.FC<CategoriesProp> = memo(({ categories, categoryID }) => {
 
             let found = categories.find((cat: any) => cat.categoryID === numericCategoryID);
             if (!found) {
-                // ищем во вложенных подкатегориях
                 categories.forEach((cat: any) => {
                     const sub = cat.subcategories?.find((subcat: any) => subcat.categoryID === numericCategoryID);
                     if (sub) {
-                        found = { ...sub, parent: cat.categoryID }; // добавляем родителя вручную
+                        found = { ...sub, parent: cat.categoryID }; 
                     }
                 });
             }
-            if (found.parent === 1) {
+            if (found?.parent === 1) {
                 setActiveCategoryId(Number(categoryID));
-            } else if (found.parent !== 1) {
+            } else if (found?.parent !== 1) {
                 setActiveSubCategoryId(Number(categoryID));
-                setActiveCategoryId(Number(found.parent));
+                setActiveCategoryId(Number(found?.parent));
             }
         }
     }, [categoryID, categories]);

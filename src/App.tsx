@@ -5,6 +5,8 @@ import ProductItem from "./components/productItem/ProductItem";
 import Bucket from "./components/Bucket";
 import About from "./pages/About";
 import Contacts from "./pages/Contacts";
+import Login from "./pages/Login";
+import Registration from "./pages/Registration";
 
 function App() {
     return (
@@ -16,6 +18,8 @@ function App() {
                 <Route path="bucket" element={<Bucket/>}/>
                 <Route path="about" element={<About/>}/>
                 <Route path="contacts" element={<Contacts/>}/>
+                <Route path="login" element={<Login/>}/>
+                <Route path="registration" element={<Registration/>}/>
                 <Route path="*" element={<ProductList/>}/>
             </Route>
         </Routes>
