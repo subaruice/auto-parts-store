@@ -15,9 +15,10 @@ const Login = () => {
     const {
         register,
         handleSubmit,
+        setError,
         formState: { errors, isSubmitting },
     } = useForm<LoginFormValues>({
-        mode: "onBlur", // валидация при уходе с поля
+        mode: "onBlur", 
     });
     useEffect(() => {
         if (user) {
@@ -26,15 +27,23 @@ const Login = () => {
     }, [user]);
 
     const onSubmit = async (data: LoginFormValues) => {
-        const res = await axios.post("http://localhost:3001/login", data, { withCredentials: true });
-        if (res.data.user) {
-            setUser(res.data.user);
-            navigate("/profile", { replace: true });
+        try {
+            const res = await axios.post("http://localhost:3001/login", data, { withCredentials: true });
+            if (res.data.user) {
+                setUser(res.data.user);
+                navigate("/profile", { replace: true });
+            }
+        } catch (err: any) {
+            if (err.response?.data?.message === "Неправильный имейл") {
+                setError("email", { type: "server", message: "Неправильный имейл" });
+            } else if (err.response?.data?.message === "Неправильный пароль") {
+                setError('password', { type: "server", message: "Неправильный пароль" });
+            }
         }
     };
 
     return (
-        <div className="flex text-black/80 items-start justify-center min-h-screen p-2 md:p-4 bg-gray-100">
+        <div className="flex text-black/80 items-start justify-center min-h-screen p-2 md:p-4">
             <form
                 onSubmit={handleSubmit(onSubmit)}
                 className="bg-white flex  justify-center px-6 pt-10 pb-25 rounded-lg shadow-lg w-full max-w-xl"

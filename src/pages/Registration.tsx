@@ -2,13 +2,16 @@ import axios from "axios";
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router";
 import Skeleton from "../components/UI/Skeleton";
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 import { authContext } from "../AuthContext";
+import Notification from "../components/UI/Notification";
 
 type LoginFormValues = {
     email: string;
     password: string;
     confirmPassword: string;
+    name: string;
+    surname: string;
     login: string;
 };
 
@@ -20,6 +23,8 @@ export default function Registration() {
         handleSubmit,
         getValues,
         reset,
+        setError,
+        setValue,
         formState: { errors, isSubmitting },
     } = useForm<LoginFormValues>({
         mode: "onBlur",
@@ -27,7 +32,7 @@ export default function Registration() {
 
     useEffect(() => {
         if (user) {
-            navigate("/profile", {replace: true});
+            navigate("/profile", { replace: true });
         }
     });
 
@@ -39,12 +44,16 @@ export default function Registration() {
             navigate("/profile");
             reset();
         } catch (err: any) {
-            console.error(err.response.data.message);
+            if (err.response?.data?.message === "Пользователь с таким email уже существует") {
+                setError("email", { type: "server", message: "Пользователь с таким email уже существует" });
+            } else {
+                console.error(err.response.data.message);
+            }
         }
     };
 
     return (
-        <div className="flex text-black/80 items-start justify-center min-h-screen p-2 md:p-4 bg-gray-100">
+        <div className="flex text-black/80 items-start justify-center min-h-screen p-2 md:p-4">
             {isSubmitting ? (
                 <div>
                     <Skeleton />
@@ -57,19 +66,74 @@ export default function Registration() {
                     <div className="max-w-sm w-sm">
                         <h2 className="text-2xl font-bold mb-6 text-center">Регистрация</h2>
 
+                        <div className="mb-6 flex gap-2">
+                            <div>
+                                <label className="block text-sm font-medium mb-1">Имя</label>
+                                <input
+                                    autoComplete="Name"
+                                    type="text"
+                                    placeholder="Имя"
+                                    {...register("name", {
+                                        required: "Введите имя",
+                                        minLength: {
+                                            value: 2,
+                                            message: "Слишком короткое имя",
+                                        },
+                                    })}
+                                    onChange={(e) => {
+                                        const filtered = e.target.value.replace(/[^ \p{L}]/gu, "");
+                                        setValue("name", filtered);
+                                    }}
+                                    className="w-full px-3 py-2 border border-black/20 rounded-lg outline-none focus:ring-1 focus:ring-blue-500"
+                                />
+                                {errors.name && <p className="text-red-500 text-sm mt-1">{errors.name.message}</p>}
+                            </div>
+                            <div>
+                                <label className="block text-sm font-medium mb-1">Фамилия</label>
+                                <input
+                                    autoComplete="Surname"
+                                    type="text"
+                                    placeholder="Фамилия"
+                                    {...register("surname", {
+                                        required: "Введите фамилию",
+
+                                        minLength: {
+                                            value: 2,
+                                            message: "Слишком короткая фамилия",
+                                        },
+                                    })}
+                                    onChange={(e) => {
+                                        const filtered = e.target.value.replace(/[^ \p{L}]/gu, "");
+                                        setValue("surname", filtered);
+                                    }}
+                                    className="w-full px-3 py-2 border border-black/20 rounded-lg outline-none focus:ring-1 focus:ring-blue-500"
+                                />
+                                {errors.surname && (
+                                    <p className="text-red-500 text-sm mt-1">{errors.surname.message}</p>
+                                )}
+                            </div>
+                        </div>
+
                         <div className="mb-6">
-                            <label className="block text-sm font-medium mb-1">Имя или никнейм</label>
+                            <label className="block text-sm font-medium mb-1">Логин или никнейм</label>
                             <input
                                 autoComplete="login"
                                 type="text"
-                                placeholder="example"
+                                placeholder="Логин"
                                 {...register("login", {
-                                    required: "Введите имя или никнейм",
+                                    pattern: {
+                                        value: /^[\u0000-\u007F]+$/,
+                                        message: "Только латиницей",
+                                    },
                                     minLength: {
                                         value: 2,
-                                        message: "Слишком короткое имя",
+                                        message: "Слишком короткий логин",
                                     },
                                 })}
+                                onChange={(e) => {
+                                    const filtered = e.target.value.replace(/[^\u0000-\u007F]/g, "");
+                                    setValue("login", filtered, { shouldValidate: true });
+                                }}
                                 className="w-full px-3 py-2 border border-black/20 rounded-lg outline-none focus:ring-1 focus:ring-blue-500"
                             />
                             {errors.login && <p className="text-red-500 text-sm mt-1">{errors.login.message}</p>}

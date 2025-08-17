@@ -10,10 +10,10 @@ const Profile = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-gray-50 p-6">
-      <div className="max-w-4xl mx-auto bg-white rounded-xl shadow-md p-4">
+    <div className="min-h-screen w-full p-2 md:p-4">
+      <div className="bg-white rounded-xl shadow-md p-2 md:p-4">
         {/* Верхнее меню */}
-        <nav className="flex border-b border-gray-200 mb-4">
+        <nav className="flex items-center border-b border-gray-200">
           {menuItems.map((item) => (
             <Link
               key={item.path}
