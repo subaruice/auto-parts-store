@@ -10,7 +10,7 @@ type LoginFormValues = {
 };
 
 const Login = () => {
-    const {user, setUser} = useContext(authContext);
+    const { user, setUser } = useContext(authContext);
     const navigate = useNavigate();
     const {
         register,
@@ -27,9 +27,9 @@ const Login = () => {
 
     const onSubmit = async (data: LoginFormValues) => {
         const res = await axios.post("http://localhost:3001/login", data, { withCredentials: true });
-        if(res.data.user){
-            setUser(res.data.user)
-            navigate('/profile');
+        if (res.data.user) {
+            setUser(res.data.user);
+            navigate("/profile", { replace: true });
         }
     };
 

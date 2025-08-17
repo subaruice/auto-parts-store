@@ -2,7 +2,6 @@ import express from "express";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 import { pool } from "../db.js";
-import checkAuthJWT from "../utils/checkAuthJWT.js";
 
 const router = express.Router();
 
