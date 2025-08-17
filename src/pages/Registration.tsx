@@ -2,7 +2,7 @@ import axios from "axios";
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router";
 import Skeleton from "../components/UI/Skeleton";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { authContext } from "../AuthContext";
 
 type LoginFormValues = {
@@ -13,7 +13,7 @@ type LoginFormValues = {
 };
 
 export default function Registration() {
-    const {setUser} = useContext(authContext);
+    const { user, setUser } = useContext(authContext);
     const navigate = useNavigate();
     const {
         register,
@@ -25,14 +25,20 @@ export default function Registration() {
         mode: "onBlur",
     });
 
+    useEffect(() => {
+        if (user) {
+            navigate("/profile", {replace: true});
+        }
+    });
+
     const onSubmit = async (data: LoginFormValues) => {
         console.log("Reg data:", data);
-        try{
+        try {
             await axios.post("http://localhost:3001/registration", data, { withCredentials: true });
             setUser(data);
-            navigate('/profile')
+            navigate("/profile");
             reset();
-        }catch(err:any){
+        } catch (err: any) {
             console.error(err.response.data.message);
         }
     };

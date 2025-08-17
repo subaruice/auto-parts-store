@@ -2,8 +2,10 @@ import { ShoppingCart } from "lucide-react";
 import SearchIcon from "../../icons/search-icon.svg?react";
 import UserProfile from "../../icons/user-profile.svg?react";
 import { Link, useNavigate } from "react-router";
-import { memo, useEffect, useState } from "react";
+import { memo, useContext, useEffect, useState } from "react";
 import Notification from "../UI/Notification";
+import { authContext } from "../../AuthContext";
+import { CircleUser } from "lucide-react";
 
 interface HeaderProps {
     search: string;
@@ -11,6 +13,7 @@ interface HeaderProps {
 }
 
 const Header: React.FC<HeaderProps> = memo(({ search, setSearch }) => {
+    const { user } = useContext(authContext);
     const [productsCounter, setProductsCounter] = useState(0);
     const [showEmptyBucket, setShowEmptyBucket] = useState(false);
     const navigate = useNavigate();
@@ -65,11 +68,18 @@ const Header: React.FC<HeaderProps> = memo(({ search, setSearch }) => {
             </div>
             <div className="flex items-center">
                 <div className="h-full flex items-center px-[18px] border-x-[0.5px] border-black/30">
-                    <Link to={'/login'}>
-                        <UserProfile
-                            color="#8D99AD"
-                            className="cursor-pointer hover:stroke-gray-600 active:stroke-gray-900"
-                        />
+                    <Link to={"/login"}>
+                        {!user ? (
+                            <UserProfile
+                                color="#8D99AD"
+                                className="cursor-pointer hover:stroke-gray-600 active:stroke-gray-900"
+                            />
+                        ) : (
+                            <CircleUser
+                                color="#8D99AD"
+                                className=" w-8 h-8  cursor-pointer hover:stroke-gray-600 active:stroke-gray-900"
+                            />
+                        )}
                     </Link>
                 </div>
                 <div className="px-[18px] flex items-center">

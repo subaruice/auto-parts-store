@@ -1,13 +1,14 @@
-import { memo, useEffect, useState } from "react";
+import { memo, useContext, useEffect, useState } from "react";
 import Burger from "../../icons/burger-icon.svg?react";
 import UserProfile from "../../icons/user-profile.svg?react";
 import HeadLogo from "../../icons/logo-head.png";
-import { ShoppingCart } from "lucide-react";
+import { CircleUser, ShoppingCart } from "lucide-react";
 import SidebarMobile from "../sibebar/SidebarMobile";
 import { X } from "lucide-react";
 import { AnimatePresence, motion } from "framer-motion";
 import { Link } from "react-router";
 import Notification from "../UI/Notification";
+import { authContext } from "../../AuthContext";
 
 interface Props {
     categoryID?: string | undefined;
@@ -15,6 +16,7 @@ interface Props {
 }
 
 const HeaderMobile: React.FC<Props> = memo(({ categoryID, categories }) => {
+    const { user } = useContext(authContext);
     const [productsCounter, setProductsCounter] = useState(0);
     const [showEmptyBucket, setShowEmptyBucket] = useState(false);
     const [isSidebarOpen, setIsSidebarOpen] = useState<boolean>(false);
@@ -92,10 +94,17 @@ const HeaderMobile: React.FC<Props> = memo(({ categoryID, categories }) => {
             </Link>
             <div className="flex gap-2">
                 <Link to={"/login"}>
-                    <UserProfile
-                        stroke="#dfdfdf"
-                        className="cursor-pointer hover:stroke-gray-600 active:stroke-gray-900"
-                    />
+                    {!user ? (
+                        <UserProfile
+                            color="#dfdfdf"
+                            className="cursor-pointer hover:stroke-gray-600 active:stroke-gray-900"
+                        />
+                    ) : (
+                        <CircleUser
+                            color="#dfdfdf"
+                            className=" w-8 h-8  cursor-pointer hover:stroke-gray-600 active:stroke-gray-900"
+                        />
+                    )}
                 </Link>
                 <Link className="relative" onClick={(e) => toggleEmptyBucket(e)} to="/bucket">
                     <ShoppingCart
