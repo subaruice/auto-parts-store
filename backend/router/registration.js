@@ -2,13 +2,12 @@ import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 import { pool } from "../db.js";
 import express from "express";
-import checkAuthJWT from "../utils/checkAuthJWT.js";
 
 const router = express.Router();
 
 router.post("/registration", async (req, res) => {
     try {
-        const { login, email, password } = req.body;
+        const { login, email, password, name, surname } = req.body;
 
         if (!login || !email || !password) {
             return res.status(404).json({ message: "Заполните обязательные поля" });
@@ -19,16 +18,16 @@ router.post("/registration", async (req, res) => {
             email,
         ]);
         if (userExists.length > 0) {
-            return res.status(400).json({ message: "Пользователь уже существует" });
+            return res.status(400).json({ message: "Пользователь с таким email уже существует" });
         }
 
         const hashPass = await bcrypt.hash(password, 10);
 
         const reg_datetime = new Date();
         const [result] = await pool.query(
-            `INSERT INTO avl_customers (Login, cust_password, Email, reg_datetime)
-             VALUES (?, ?, ?, ? )`,
-            [login, hashPass, email, reg_datetime]
+            `INSERT INTO avl_customers (Login, cust_password, Email, reg_datetime, first_name, last_name)
+             VALUES (?, ?, ?, ?, ?, ?)`,
+            [login, hashPass, email, reg_datetime, name, surname]
         );
 
         const token = jwt.sign({ id: result.insertId, login, email }, process.env.JWT_SECRET_KEY, { expiresIn: "1d" });
