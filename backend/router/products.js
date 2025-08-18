@@ -67,9 +67,9 @@ router.get("/", async (req, res) => {
 
         res.set("x-total-count", count.length);
         res.json(cleanedProducts);
-    } catch {
+    } catch(err) {
         console.log("DB error");
-        res.status(500).json({ error: "db error" });
+        res.status(500).json({ error: err });
     }
 });
 

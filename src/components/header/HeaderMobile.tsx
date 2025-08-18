@@ -96,13 +96,12 @@ const HeaderMobile: React.FC<Props> = memo(({ categoryID, categories }) => {
                 <Link to={"/login"}>
                     {!user ? (
                         <UserProfile
-                            color="#dfdfdf"
-                            className="cursor-pointer hover:stroke-gray-600 active:stroke-gray-900"
+                            className="stroke-[#dfdfdf] cursor-pointer hover:stroke-gray-600 active:stroke-gray-900"
                         />
                     ) : (
                         <CircleUser
                             color="#dfdfdf"
-                            className=" w-8 h-8  cursor-pointer hover:stroke-gray-600 active:stroke-gray-900"
+                            className="w-8 h-8 cursor-pointer hover:stroke-gray-600 active:stroke-gray-900"
                         />
                     )}
                 </Link>
