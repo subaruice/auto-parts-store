@@ -2,9 +2,8 @@ import axios from "axios";
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router";
 import Skeleton from "../components/UI/Skeleton";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect } from "react";
 import { authContext } from "../AuthContext";
-import Notification from "../components/UI/Notification";
 
 type LoginFormValues = {
     email: string;

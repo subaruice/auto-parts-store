@@ -12,7 +12,7 @@ router.get("/profile", checkAuthJWT, async (req, res) => {
 
         if (user.length === 0) return res.status(403).json({ message: "Пользователь не найден" });
 
-        res.json({user:user[0]});
+        res.json(user[0]);
     } catch (err) {
         console.erroe(err);
         res.status(500).json({ message: "Ошибка сервера" });

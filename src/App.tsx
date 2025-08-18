@@ -1,4 +1,4 @@
-import { Route, Routes } from "react-router";
+import { Navigate, Route, Routes } from "react-router";
 import Homepage from "./pages/homepage/Homepage";
 import ProductList from "./components/ProductList";
 import ProductItem from "./components/productItem/ProductItem";
@@ -10,7 +10,7 @@ import Registration from "./pages/Registration";
 import ProtectedRoutes from "./components/ProtectedRoutes";
 import Profile from "./pages/profile/Profile";
 import Orders from "./pages/profile/Orders";
-import PerfosnalInfo from './pages/profile/PerfosnalInfo';
+import PerfosnalInfo from "./pages/profile/PerfosnalInfo";
 
 function App() {
     return (
@@ -24,13 +24,14 @@ function App() {
                 <Route path="contacts" element={<Contacts />} />
                 <Route path="login" element={<Login />} />
                 <Route path="registration" element={<Registration />} />
-                <Route path="*" element={<ProductList />} />
                 <Route element={<ProtectedRoutes />}>
-                    <Route path="profile/" element={<Profile/>}>
+                    <Route path="profile/" element={<Profile />}>
                         <Route index element={<PerfosnalInfo />} />
                         <Route path="orders" element={<Orders />} />
+                        <Route path="*" element={<Profile />} />
                     </Route>
                 </Route>
+                <Route path="*" element={<ProductList />} />
             </Route>
         </Routes>
     );
