@@ -186,6 +186,7 @@ export default function Registration() {
                                         return value === password || "Пароли не свпадают";
                                     },
                                 })}
+                                
                                 className="w-full px-3 py-2 border border-black/20 rounded-lg outline-none focus:ring-1 focus:ring-blue-500"
                             />
                             {errors.confirmPassword && (
