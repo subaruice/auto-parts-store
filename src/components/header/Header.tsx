@@ -75,10 +75,17 @@ const Header: React.FC<HeaderProps> = memo(({ search, setSearch }) => {
                                 className="cursor-pointer hover:stroke-gray-600 active:stroke-gray-900"
                             />
                         ) : (
-                            <CircleUser
-                                color="#8D99AD"
-                                className=" w-8 h-8  cursor-pointer hover:stroke-gray-600 active:stroke-gray-900"
-                            />
+                            <>
+                            {user.avatar_image ? (
+                                    <img src={user.avatar_image} alt="user_image" className="w-8 object-cover h-8 rounded-full"/>
+                            ) : (
+
+                                <CircleUser
+                                    color="#8D99AD"
+                                    className=" w-8 h-8  cursor-pointer hover:stroke-gray-600 active:stroke-gray-900"
+                                />
+                            )}
+                            </>
                         )}
                     </Link>
                 </div>

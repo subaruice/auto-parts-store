@@ -96,13 +96,20 @@ const HeaderMobile: React.FC<Props> = memo(({ categoryID, categories }) => {
                 <Link to={"/login"}>
                     {!user ? (
                         <UserProfile
-                            className="stroke-[#dfdfdf] cursor-pointer hover:stroke-gray-600 active:stroke-gray-900"
+                            color="#8D99AD"
+                            className="cursor-pointer hover:stroke-gray-600 active:stroke-gray-900"
                         />
                     ) : (
-                        <CircleUser
-                            color="#dfdfdf"
-                            className="w-8 h-8 cursor-pointer hover:stroke-gray-600 active:stroke-gray-900"
-                        />
+                        <>
+                            {user.avatar_image ? (
+                                <img src={user.avatar_image} alt="user_image" className="w-8 object-cover h-8 rounded-full" />
+                            ) : (
+                                <CircleUser
+                                    color="#8D99AD"
+                                    className=" w-8 h-8  cursor-pointer hover:stroke-gray-600 active:stroke-gray-900"
+                                />
+                            )}
+                        </>
                     )}
                 </Link>
                 <Link className="relative" onClick={(e) => toggleEmptyBucket(e)} to="/bucket">
