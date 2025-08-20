@@ -1,11 +1,7 @@
 import express from "express";
 import { pool } from "../db.js";
-import multer from "multer";
 
 const router = express.Router();
-
-const storage = multer.memoryStorage()
-const upload = multer({storage})
 
 router.patch("/profile/edit", async (req, res) => {
     try {
