@@ -82,6 +82,7 @@ const Homepage = () => {
         toTop.current?.scrollIntoView({ behavior: "smooth", block: "start" });
     };
 
+    
     useEffect(() => {
         console.log("useeffect initial");
         initialLoad.current = true;

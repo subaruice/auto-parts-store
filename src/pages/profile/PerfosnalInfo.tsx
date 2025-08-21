@@ -37,14 +37,30 @@ const PerfosnalInfo = () => {
         navigate("/login");
     };
 
+    const [preview, setPreview] = useState<string | null>(null);
+    const [file, setFile] = useState<FileList | null>(null);
+
+    const handleChange = (e: any) => {
+        const file = e.target.files?.[0];
+        setFile(file);
+        if (file) {
+            const reader = new FileReader();
+            reader.onloadend = () => {
+                setPreview(reader.result as string);
+            };
+            reader.readAsDataURL(file);
+        }
+    };
     const onDelete = async () => {
         const res = await axios.patch(
             "http://localhost:3001/profile/delete",
-            {customerID},
+            { customerID },
             { withCredentials: true }
         );
-        if(avatar_image) setUser((prev) => ({ ...prev, avatar_image: res.data.avatar_url }));
-        resetField('avatar_image')
+        if (avatar_image) setUser((prev) => ({ ...prev, avatar_image: res.data.avatar_url }));
+        resetField("avatar_image");
+        setFile(null)
+        setPreview(null)
     };
 
     const onSubmit = async (data: any) => {
@@ -53,10 +69,13 @@ const PerfosnalInfo = () => {
             if (key === "avatar_image" && value && (value as FileList)[0]) {
                 formData.append(key, (value as FileList)[0]);
             } else {
-                formData.append(key, value as string); 
+                formData.append(key, value as string);
             }
         });
         formData.append("id", customerID);
+        if (file) {
+            formData.append("avatar_image", (file as any));
+        }
         try {
             const res = await axios.patch("http://localhost:3001/profile/edit", formData, {
                 withCredentials: true,
@@ -64,8 +83,8 @@ const PerfosnalInfo = () => {
                     "Content-Type": "multipart/form-data",
                 },
             });
-            
-            setUser((prev) => ({ ...prev, ...data, avatar_image: res.data.avatar_url}));
+
+            setUser((prev) => ({ ...prev, ...data, avatar_image: res.data.avatar_url }));
             setIsEditing(false);
         } catch (err: any) {
             console.log(err);
@@ -74,7 +93,6 @@ const PerfosnalInfo = () => {
             }
         }
         console.log(data);
-        
     };
 
     return (
@@ -90,7 +108,7 @@ const PerfosnalInfo = () => {
                 <>
                     <div className="flex text-black/80 flex-col gap-2">
                         <img
-                            src={avatar_image ? avatar_image : "avatar.webp"}
+                            src={preview ?? avatar_image ?? "avatar.webp"}
                             className="rounded-full object-cover h-40 w-40"
                             alt="avatar"
                         />
@@ -108,7 +126,7 @@ const PerfosnalInfo = () => {
                                     {...register("avatar_image")}
                                     type="file"
                                     className="hidden"
-                                    
+                                    onChange={handleChange}
                                 />
                                 {avatar_image && (
                                     <button
