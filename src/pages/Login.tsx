@@ -28,7 +28,7 @@ const Login = () => {
 
     const onSubmit = async (data: LoginFormValues) => {
         try {
-            const res = await axios.post("http://localhost:3001/login", data, { withCredentials: true });
+            const res = await axios.post("https://backend-auto-production.up.railway.app/login", data, { withCredentials: true });
             if (res.data.user) {
                 setUser(res.data.user);
                 navigate("/profile", { replace: true });

@@ -14,7 +14,6 @@ const PerfosnalInfo = () => {
         handleSubmit,
         setValue,
         resetField,
-        watch,
         reset,
         formState: { isSubmitting, errors },
     } = useForm({
@@ -30,15 +29,14 @@ const PerfosnalInfo = () => {
     });
     const [isEditing, setIsEditing] = useState(false);
     const navigate = useNavigate();
+    const [preview, setPreview] = useState<string | null>(null);
+    const [file, setFile] = useState<FileList | null>(null);
 
     const logout = async () => {
-        await axios.post("http://localhost:3001/logout", {}, { withCredentials: true });
+        await axios.post("https://backend-auto-production.up.railway.app/logout", {}, { withCredentials: true });
         setUser(null);
         navigate("/login");
     };
-
-    const [preview, setPreview] = useState<string | null>(null);
-    const [file, setFile] = useState<FileList | null>(null);
 
     const handleChange = (e: any) => {
         const file = e.target.files?.[0];
@@ -53,14 +51,14 @@ const PerfosnalInfo = () => {
     };
     const onDelete = async () => {
         const res = await axios.patch(
-            "http://localhost:3001/profile/delete",
+            "https://backend-auto-production.up.railway.app/profile/delete",
             { customerID },
             { withCredentials: true }
         );
         if (avatar_image) setUser((prev) => ({ ...prev, avatar_image: res.data.avatar_url }));
         resetField("avatar_image");
-        setFile(null)
-        setPreview(null)
+        setFile(null);
+        setPreview(null);
     };
 
     const onSubmit = async (data: any) => {
@@ -74,10 +72,10 @@ const PerfosnalInfo = () => {
         });
         formData.append("id", customerID);
         if (file) {
-            formData.append("avatar_image", (file as any));
+            formData.append("avatar_image", file as any);
         }
         try {
-            const res = await axios.patch("http://localhost:3001/profile/edit", formData, {
+            const res = await axios.patch("https://backend-auto-production.up.railway.app/profile/edit", formData, {
                 withCredentials: true,
                 headers: {
                     "Content-Type": "multipart/form-data",

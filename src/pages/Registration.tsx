@@ -38,7 +38,7 @@ export default function Registration() {
     const onSubmit = async (data: LoginFormValues) => {
         console.log("Reg data:", data);
         try {
-            await axios.post("http://localhost:3001/registration", data, { withCredentials: true });
+            await axios.post("https://backend-auto-production.up.railway.app/registration", data, { withCredentials: true });
             setUser(data);
             navigate("/profile");
             reset();
