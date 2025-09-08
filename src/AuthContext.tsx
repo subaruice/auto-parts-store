@@ -19,7 +19,7 @@ export const AuthContextProvider: React.FC<AuthProps> = ({ children }) => {
     const [user, setUser] = useState<User | null>(null);
     const checkAuth = async () => {
         try {
-            const res = await axios.get("https://backend-auto-production.up.railway.app/profile", { withCredentials: true });
+            const res = await axios.get("http://localhost:3001/profile", { withCredentials: true });
             setUser(res.data);
         } catch (err) {
             console.log(err);

@@ -96,8 +96,8 @@ const HeaderMobile: React.FC<Props> = memo(({ categoryID, categories }) => {
                 <Link to={"/login"}>
                     {!user ? (
                         <UserProfile
-                            color="#8D99AD"
-                            className="cursor-pointer hover:stroke-gray-600 active:stroke-gray-900"
+                            color="#dfdfdf"
+                            className=" stroke-[#dfdfdf] cursor-pointer hover:stroke-gray-600 active:stroke-gray-900"
                         />
                     ) : (
                         <>
@@ -105,8 +105,8 @@ const HeaderMobile: React.FC<Props> = memo(({ categoryID, categories }) => {
                                 <img src={user.avatar_image} alt="user_image" className="w-8 object-cover h-8 rounded-full" />
                             ) : (
                                 <CircleUser
-                                    color="#8D99AD"
-                                    className=" w-8 h-8  cursor-pointer hover:stroke-gray-600 active:stroke-gray-900"
+                                    color="#dfdfdf"
+                                    className="stroke-[#dfdfdf] w-8 h-8  cursor-pointer hover:stroke-gray-600 active:stroke-gray-900"
                                 />
                             )}
                         </>

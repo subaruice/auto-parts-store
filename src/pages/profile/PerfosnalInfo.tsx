@@ -33,7 +33,7 @@ const PerfosnalInfo = () => {
     const [file, setFile] = useState<FileList | null>(null);
 
     const logout = async () => {
-        await axios.post("https://backend-auto-production.up.railway.app/logout", {}, { withCredentials: true });
+        await axios.post("http://localhost:3001/logout", {}, { withCredentials: true });
         setUser(null);
         navigate("/login");
     };
@@ -51,7 +51,7 @@ const PerfosnalInfo = () => {
     };
     const onDelete = async () => {
         const res = await axios.patch(
-            "https://backend-auto-production.up.railway.app/profile/delete",
+            "http://localhost:3001/profile/delete",
             { customerID },
             { withCredentials: true }
         );
@@ -75,7 +75,7 @@ const PerfosnalInfo = () => {
             formData.append("avatar_image", file as any);
         }
         try {
-            const res = await axios.patch("https://backend-auto-production.up.railway.app/profile/edit", formData, {
+            const res = await axios.patch("http://localhost:3001/profile/edit", formData, {
                 withCredentials: true,
                 headers: {
                     "Content-Type": "multipart/form-data",
@@ -260,19 +260,22 @@ const PerfosnalInfo = () => {
                         </div>
                         <div className="flex flex-col gap-3">
                             {isEditing && (
-                                <div className="flex gap-2">
+                                <div className="grid gap-2 grid-cols-2">
                                     <button
                                         type="submit"
-                                        className="w-full bg-blue-600  text-white py-2 px-4 rounded-lg hover:bg-blue-700 transition disabled:opacity-50"
+                                        className=" bg-blue-600  text-white py-2 px-4 rounded-lg hover:bg-blue-700 transition disabled:opacity-50"
                                     >
                                         Сохранить
                                     </button>
                                     <button
                                         onClick={() => reset()}
                                         type="button"
-                                        className="w-full bg-gray-500  text-white py-2 px-4 rounded-lg hover:bg-gray-700 transition disabled:opacity-50"
+                                        className=" bg-gray-500  text-white py-2 px-4 rounded-lg hover:bg-gray-700 transition disabled:opacity-50"
                                     >
                                         Сбросить изменения
+                                    </button>
+                                    <button type="button" className="col-span-2 bg-gray-200 text-black py-2 px-4 rounded-lg hover:bg-gray-700 transition disabled:opacity-50">
+                                        Изменить пароль
                                     </button>
                                 </div>
                             )}
@@ -280,8 +283,6 @@ const PerfosnalInfo = () => {
                                 <button
                                     type="button"
                                     onClick={() => {
-                                        console.log("редакт");
-
                                         setIsEditing(true);
                                     }}
                                     className="w-full bg-blue-600  text-white py-2 px-4 rounded-lg hover:bg-blue-700 transition disabled:opacity-50"
@@ -296,6 +297,7 @@ const PerfosnalInfo = () => {
                             >
                                 Выйти
                             </button>
+
                         </div>
                     </div>
                 </>
