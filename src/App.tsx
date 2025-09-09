@@ -11,6 +11,7 @@ import ProtectedRoutes from "./components/ProtectedRoutes";
 import Profile from "./pages/profile/Profile";
 import Orders from "./pages/profile/Orders";
 import PerfosnalInfo from "./pages/profile/PerfosnalInfo";
+import CreateOrder from "./pages/CreateOrder";
 
 function App() {
     return (
@@ -24,6 +25,7 @@ function App() {
                 <Route path="contacts" element={<Contacts />} />
                 <Route path="login" element={<Login />} />
                 <Route path="registration" element={<Registration />} />
+                <Route path="create-order" element={<CreateOrder/>}/>
                 <Route element={<ProtectedRoutes />}>
                     <Route path="profile/" element={<Profile />}>
                         <Route index element={<PerfosnalInfo />} />

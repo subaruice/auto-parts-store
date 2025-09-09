@@ -24,9 +24,9 @@ const initialState: OrderState = {
     error: null
 };
 
-export const fetchOrders = createAsyncThunk("orderSlice/fetchOrders", async (formData: Order) => {
+export const fetchOrders = createAsyncThunk<Order[], Order>("orderSlice/fetchOrders", async (formData: Order) => {
     try {
-        const res = await axios.post("http://localhost:3001/orders", formData, { withCredentials: true });
+        const res = await axios.post("http://localhost:3001/accept-order", formData, { withCredentials: true });
         return res.data;
     } catch (err) {
         console.log(err);
@@ -48,7 +48,7 @@ const orderSlice = createSlice({
         })
         builder.addCase(fetchOrders.rejected, (state, action) => {
             state.loading = false;
-            state.error = action.error.message;
+            state.error = action.error.message ?? 'Unknown error';
         })
     },
 });

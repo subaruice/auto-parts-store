@@ -102,9 +102,11 @@ const Bucket = memo(() => {
                                 <div className="text-center text-[25px] sm:text-[30px] px-1 sm:px-3 flex-1 text-black/80">
                                     {finalPrice}₴
                                 </div>
-                                <button className="self-end font-medium text-[18px] text-white rounded-xl active:bg-green-950 hover:bg-[#468153] transition-all py-4 px-6 bg-[#3fa357] w-full sm:w-50">
-                                    Оформить заказ
-                                </button>
+                                <Link to={"/create-order"}>
+                                    <button className="self-end font-medium text-[18px] text-white rounded-xl active:bg-green-950 hover:bg-[#468153] transition-all py-4 px-6 bg-[#3fa357] w-full sm:w-50">
+                                        Оформить заказ
+                                    </button>
+                                </Link>
                             </div>
                         </div>
                     </div>
