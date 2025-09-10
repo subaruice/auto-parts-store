@@ -24,9 +24,9 @@ const initialState: OrderState = {
     error: null
 };
 
-export const fetchOrders = createAsyncThunk<Order[], Order>("orderSlice/fetchOrders", async (formData: Order) => {
+export const fetchOrders = createAsyncThunk<Order[], Order>("orderSlice/fetchOrders", async () => {
     try {
-        const res = await axios.post("http://localhost:3001/accept-order", formData, { withCredentials: true });
+        const res = await axios.get("http://localhost:3001/orders", { withCredentials: true });
         return res.data;
     } catch (err) {
         console.log(err);
