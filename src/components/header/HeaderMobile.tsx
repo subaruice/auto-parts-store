@@ -34,7 +34,7 @@ const HeaderMobile: React.FC<Props> = memo(({ categoryID, categories }) => {
         window.addEventListener("customEvent", handleCouter);
         handleCouter();
         return () => window.removeEventListener("customEvent", handleCouter);
-    }, []);
+    }, [location.pathname]);
 
     const toggleEmptyBucket = (e: any) => {
         setIsSidebarOpen(false);

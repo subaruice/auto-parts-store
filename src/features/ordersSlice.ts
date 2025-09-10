@@ -1,7 +1,8 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
-type Order = {
+export type Order = {
+    id?: number | string;
     customerID: null | number;
     first_name: string;
     last_name: string;
@@ -24,7 +25,7 @@ const initialState: OrderState = {
     error: null
 };
 
-export const fetchOrders = createAsyncThunk<Order[], Order>("orderSlice/fetchOrders", async () => {
+export const fetchOrders = createAsyncThunk<Order[]>("orderSlice/fetchOrders", async () => {
     try {
         const res = await axios.get("http://localhost:3001/orders", { withCredentials: true });
         return res.data;

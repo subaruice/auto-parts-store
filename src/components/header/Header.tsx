@@ -31,7 +31,7 @@ const Header: React.FC<HeaderProps> = memo(({ search, setSearch }) => {
         window.addEventListener("customEvent", handleCouter);
         handleCouter();
         return () => window.removeEventListener("customEvent", handleCouter);
-    }, []);
+    }, [location.pathname]);
 
     const toggleEmptyBucket = (e: any) => {
         const existing = JSON.parse(localStorage.getItem("products") || "[]");

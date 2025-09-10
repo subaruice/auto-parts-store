@@ -2,6 +2,7 @@ import { useContext } from "react";
 import { useForm } from "react-hook-form";
 import { authContext } from "../AuthContext";
 import axios from "axios";
+import { useNavigate } from "react-router";
 
 type OrderFormValues = {
     first_name: string;
@@ -19,6 +20,12 @@ type FormValues = Omit<OrderFormValues, "customerID" | "productID">;
 const CreateOrder = () => {
     const { user } = useContext(authContext);
     const products = JSON.parse(localStorage.getItem("products") || "");
+    const navigate = useNavigate();
+
+    const sortedProducts = products.map((p: any) => ({
+        productID: p.productID,
+        quantity: p.quantity,
+    }));
 
     const {
         register,
@@ -33,21 +40,18 @@ const CreateOrder = () => {
     const onSubmit = async (data: FormValues) => {
         const payload: OrderFormValues = {
             ...data,
-            productID: products,
+            productID: sortedProducts,
             customerID: user?.customerID || "",
         };
         const res = await axios.post("http://localhost:3001/accept-order", payload, { withCredentials: true });
+        console.log(res.data.message);
+        localStorage.removeItem("products");
+        navigate("/");
     };
 
     return (
         <div className="p-2 md:p-5 text-black/80">
-            <form
-                onSubmit={(e) => {
-                    e.preventDefault();
-                    handleSubmit(onSubmit);
-                }}
-                className="p-2 md:p-5 bg-white rounded-xl flex flex-col gap-3"
-            >
+            <form onSubmit={handleSubmit(onSubmit)} className="p-2 md:p-5 bg-white rounded-xl flex flex-col gap-3">
                 <h3 className=" text-center font-semibold text-[18px] mb-3 md:mb-5">Оформление заказа</h3>
                 <div className="flex gap-2">
                     <div>
@@ -118,10 +122,6 @@ const CreateOrder = () => {
                         className="w-full px-3 py-2 border border-black/20 rounded-lg outline-none focus:ring-1 focus:ring-blue-500"
                         {...register("newPost_office", {
                             required: "Введите номер отделения",
-                            minLength: {
-                                value: 2,
-                                message: "Слишком мало букв",
-                            },
                         })}
                         onChange={(e) => {
                             const filtered = e.target.value.replace(/[^0-9]/g, "");
