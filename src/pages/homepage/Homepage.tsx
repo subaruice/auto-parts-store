@@ -21,6 +21,7 @@ const Homepage = () => {
     const offset = useRef(0);
     const [items, setItems] = useState<Item[]>([]);
     const [search, setSearch] = useState<string>("");
+    const [debounceSearch, setDebounceSearch] = useState<string>(search);
     const [categories, setCategories] = useState([]);
     const observerRef = useRef(null);
     const initialLoad = useRef(true);
@@ -82,6 +83,13 @@ const Homepage = () => {
         toTop.current?.scrollIntoView({ behavior: "smooth", block: "start" });
     };
 
+    useEffect(() => {
+        const timerId = setTimeout(() => {
+            setDebounceSearch(search)
+        }, 1000);
+
+        return () => clearTimeout(timerId)
+    }, [search])
     
     useEffect(() => {
         console.log("useeffect initial");
@@ -112,7 +120,7 @@ const Homepage = () => {
     }, []);
 
     const filteredItems = useMemo(() => {
-        const key = search.toLowerCase();
+        const key = debounceSearch.toLowerCase();
         if (location.pathname === "/") {
             return items.filter((item) => {
                 return (
@@ -133,7 +141,7 @@ const Homepage = () => {
                 );
             });
         }
-    }, [search, items]);
+    }, [debounceSearch, items]);
     const contextValue = useMemo(
         () => ({ product, filteredItems, categories, isLoading }),
         [product, filteredItems, categories, isLoading]

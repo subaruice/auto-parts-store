@@ -10,7 +10,7 @@ export type Order = {
     newPost_office: null | number;
     phone_number: null | number;
     payment_method: string;
-    productID: number[];
+    productID: any[];
 };
 
 type OrderState = {
@@ -25,7 +25,7 @@ const initialState: OrderState = {
     error: null
 };
 
-export const fetchOrders = createAsyncThunk<Order[]>("orderSlice/fetchOrders", async () => {
+export const fetchOrders = createAsyncThunk<Order[]>("orderSlice/fetchOrders", async() => {
     try {
         const res = await axios.get("http://localhost:3001/orders", { withCredentials: true });
         return res.data;

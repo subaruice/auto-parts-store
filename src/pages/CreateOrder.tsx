@@ -27,10 +27,12 @@ const CreateOrder = () => {
         quantity: p.quantity,
     }));
 
+    const sum =  products.reduce((acc: number, product: any) => acc + product.Price, 0)
+
     const {
         register,
         handleSubmit,
-        getValues,
+        
         setValue,
         formState: { errors, isSubmitting },
     } = useForm<FormValues>({
@@ -188,6 +190,10 @@ const CreateOrder = () => {
                                 <span className="text-black/40">{` x${p.quantity}`}</span>
                             </div>
                         ))}
+                </div>
+                <div className="font-medium text-[15px]">
+                    На сумму: <span className="font-normal">{sum}₴</span>
+                    
                 </div>
                 <button type="submit" className="mb-4 max-w-50 px-3 py-2 bg-green-500 rounded-lg text-white ">
                     Отправить заказ
