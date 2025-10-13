@@ -12,10 +12,17 @@ import Profile from "./pages/profile/Profile";
 import Orders from "./pages/profile/Orders";
 import PerfosnalInfo from "./pages/profile/PerfosnalInfo";
 import CreateOrder from "./pages/CreateOrder";
+import Admin from "./admin/Admin";
+import Products from "./admin/pages/Products";
+import Users from "./admin/pages/Users";
 
 function App() {
     return (
         <Routes>
+            <Route path="/admin/" element={<Admin/>}>
+                <Route  path="products" element={<Products/>}/>
+                <Route path="users" element={<Users/>}/>
+            </Route>
             <Route path="/" element={<Homepage />}>
                 <Route index element={<ProductList />} />
                 <Route path="category/:categoryID" element={<ProductList />} />

@@ -14,7 +14,7 @@ export default class PostService {
         const response = await axios.get("http://localhost:3001/api/category/");
         return response;
     }
-    static async getCategoryByProduct(id: string, limit?: number, offset?: number) {
+    static async getCategoryByProduct(id: number, limit?: number, offset?: number) {
         const response = await axios.get(`http://localhost:3001/api/products/category/${id}`, {
             params: {
                 limit: limit || 20,

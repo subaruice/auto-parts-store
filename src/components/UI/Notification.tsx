@@ -12,7 +12,7 @@ const Notification: React.FC<BucketProps> = memo(({ show, children }) => {
         setIsVisible(true)
         setTimeout(() => {
             setIsVisible(false)
-        }, 2000);
+        }, 2500);
     }, [show])
 
     return (

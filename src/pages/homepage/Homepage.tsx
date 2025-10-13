@@ -41,7 +41,7 @@ const Homepage = () => {
         }
 
         if (categoryID) {
-            const resProductByCategory = await PostService.getCategoryByProduct(categoryID, limit, offset.current);
+            const resProductByCategory = await PostService.getCategoryByProduct(Number(categoryID), limit, offset.current);
             setItems((prev) =>
                 initialLoad.current ? resProductByCategory.data : [...prev, ...resProductByCategory.data]
             );
