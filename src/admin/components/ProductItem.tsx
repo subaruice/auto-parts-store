@@ -6,7 +6,7 @@ import Notification from "../../components/UI/Notification";
 import axios from "axios";
 import { useDispatch } from "react-redux";
 import type { AppDispatch } from "../../app/store";
-import { updateProduct } from "../../features/adminSlice";
+import { deleteProductById, updateProduct } from "../../features/adminSlice";
 
 interface Props {
     product: Product | undefined;
@@ -14,7 +14,7 @@ interface Props {
 
 const ProductItem: React.FC<Props> = memo(({ product }) => {
     const { productID, name, description, list_price, Price, product_code, in_stock } = product || {};
-    const [showNotification, setShowNotification] = useState(false); 
+    const [showNotification, setShowNotification] = useState(false);
     const {
         handleSubmit,
         setValue,
@@ -44,16 +44,20 @@ const ProductItem: React.FC<Props> = memo(({ product }) => {
             });
             console.log(res.data);
             // if (res.data.message && res.data.message !== "Ничего не обновлено" && notMessage !== '') {
-                setNotMessage(res.data.message);
-                setShowNotification(true);
-                setTimeout(() => {
-                    setShowNotification(false);
-                }, 2500);
+            setNotMessage(res.data.message);
+            setShowNotification(true);
+            setTimeout(() => {
+                setShowNotification(false);
+            }, 2500);
             // }
             dispatch(updateProduct(updated));
         } catch (err) {
             console.log(err);
         }
+    };
+
+    const onDelete = (id: number) => {
+        dispatch(deleteProductById(id));
     };
 
     return (
@@ -249,7 +253,10 @@ const ProductItem: React.FC<Props> = memo(({ product }) => {
                                     Редактировать
                                 </div>
                                 <div
-                                    onClick={() => setIsEditing(true)}
+                                    onClick={() => {
+                                        productID && onDelete(productID);
+                                        setIsEditing(true);
+                                    }}
                                     className="text-white text-center bg-red-500 rounded-lg p-2 hover:bg-red-600"
                                 >
                                     Удалить

@@ -8,6 +8,7 @@ import { ChevronDown, ChevronUp } from "lucide-react";
 import Skeleton from "../../components/UI/Skeleton";
 import PostService from "./../../API/PostService";
 import ProductItem from "../components/ProductItem";
+import AddProduct from "../components/AddProduct";
 
 const Products: React.FC = memo(() => {
     const dispatch = useDispatch<AppDispatch>();
@@ -18,6 +19,7 @@ const Products: React.FC = memo(() => {
     const [selectedCat, setIsSelectedCat] = useState("Все");
     const [categoryId, setCategoryId] = useState<number>();
     const [selectedProductId, setSelectedProductId] = useState<number>();
+    const [showAddComponent, setShowAddComponent] = useState(false);
     const fetchCategory = async (id: number) => {
         try {
             const res = await PostService.getCategoryByProduct(id, 999);
@@ -27,11 +29,11 @@ const Products: React.FC = memo(() => {
         }
     };
 
-    console.log('render');
-    
+    console.log("render");
+
     const product = useMemo(() => {
-       return products.find((p) => p.productID === selectedProductId)
-    }, [selectedProductId])
+        return products.find((p) => p.productID === selectedProductId);
+    }, [selectedProductId]);
 
     useEffect(() => {
         dispatch(fetchProducts());
@@ -48,9 +50,16 @@ const Products: React.FC = memo(() => {
         <div className="p-4 w-full">
             <div className="flex justify-between text-white items-center mb-4">
                 <h2 className="text-xl font-bold">Продукты</h2>
-                <button className="self-end bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">
-                    + Добавить продукт
-                </button>
+                {showAddComponent ? (
+                    <AddProduct setModal={setShowAddComponent} />
+                ) : (
+                    <button
+                        onClick={() => setShowAddComponent(true)}
+                        className="self-end bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600"
+                    >
+                        + Добавить продукт
+                    </button>
+                )}
             </div>
             {loading ? (
                 <Skeleton />
@@ -98,38 +107,34 @@ const Products: React.FC = memo(() => {
                                 key={p.productID}
                                 className="cursor-pointer hover:outline-4 hover:outline-blue-500 p-2 rounded-xl bg-white"
                             >
-                                    {p.productID === selectedProductId ? (
-                                        <ProductItem product={product} />
-                                    ) : (
-                                        <div
-                                            
-                                            className="flex gap-5"
-                                        >
-                                            <img
-                                                src={`https://milotec.com.ua/pictures/${p.pictures[1]?.enlarged || p.pictures[1]?.thumbnail || p.pictures[1]?.filename || p.pictures[0].enlarged || p.pictures[0].thumbnail || p.pictures[0].filename}`}
-                                                alt="no image"
-                                                className="w-25 rounded-lg"
-                                            />
-                                            <div>
-                                                <h3 className="font-bold">{p.name}</h3>
-                                                <p>
-                                                    Код: <span className="text-black/60">{p.product_code}</span>
-                                                </p>
-                                                <p>
-                                                    Цена: <span className="font-medium">{p.Price} ₴</span>
-                                                </p>
-                                                <p>
-                                                    В наличии:{" "}
-                                                    <span
-                                                        className={`${p.in_stock > 0 ? "text-green-600" : "text-red-700"} font-medium `}
-                                                    >
-                                                        {p.in_stock}
-                                                    </span>
-                                                </p>
-                                            </div>
+                                {p.productID === selectedProductId ? (
+                                    <ProductItem product={product} />
+                                ) : (
+                                    <div className="flex gap-5">
+                                        <img
+                                            src={`https://milotec.com.ua/pictures/${p.pictures[1]?.enlarged || p.pictures[1]?.thumbnail || p.pictures[1]?.filename || p.pictures[0].enlarged || p.pictures[0].thumbnail || p.pictures[0].filename}`}
+                                            alt="no image"
+                                            className="w-25 rounded-lg"
+                                        />
+                                        <div>
+                                            <h3 className="font-bold">{p.name}</h3>
+                                            <p>
+                                                Код: <span className="text-black/60">{p.product_code}</span>
+                                            </p>
+                                            <p>
+                                                Цена: <span className="font-medium">{p.Price} ₴</span>
+                                            </p>
+                                            <p>
+                                                В наличии:{" "}
+                                                <span
+                                                    className={`${p.in_stock > 0 ? "text-green-600" : "text-red-700"} font-medium `}
+                                                >
+                                                    {p.in_stock}
+                                                </span>
+                                            </p>
                                         </div>
-                                    )}
-                                
+                                    </div>
+                                )}
                             </div>
                         ))}
                     </div>

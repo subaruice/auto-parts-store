@@ -1,4 +1,4 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice, type PayloadAction } from "@reduxjs/toolkit";
 import PostService from "./../API/PostService";
 import type { Product } from "./../types/product";
 import type { Category } from "../types/category";
@@ -16,6 +16,29 @@ const initialState: InitialState = {
     products: [],
     categories: [],
 };
+
+export const deleteProductById = createAsyncThunk(
+    "adminSlice/deleteProductById",
+    async (id: number, { rejectWithValue }) => {
+        try {
+            const res = await PostService.deleteProductById(id);
+            return res.data;
+        } catch (err: any) {
+            console.log(err);
+            return rejectWithValue(err.response?.data || "Ошибка запроса");
+        }
+    }
+);
+
+export const addNewProduct = createAsyncThunk("adminSlice/addNewProduct", async (data, { rejectWithValue }) => {
+    try {
+        const res = await PostService.addNewProduct(data);
+        return res.data;
+    } catch (err: any) {
+        console.log(err);
+        return rejectWithValue(err.response?.data || "Ошибка запроса");
+    }
+});
 
 export const fetchProducts = createAsyncThunk("adminSlice/fetchProducts", async (_, { rejectWithValue }) => {
     try {
@@ -44,8 +67,8 @@ const adminSlice = createSlice({
         updateProduct: (state, action) => {
             const updated = action.payload;
             const id = state.products.findIndex((p) => p.productID === updated.productID);
-            if(id !== -1){
-                state.products[id] = {...state.products[id], ...updated}
+            if (id !== -1) {
+                state.products[id] = { ...state.products[id], ...updated };
             }
         },
         changeByCategoryProduct: (state, action) => {
@@ -68,6 +91,12 @@ const adminSlice = createSlice({
         });
         builder.addCase(fetchCategories.fulfilled, (state, action) => {
             state.categories = action.payload;
+        });
+        builder.addCase(deleteProductById.fulfilled, (state, action) => {
+            state.products = state.products.filter((p) => p.productID !== action.payload);
+        });
+        builder.addCase(addNewProduct.fulfilled, (state, action) => {
+            state.products = [...state.products, action.payload];
         });
     },
 });
