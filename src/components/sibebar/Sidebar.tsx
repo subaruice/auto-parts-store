@@ -87,7 +87,7 @@ const Sidebar: React.FC<CategoriesProp> = memo(({ categories, categoryID }) => {
                                     <AnimatePresence>
                                         {activeCategoryId === cat.categoryID && cat.subcategories.length > 0 && (
                                             <motion.div
-                                                className="ml-4 flex flex-col gap-2 text-[16px] mt-2 text-gray-300"
+                                                className="ml-4 flex flex-col gap-2 text-[16px] overflow-hidden mt-2 text-gray-300"
                                                 initial={{ height: 0, opacity: 0 }}
                                                 animate={{ height: "auto", opacity: 1 }}
                                                 exit={{ height: 0, opacity: 0 }}

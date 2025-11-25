@@ -19,9 +19,10 @@ import Users from "./admin/pages/Users";
 function App() {
     return (
         <Routes>
-            <Route path="/admin/" element={<Admin/>}>
-                <Route  path="products" element={<Products/>}/>
-                <Route path="users" element={<Users/>}/>
+            <Route path="/admin/" element={<ProtectedRoutes />}>
+                <Route index element={<Products />} />
+                <Route path="products" element={<Products />} />
+                <Route path="users" element={<Users />} />
             </Route>
             <Route path="/" element={<Homepage />}>
                 <Route index element={<ProductList />} />
@@ -32,7 +33,7 @@ function App() {
                 <Route path="contacts" element={<Contacts />} />
                 <Route path="login" element={<Login />} />
                 <Route path="registration" element={<Registration />} />
-                <Route path="create-order" element={<CreateOrder/>}/>
+                <Route path="create-order" element={<CreateOrder />} />
                 <Route element={<ProtectedRoutes />}>
                     <Route path="profile/" element={<Profile />}>
                         <Route index element={<PerfosnalInfo />} />
