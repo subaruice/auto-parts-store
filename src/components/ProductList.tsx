@@ -80,7 +80,7 @@ const ProductList = memo(() => {
         <div className="flex flex-col gap-4 px-4 py-4">
             {(category || location.pathname === '/catalog') && (
                 <div className="rounded-lg relative sm:flex-row flex-col gap-2 items-center flex px-3 py-2 sm:py-1 bg-white justify-between w-full">
-                    <div className="grow font-medium text-[22px] text-black/70">{category.name}</div>
+                    <div className="grow font-medium text-[22px] text-black/70">{category?.name ?? 'Каталог'}</div>
                     <div className="flex gap-2 items-center justify-center">
                         <input
                             type="checkbox"

@@ -34,7 +34,7 @@ const HeaderMobile: React.FC<Props> = memo(({ categoryID, categories }) => {
         window.addEventListener("customEvent", handleCouter);
         handleCouter();
         return () => window.removeEventListener("customEvent", handleCouter);
-    }, []);
+    }, [location.pathname]);
 
     const toggleEmptyBucket = (e: any) => {
         setIsSidebarOpen(false);
@@ -78,10 +78,10 @@ const HeaderMobile: React.FC<Props> = memo(({ categoryID, categories }) => {
 
                 {isSidebarOpen && (
                     <motion.div
-                        initial={{ scaleX: 0, transformOrigin: "left" }}
-                        animate={{ scaleX: 1 }}
-                        exit={{ scaleX: 0 }}
-                        transition={{ duration: 0.1 }}
+                        initial={{ x: -100, opacity: 0,transformOrigin: "left" }}
+                        animate={{ x: 0 , opacity: 1}}
+                        exit={{ x: -100, opacity: 0 }}
+                        transition={{ duration: 0.2 }}
                         onClick={toggleSidebar}
                         className="z-50 overflow-auto fixed top-16 bottom-0 right-0 left-0"
                     >
@@ -93,11 +93,11 @@ const HeaderMobile: React.FC<Props> = memo(({ categoryID, categories }) => {
                 <img src={HeadLogo} className="cursor-pointer h-10" alt="Header Logo" />
             </Link>
             <div className="flex gap-2">
-                <Link to={"/login"}>
+                <Link to={"/profile"}>
                     {!user ? (
                         <UserProfile
-                            color="#8D99AD"
-                            className="cursor-pointer hover:stroke-gray-600 active:stroke-gray-900"
+                            color="#dfdfdf"
+                            className=" stroke-[#dfdfdf] cursor-pointer hover:stroke-gray-600 active:stroke-gray-900"
                         />
                     ) : (
                         <>
@@ -105,8 +105,8 @@ const HeaderMobile: React.FC<Props> = memo(({ categoryID, categories }) => {
                                 <img src={user.avatar_image} alt="user_image" className="w-8 object-cover h-8 rounded-full" />
                             ) : (
                                 <CircleUser
-                                    color="#8D99AD"
-                                    className=" w-8 h-8  cursor-pointer hover:stroke-gray-600 active:stroke-gray-900"
+                                    color="#dfdfdf"
+                                    className="stroke-[#dfdfdf] w-8 h-8  cursor-pointer hover:stroke-gray-600 active:stroke-gray-900"
                                 />
                             )}
                         </>

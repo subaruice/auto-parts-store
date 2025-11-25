@@ -9,6 +9,9 @@ import login from "./router/login.js";
 import cookieParser from "cookie-parser";
 import profile from "./router/profile.js";
 import updateUserInfo from "./router/updateUserInfo.js";
+import acceptOrder from "./router/acceptOrder.js";
+import orders from "./router/orders.js";
+import updateProduct from "./router/updateProduct.js";
 
 const app = express();
 const PORT = 3001;
@@ -31,6 +34,9 @@ app.use("/", login);
 app.use("/", profile);
 app.use("/", logout);
 app.use("/", updateUserInfo);
+app.use("/", acceptOrder);
+app.use("/", orders);
+app.use("/", updateProduct);
 
 app.listen(PORT, () => {
     console.log(`✅ Server running on http://localhost:${PORT}`);

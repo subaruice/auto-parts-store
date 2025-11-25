@@ -29,8 +29,6 @@ body {
 textarea,
 select {
     font: inherit;
-    border: none;
-    outline: none;
 }
 
 a {

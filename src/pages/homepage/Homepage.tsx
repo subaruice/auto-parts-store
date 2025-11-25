@@ -1,6 +1,6 @@
 import Header from "../../components/header/Header";
 import PostService from "../../API/PostService";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState, useTransition } from "react";
 // @ts-ignore
 import { useFetching } from "../../hooks/useFetching";
 import Skeleton from "../../components/UI/Skeleton";
@@ -16,62 +16,34 @@ interface Item {
 const Homepage = () => {
     const { categoryID, productID, cat } = useParams();
     const [product, setProduct] = useState<Item>({});
-    const [hasMore, setHasMore] = useState(true);
     const limit = 2000;
-    const offset = useRef(0);
     const [items, setItems] = useState<Item[]>([]);
     const [search, setSearch] = useState<string>("");
+    const [debounceSearch, setDebounceSearch] = useState<string>(search);
     const [categories, setCategories] = useState([]);
-    const observerRef = useRef(null);
-    const initialLoad = useRef(true);
     const isMobile = window.innerWidth < 1024;
-
+    const [isPending, startTransition] = useTransition();
     const [fetchItems, isLoading, onError] = useFetching(async () => {
         if (location.pathname !== "/catalog") {
             setSearch("");
         }
-        console.log("fetch");
-        if (!categoryID && !productID && location.pathname !== "/" && location.pathname !== '/catalog') return;
-
-        if (initialLoad.current) {
-            setItems([]);
-            offset.current = 0;
-            setHasMore(true);
-        }
+        if (!categoryID && !productID && location.pathname !== "/" && location.pathname !== "/catalog") return;
 
         if (categoryID) {
-            const resProductByCategory = await PostService.getCategoryByProduct(categoryID, limit, offset.current);
-            setItems((prev) =>
-                initialLoad.current ? resProductByCategory.data : [...prev, ...resProductByCategory.data]
-            );
-            offset.current += limit;
-            if (offset.current >= resProductByCategory.headers["x-total-count"]) {
-                setHasMore(false);
-            }
-            initialLoad.current = false;
+            const resProductByCategory = await PostService.getCategoryByProduct(Number(categoryID), limit);
+            setItems(resProductByCategory.data);
         } else if (productID) {
             const resProduct = await PostService.getProductByID(productID);
             setProduct(resProduct.data);
             return;
         } else if (location.pathname === "/") {
-            const resItems = await PostService.getAllSaleProducts(20, offset.current);
-            setItems((prev) => (initialLoad.current ? resItems.data : [...prev, ...resItems.data]));
-            offset.current += 20;
-            if (offset.current >= resItems.headers["x-total-count"]) {
-                setHasMore(false);
-            }
-            initialLoad.current = false;
+            const resItems = await PostService.getAllSaleProducts(limit);
+            setItems(resItems.data);
         } else if (location.pathname === "/catalog") {
-            const resItems = await PostService.getAllProducts(limit, offset.current);
-            setItems((prev) => (initialLoad.current ? resItems.data : [...prev, ...resItems.data]));
-            offset.current += limit;
-            if (offset.current >= resItems.headers["x-total-count"]) {
-                setHasMore(false);
-            }
-            initialLoad.current = false;
+            const resItems = await PostService.getAllProducts(limit);
+            setItems(resItems.data);
         }
     });
-
     const location = useLocation();
     const toTop = useRef<HTMLDivElement>(null);
     const [fetchCategories] = useFetching(async () => {
@@ -82,37 +54,26 @@ const Homepage = () => {
         toTop.current?.scrollIntoView({ behavior: "smooth", block: "start" });
     };
 
-    
     useEffect(() => {
-        console.log("useeffect initial");
-        initialLoad.current = true;
-        setHasMore(true);
+        const timerId = setTimeout(() => {
+            startTransition(() => {
+                setDebounceSearch(search);
+            });
+        }, 300);
+        return () => clearTimeout(timerId);
+    }, [search]);
+
+    useEffect(() => {
         fetchItems();
         scrollToTop();
     }, [categoryID, productID, location.pathname]);
-
-    useEffect(() => {
-        if (!observerRef.current) return;
-        const observer = new IntersectionObserver(([entry]) => {
-            if (entry.isIntersecting && hasMore && !isLoading && !initialLoad.current && !onError) {
-                console.log("useeffect observer");
-                fetchItems();
-            }
-        });
-        if (observerRef.current) {
-            observer.observe(observerRef.current);
-        }
-        return () => {
-            if (observerRef.current) observer.unobserve(observerRef.current);
-        };
-    }, [hasMore, isLoading]);
 
     useEffect(() => {
         fetchCategories();
     }, []);
 
     const filteredItems = useMemo(() => {
-        const key = search.toLowerCase();
+        const key = debounceSearch.toLowerCase();
         if (location.pathname === "/") {
             return items.filter((item) => {
                 return (
@@ -133,7 +94,7 @@ const Homepage = () => {
                 );
             });
         }
-    }, [search, items]);
+    }, [debounceSearch, items]);
     const contextValue = useMemo(
         () => ({ product, filteredItems, categories, isLoading }),
         [product, filteredItems, categories, isLoading]
@@ -152,10 +113,11 @@ const Homepage = () => {
                     <Skeleton />
                 ) : onError ? (
                     <div className="text-gray-700 mt-10 text-[30px] text-center">Нет товаров в данной категории</div>
+                ) : isPending ? (
+                    <Skeleton />
                 ) : (
                     <Outlet context={contextValue} />
                 )}
-                {(location.pathname === "/" || location.pathname === '/catalog') && <div className="h-[1px]" ref={observerRef}></div>}
             </div>
         </div>
     );

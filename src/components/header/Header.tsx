@@ -31,7 +31,7 @@ const Header: React.FC<HeaderProps> = memo(({ search, setSearch }) => {
         window.addEventListener("customEvent", handleCouter);
         handleCouter();
         return () => window.removeEventListener("customEvent", handleCouter);
-    }, []);
+    }, [location.pathname]);
 
     const toggleEmptyBucket = (e: any) => {
         const existing = JSON.parse(localStorage.getItem("products") || "[]");
@@ -68,7 +68,7 @@ const Header: React.FC<HeaderProps> = memo(({ search, setSearch }) => {
             </div>
             <div className="flex items-center">
                 <div className="h-full flex items-center px-[18px] border-x-[0.5px] border-black/30">
-                    <Link to={"/login"}>
+                    <Link to={"/profile"}>
                         {!user ? (
                             <UserProfile
                                 color="#8D99AD"
