@@ -1,9 +1,8 @@
-import type { FC, SetStateAction, Dispatch } from "react";
+import type { Dispatch, FC, SetStateAction } from "react";
 import { useForm } from "react-hook-form";
+import { useDispatch } from "react-redux";
+import type { AppDispatch } from "../../app/store";
 import { addNewProduct } from "../../features/adminSlice";
-import { useDispatch, useSelector } from "react-redux";
-import type { AppDispatch, RootState } from "../../app/store";
-import type { Product } from "../../types/product";
 
 interface Props {
     setModal: Dispatch<SetStateAction<boolean>>;
@@ -13,12 +12,11 @@ const AddProduct: FC<Props> = ({ setModal }) => {
     const {
         register,
         handleSubmit,
-        reset,
+        
         setValue,
-        formState: { errors, isSubmitting },
+        formState: { errors },
     } = useForm({ mode: "onBlur" });
     const dispatch = useDispatch<AppDispatch>();
-    const products = useSelector<RootState, Product[]>((state) => state.admin.products)
 
     const onSubmit = (data: any) => {
         dispatch(addNewProduct(data));

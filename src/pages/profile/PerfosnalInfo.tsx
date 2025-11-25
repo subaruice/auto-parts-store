@@ -33,7 +33,7 @@ const PerfosnalInfo = () => {
     const [file, setFile] = useState<FileList | null>(null);
 
     const logout = async () => {
-        await axios.post("http://localhost:3001/logout", {}, { withCredentials: true });
+        await axios.post(`${import.meta.env.VITE_BASE_URL_DEV}/logout`, {}, { withCredentials: true });
         setUser(null);
         navigate("/login");
     };

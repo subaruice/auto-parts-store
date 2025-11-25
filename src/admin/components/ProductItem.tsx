@@ -39,7 +39,7 @@ const ProductItem: React.FC<Props> = memo(({ product }) => {
     const onSubmit = async (data: any) => {
         const updated = { ...data, productID };
         try {
-            const res = await axios.patch("http://localhost:3001/admin/patch-product", updated, {
+            const res = await axios.patch(`${import.meta.env.VITE_BASE_URL_DEV}/admin/patch-product`, updated, {
                 withCredentials: true,
             });
             console.log(res.data);

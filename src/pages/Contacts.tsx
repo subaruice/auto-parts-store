@@ -26,7 +26,7 @@ const Contacts = () => {
             setTimeout(() => {
                 setIsShowMessage(false);
             }, 2500);
-            await axios.post("http://localhost:3001/feedback", data);
+            await axios.post(`${import.meta.env.VITE_BASE_URL_DEV}/feedback`, data);
         } catch (err) {
             console.log(err);
         } finally {

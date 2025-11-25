@@ -1,4 +1,4 @@
-import { createAsyncThunk, createSlice, type PayloadAction } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import PostService from "./../API/PostService";
 import type { Product } from "./../types/product";
 import type { Category } from "../types/category";

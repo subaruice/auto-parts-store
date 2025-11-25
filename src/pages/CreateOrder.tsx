@@ -1,8 +1,8 @@
+import axios from "axios";
 import { useContext } from "react";
 import { useForm } from "react-hook-form";
-import { authContext } from "../AuthContext";
-import axios from "axios";
 import { useNavigate } from "react-router";
+import { authContext } from "../AuthContext";
 
 type OrderFormValues = {
     first_name: string;
@@ -34,7 +34,7 @@ const CreateOrder = () => {
         handleSubmit,
         
         setValue,
-        formState: { errors, isSubmitting },
+        formState: { errors },
     } = useForm<FormValues>({
         mode: "onBlur",
     });
@@ -45,7 +45,7 @@ const CreateOrder = () => {
             productID: sortedProducts,
             customerID: user?.customerID || "",
         };
-        const res = await axios.post("http://localhost:3001/accept-order", payload, { withCredentials: true });
+        const res = await axios.post(`${import.meta.env.VITE_BASE_URL_DEV}/accept-order`, payload, { withCredentials: true });
         console.log(res.data.message);
         localStorage.removeItem("products");
         navigate("/");

@@ -27,7 +27,7 @@ const initialState: OrderState = {
 
 export const fetchOrders = createAsyncThunk<Order[]>("orderSlice/fetchOrders", async() => {
     try {
-        const res = await axios.get("http://localhost:3001/orders", { withCredentials: true });
+        const res = await axios.get(`${import.meta.env.VITE_BASE_URL_DEV}/orders`, { withCredentials: true });
         return res.data;
     } catch (err) {
         console.log(err);
