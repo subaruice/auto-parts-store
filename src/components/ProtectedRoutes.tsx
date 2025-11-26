@@ -6,7 +6,9 @@ import Skeleton from "./UI/Skeleton";
 const ProtectedRoutes = () => {
     const { user } = useContext(authContext);
 
-    if(user === null) return <Skeleton/>
+    if(user === null) {
+      <Skeleton/>  
+    } 
 
     if (!user) {
         return <Navigate to={"/login"} replace />;

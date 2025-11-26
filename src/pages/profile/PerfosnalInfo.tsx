@@ -51,7 +51,7 @@ const PerfosnalInfo = () => {
     };
     const onDelete = async () => {
         const res = await axios.patch(
-            "http://localhost:3001/profile/delete",
+            `${import.meta.env.VITE_BASE_URL_DEV}/profile/delete`,
             { customerID },
             { withCredentials: true }
         );
@@ -75,7 +75,7 @@ const PerfosnalInfo = () => {
             formData.append("avatar_image", file as any);
         }
         try {
-            const res = await axios.patch("http://localhost:3001/profile/edit", formData, {
+            const res = await axios.patch(`${import.meta.env.VITE_BASE_DEV_URL}/profile/edit`, formData, {
                 withCredentials: true,
                 headers: {
                     "Content-Type": "multipart/form-data",

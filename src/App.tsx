@@ -20,7 +20,7 @@ function App() {
     return (
         <Routes>
             <Route path="/admin/" element={<ProtectedRoutes />}>
-                <Route index element={<Products />} />
+                <Route index element={<Admin />} />
                 <Route path="products" element={<Products />} />
                 <Route path="users" element={<Users />} />
             </Route>
